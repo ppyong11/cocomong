@@ -46,7 +46,7 @@ public class FavoriteActivity extends AppCompatActivity {
                 //startActivity(intent);
 
             }
-        });*/
+        });
     }
 }
 */
