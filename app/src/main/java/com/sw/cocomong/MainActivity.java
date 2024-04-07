@@ -25,7 +25,6 @@ public class MainActivity extends AppCompatActivity {
         //setContentView(R.layout.refridge_list);
         setContentView(R.layout.favorite_list);
 
-
         //startActivity(new Intent(getApplicationContext(), FavoriteActivity.class).putExtra("main","음식 정보 내놔라"));
     }
 

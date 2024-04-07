@@ -24,7 +24,6 @@ public class FavoriteActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
        // setContentView(R.layout.favorite_list);
 
-        Intent intent = getIntent();
 //        // 어댑터 연결
         ListView list = (ListView) findViewById(R.id.food_list);
         FoodAdapter adapter = new FoodAdapter(FavoriteActivity.this, android.R.layout.simple_list_item_1);
@@ -35,7 +34,7 @@ public class FavoriteActivity extends AppCompatActivity {
 
         list.setAdapter(adapter);
 
-
+/*
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -47,8 +46,7 @@ public class FavoriteActivity extends AppCompatActivity {
                 //startActivity(intent);
 
             }
-        });
+        });*/
     }
-
 }
 */
