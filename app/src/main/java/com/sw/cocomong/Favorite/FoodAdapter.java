@@ -1,4 +1,4 @@
-package com.sw.cocomong.Favorite;
+/*package com.sw.cocomong.Favorite;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -50,10 +50,10 @@ public class FoodAdapter extends ArrayAdapter{
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.favorite_item,parent,false);
         }
-        TextView tvFoodName = convertView.findViewById(R.id.tv_foodName);
-        TextView tvCategory = convertView.findViewById(R.id.tv_category);
-        TextView tvExpire = convertView.findViewById(R.id.tv_exprire);
-        CheckBox cbFavorite = convertView.findViewById(R.id.cb_favorite);
+        TextView tvFoodName = convertView.findViewById(R.id.food_name);
+        TextView tvCategory = convertView.findViewById(R.id.category);
+        TextView tvExpire = convertView.findViewById(R.id.food_date);
+        CheckBox cbFavorite = convertView.findViewById(R.id.favorite_cb);
 
         tvFoodName.setText(foodListItem.getName());
         tvCategory.setText(foodListItem.getCategory());
@@ -62,4 +62,4 @@ public class FoodAdapter extends ArrayAdapter{
 
         return convertView;
     }
-}
+}*/

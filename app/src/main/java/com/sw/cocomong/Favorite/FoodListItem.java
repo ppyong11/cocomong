@@ -1,4 +1,4 @@
-package com.sw.cocomong.Favorite;
+/*package com.sw.cocomong.Favorite;
 
 public class FoodListItem {
     private String name;
@@ -44,3 +44,4 @@ public class FoodListItem {
         this.favorite=false;
     }
 }
+*/

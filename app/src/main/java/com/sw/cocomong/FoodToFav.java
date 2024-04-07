@@ -11,7 +11,6 @@ import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -53,7 +52,7 @@ public class FoodToFav extends AppCompatActivity {
         btn_star.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(FoodToFav.this, Favorite.class);
+                Intent intent = new Intent(FoodToFav.this, Favorite_layout.class);
                 startActivity(intent);
             }
 

@@ -1,4 +1,4 @@
-package com.sw.cocomong.Favorite;
+/*package com.sw.cocomong.Favorite;
 
 import android.app.Activity;
 import android.app.LauncherActivity;
@@ -55,3 +55,4 @@ public class FavoriteActivity extends AppCompatActivity {
     }
 
 }
+*/

@@ -20,7 +20,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Favorite" android:label="Favorite"></activity>
+        <activity android:name=".Favorite_layout" android:label="Favorite"></activity>
     </application>
 
 </manifest>
