@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    android:background="#dac9ff">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="5dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:background="@color/white"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/back_btn"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_weight="0"
+                android:src="?attr/actionModeCloseDrawable"
+                android:text="Button" />
+
+            <TextView
+                android:id="@+id/food_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="재료 이름"
+                android:textSize="20dp"
+                android:textStyle="bold" />
+
+            <ImageButton
+                android:id="@+id/edit_btn"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_weight="0"
+                android:src="@android:drawable/ic_menu_edit"
+                android:text="Button" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/food_image"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_marginRight="5dp"
+                android:background="@color/white"
+                app:srcCompat="@android:drawable/ic_menu_gallery" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/barcode_tv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="fill"
+                    android:padding="10dp"
+                    android:layout_marginBottom="5dp"
+                    android:background="@color/white"
+                    android:text="바코드 코드 번호" />
+
+                <TextView
+                    android:id="@+id/food_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="bottom"
+                    android:background="@color/white"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:textSize="20dp"
+                    android:textStyle="bold"
+                    android:text="음식 이름" />
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/category"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/white"
+            android:gravity="center_vertical"
+            android:padding="10dp"
+            android:layout_marginBottom="5dp"
+            android:text="카테고리"
+            android:textSize="17dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="5dp"
+            android:background="@color/white"
+            android:padding="10dp"
+            android:text="유통기한" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:background="@color/white"
+            android:padding="10dp"
+            android:layout_weight="0"
+            android:layout_marginBottom="5dp
+"
+            android:text="메모" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:backgroundTint="#b796ff "
+            android:text="저장"
+            android:textSize="18dp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+</RelativeLayout>

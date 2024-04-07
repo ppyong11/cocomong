@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="food">
+        <item>양파</item>
+        <item>마늘</item>
+        <item>당근</item>
+    </string-array>
+</resources>
