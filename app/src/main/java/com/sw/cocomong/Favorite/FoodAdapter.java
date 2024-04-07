@@ -21,8 +21,13 @@ public class FoodAdapter extends ArrayAdapter{
         super(context, resource);
     }
 
-    public static ArrayList<FoodListItem> foodListItems = new ArrayList<>();
+    ArrayList<FoodListItem> foodListItems = new ArrayList<>();
     Context context;
+
+    @Override
+    public void add(Object object) {
+        foodListItems.add((FoodListItem) object);
+    }
 
     @Override
     public int getCount() {

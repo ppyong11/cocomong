@@ -1,6 +1,6 @@
 package com.sw.cocomong.Favorite;
 
-public class FoodListItem {
+public class FoodListItem{
     private String name;
     private String category;
     private String expire;

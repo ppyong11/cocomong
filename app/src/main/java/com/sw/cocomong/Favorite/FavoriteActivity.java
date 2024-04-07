@@ -19,36 +19,32 @@ import com.sw.cocomong.FoodInfoActivity;
 import com.sw.cocomong.R;
 
 public class FavoriteActivity extends AppCompatActivity {
-    String[] favFoodList;
-    ArrayAdapter<String> favFoodAdapter;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.favorite_list);
 
-        // 어댑터뷰, 데이터 연동하기.
-        // DB
-
-
-        // 어댑터 준비
-
-
-        favFoodAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, favFoodList);
-
+        Intent intent = getIntent();
 //        // 어댑터 연결
         ListView list = (ListView) findViewById(R.id.food_list);
         FoodAdapter adapter = new FoodAdapter(FavoriteActivity.this, android.R.layout.simple_list_item_1);
 
+        adapter.add(new FoodListItem("양파","야채","24-4-13",true));
+        adapter.add(new FoodListItem("감자","야채","24-4-13",true));
+        adapter.add(new FoodListItem("마늘","카테고리2","24-4-13",true));
+
+        list.setAdapter(adapter);
 
 
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String foodItem = (String) adapter.getItem(position);
-                Toast.makeText(getBaseContext(), favFoodList[position], Toast.LENGTH_SHORT).show();
+                //test
+                String foodItem = adapter.getItem(position).toString();
+                Toast.makeText(getBaseContext(), foodItem, Toast.LENGTH_SHORT).show();
                 // 화면 전환 인텐트 하면 될 듯
-                Intent intent = new Intent(FavoriteActivity.this, FoodInfoActivity.class);
-                startActivity(intent);
+                //Intent intent = new Intent(FavoriteActivity.this, FoodInfoActivity.class);
+                //startActivity(intent);
 
             }
         });
