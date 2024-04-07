@@ -21,7 +21,7 @@ public class FavoriteActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.favorite_list);
+       // setContentView(R.layout.favorite_list);
 
         // 어댑터뷰, 데이터 연동하기.
         // DB
