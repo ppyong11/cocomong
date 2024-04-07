@@ -47,6 +47,16 @@
             android:orientation="horizontal">
 
             <Button
+                android:id="@+id/btn_refback"
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:layout_weight="1"
+                android:backgroundTint="#dac9ff"
+                android:text="냉장고"
+                android:textColor="#000000"
+                android:textSize="11dp" />
+
+            <Button
                 android:id="@+id/btn_star"
                 android:layout_width="wrap_content"
                 android:layout_height="60dp"
@@ -54,27 +64,7 @@
                 android:backgroundTint="#dac9ff"
                 android:text="즐겨찾기"
                 android:textColor="#000000"
-                android:textSize="15dp" />
-
-            <Button
-                android:id="@+id/btn_tag"
-                android:layout_width="wrap_content"
-                android:layout_height="60dp"
-                android:layout_weight="1"
-                android:backgroundTint="#dac9ff"
-                android:text="태그"
-                android:textColor="#000000"
-                android:textSize="15dp" />
-
-            <Button
-                android:id="@+id/btn_date"
-                android:layout_width="wrap_content"
-                android:layout_height="60dp"
-                android:layout_weight="1"
-                android:backgroundTint="#dac9ff"
-                android:text="유통기한"
-                android:textColor="#000000"
-                android:textSize="15dp" />
+                android:textSize="11dp" />
 
             <Button
                 android:id="@+id/btn_foodplus"
@@ -84,7 +74,27 @@
                 android:backgroundTint="#dac9ff"
                 android:text="재료추가"
                 android:textColor="#000000"
-                android:textSize="15dp" />
+                android:textSize="11dp" />
+
+            <Button
+                android:id="@+id/btn_tag"
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:layout_weight="1"
+                android:backgroundTint="#dac9ff"
+                android:text="태그"
+                android:textColor="#000000"
+                android:textSize="11dp" />
+
+            <Button
+                android:id="@+id/btn_mypage"
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:layout_weight="1"
+                android:backgroundTint="#dac9ff"
+                android:text="마이페이지"
+                android:textColor="#000000"
+                android:textSize="10dp" />
         </LinearLayout>
     </LinearLayout>
 
