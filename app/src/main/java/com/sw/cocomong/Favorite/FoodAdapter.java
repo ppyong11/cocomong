@@ -25,11 +25,6 @@ public class FoodAdapter extends ArrayAdapter{
     Context context;
 
     @Override
-    public void add(Object object) {
-        foodListItems.add((FoodListItem) object);
-    }
-
-    @Override
     public int getCount() {
         return foodListItems.size();
     }
