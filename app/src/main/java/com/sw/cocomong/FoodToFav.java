@@ -15,7 +15,7 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-public class FoodToFav extends AppCompatActivity {
+/*public class FoodToFav extends AppCompatActivity {
 
     ListView list;
 
@@ -40,7 +40,7 @@ public class FoodToFav extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.food_item);
+        setContentView(R.layout.food_list);
 
         Button btn_star = (Button)findViewById(R.id.btn_star);
 
@@ -55,7 +55,6 @@ public class FoodToFav extends AppCompatActivity {
                 Intent intent = new Intent(FoodToFav.this, Favorite_layout.class);
                 startActivity(intent);
             }
-
         });
 
     }
@@ -84,3 +83,4 @@ public class FoodToFav extends AppCompatActivity {
     }
 
 }
+*/

@@ -1,6 +1,6 @@
-/*package com.sw.cocomong.Favorite;
+package com.sw.cocomong.Favorite;
 
-import android.content.Context;
+import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,58 +8,43 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.sw.cocomong.R;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class FoodAdapter extends ArrayAdapter{
+public class FoodAdapter extends ArrayAdapter<FoodListItem>{
+    private final Activity context;
+    private List<FoodListItem> foodListItems;
 
-    public FoodAdapter(@NonNull Context context, int resource) {
-        super(context, resource);
-    }
 
-    ArrayList<FoodListItem> foodListItems = new ArrayList<>();
-    Context context;
-
-    @Override
-    public int getCount() {
-        return foodListItems.size();
-    }
-
-    @Nullable
-    @Override
-    public Object getItem(int position) {
-        return foodListItems.get(position);
+    public FoodAdapter(Activity context, List<FoodListItem> foodListItems) {
+        super(context, R.layout.favorite_item, foodListItems);
+        this.context=context;
+        this.foodListItems=foodListItems;
     }
 
     @Override
-    public long getItemId(int position) {
-        return position;
-    }
+    public View getView(int position, View convertView, ViewGroup parent) {
 
-    @NonNull
-    @Override
-    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        context=getContext();
+        LayoutInflater inflater = context.getLayoutInflater();
+        View rowView = inflater.inflate(R.layout.favorite_item,null,true);
+
+        TextView tvFoodName =  (TextView) rowView.findViewById(R.id.food_name);
+        TextView tvCategory = (TextView) rowView.findViewById(R.id.category);
+        TextView tvExpire = (TextView) rowView.findViewById(R.id.food_date);
+        CheckBox cbFavorite = (CheckBox) rowView.findViewById(R.id.cb_favorite);
+
+
         FoodListItem foodListItem = foodListItems.get(position);
-
-        if(convertView !=null){
-            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.favorite_item,parent,false);
-        }
-        TextView tvFoodName = convertView.findViewById(R.id.food_name);
-        TextView tvCategory = convertView.findViewById(R.id.category);
-        TextView tvExpire = convertView.findViewById(R.id.food_date);
-        CheckBox cbFavorite = convertView.findViewById(R.id.favorite_cb);
 
         tvFoodName.setText(foodListItem.getName());
         tvCategory.setText(foodListItem.getCategory());
         tvExpire.setText(foodListItem.getExpire());
         cbFavorite.setChecked(foodListItem.isFavorite());
 
-        return convertView;
+        return rowView;
     }
-}*/
+}

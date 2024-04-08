@@ -11,7 +11,7 @@
         android:background="#ffffff"/>
 
     <TextView
-        android:id="@+id/category"
+        android:id="@+id/tv_category"
         android:layout_width="match_parent"
         android:layout_height="20dp"
         android:background="#dac9ff" />

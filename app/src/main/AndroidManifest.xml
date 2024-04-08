@@ -11,7 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.RefridgeProject"
         tools:targetApi="31">
-        <activity
+        <!--<activity
             android:name=".FoodToFav"
             android:exported="true">
             <intent-filter>
@@ -20,7 +20,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+-->
         <activity android:name=".Favorite_layout" android:label="Favorite"></activity>
+        <activity
+            android:name=".FavoriteActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
     </application>
 
 </manifest>
