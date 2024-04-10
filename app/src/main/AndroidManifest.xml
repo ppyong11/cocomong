@@ -21,7 +21,10 @@
             </intent-filter>
         </activity>
 -->
-        <activity android:name=".Favorite_layout" android:label="Favorite"></activity>
+        <activity
+            android:name=".FoodInfoActivity"
+            android:label="Favorite" />
+
         <activity
             android:name=".MainFoodListActivity"
             android:exported="true">

@@ -1,4 +1,4 @@
-/*package com.sw.cocomong;
+package com.sw.cocomong;
 
 import android.os.Bundle;
 
@@ -13,4 +13,3 @@ public class FoodInfoActivity extends AppCompatActivity {
 
     }
 }
-*/
