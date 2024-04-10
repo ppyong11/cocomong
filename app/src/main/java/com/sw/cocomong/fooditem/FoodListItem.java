@@ -1,4 +1,4 @@
-package com.sw.cocomong.Favorite;
+package com.sw.cocomong.fooditem;
 
 public class FoodListItem{
     private String name;

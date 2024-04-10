@@ -1,4 +1,4 @@
-package com.sw.cocomong.Favorite;
+package com.sw.cocomong.fooditem;
 
 import android.app.Activity;
 import android.view.LayoutInflater;
@@ -8,11 +8,8 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
-import androidx.annotation.Nullable;
-
 import com.sw.cocomong.R;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class FoodAdapter extends ArrayAdapter<FoodListItem>{
