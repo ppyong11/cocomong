@@ -67,7 +67,7 @@
                 android:textSize="11dp" />
 
             <Button
-                android:id="@+id/btn_foodplus"
+                android:id="@+id/btn_foodAdd"
                 android:layout_width="wrap_content"
                 android:layout_height="60dp"
                 android:layout_weight="1"

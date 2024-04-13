@@ -18,7 +18,7 @@ public class FoodAdapter extends ArrayAdapter<FoodListItem>{
 
 
     public FoodAdapter(Activity context, List<FoodListItem> foodListItems) {
-        super(context, R.layout.favorite_item, foodListItems);
+        super(context, R.layout.food_item, foodListItems);
         this.context=context;
         this.foodListItems=foodListItems;
     }
@@ -27,11 +27,11 @@ public class FoodAdapter extends ArrayAdapter<FoodListItem>{
     public View getView(int position, View convertView, ViewGroup parent) {
 
         LayoutInflater inflater = context.getLayoutInflater();
-        View rowView = inflater.inflate(R.layout.favorite_item,null,true);
+        View rowView = inflater.inflate(R.layout.food_item,null,true);
 
-        TextView tvFoodName =  (TextView) rowView.findViewById(R.id.food_name);
-        TextView tvCategory = (TextView) rowView.findViewById(R.id.category);
-        TextView tvExpire = (TextView) rowView.findViewById(R.id.food_date);
+        TextView tvFoodName =  (TextView) rowView.findViewById(R.id.tv_listFoodName);
+        TextView tvCategory = (TextView) rowView.findViewById(R.id.tv_listCategory);
+        TextView tvExpire = (TextView) rowView.findViewById(R.id.tv_listFoodExpire);
         CheckBox cbFavorite = (CheckBox) rowView.findViewById(R.id.cb_favorite);
 
 

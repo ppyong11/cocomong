@@ -6,9 +6,12 @@
 
     android:background="#dac9ff">
 
+
+
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
         android:layout_marginTop="5dp"
         android:layout_marginEnd="5dp"
@@ -23,15 +26,15 @@
             android:orientation="horizontal">
 
             <ImageButton
-                android:id="@+id/back_btn"
+                android:id="@+id/btn_back"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_weight="0"
                 android:src="?attr/actionModeCloseDrawable"
-                android:text="Button" />
+                android:contentDescription="@string/btn_back"/>
 
             <TextView
-                android:id="@+id/tv_foodName"
+                android:id="@+id/tv_infoFoodName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -39,16 +42,17 @@
                 android:gravity="center"
                 android:padding="10dp"
                 android:text="재료 이름"
+                android:textColor="@color/black"
                 android:textSize="20dp"
                 android:textStyle="bold" />
 
             <ImageButton
-                android:id="@+id/edit_btn"
+                android:id="@+id/btn_edit"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_weight="0"
                 android:src="@android:drawable/ic_menu_edit"
-                android:text="Button" />
+                android:contentDescription="@string/btn_edit" />
 
         </LinearLayout>
 
@@ -72,69 +76,114 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/barcode_tv"
+                    android:id="@+id/tv_barcode"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="fill"
                     android:padding="10dp"
                     android:layout_marginBottom="5dp"
                     android:background="@color/white"
-                    android:text="바코드 코드 번호" />
+                    android:text="바코드 코드 번호"
+                    android:textColor="@color/black"
+                    />
 
-                <TextView
-                    android:id="@+id/tv_foodName"
+                <EditText
+                    android:id="@+id/tv_infoFoodName"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="bottom"
                     android:background="@color/white"
-                    android:gravity="center"
+                    android:gravity="center_vertical"
                     android:padding="10dp"
                     android:textSize="20dp"
                     android:textStyle="bold"
-                    android:text="음식 이름" />
+                    android:hint="음식이름"
+                    android:enabled="false"
+                    android:inputType="text"
+                    android:textColorHint="@color/black"
+                    android:textColor="@color/black"
+                    />
 
             </LinearLayout>
 
 
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/tv_category"
+        <EditText
+            android:id="@+id/tv_infoCategory"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:background="@color/white"
             android:gravity="center_vertical"
             android:padding="10dp"
             android:layout_marginBottom="5dp"
-            android:text="카테고리"
-            android:textSize="17dp"/>
+            android:hint="카테고리"
+            android:enabled="false"
+            android:inputType="text"
+            android:textColorHint="@color/black"
+            android:textSize="17dp"
+            android:textColor="@color/black"
+            />
 
-        <TextView
+        <EditText
+            android:id="@+id/tv_infoExpire"
             android:layout_width="match_parent"
             android:layout_height="50dp"
+            android:layout_marginBottom="5dp"
+            android:background="@color/white"
             android:gravity="center_vertical"
-            android:layout_marginBottom="5dp"
-            android:background="@color/white"
             android:padding="10dp"
-            android:text="유통기한" />
+            android:hint="유통기한"
+            android:enabled="false"
+            android:inputType="text"
+            android:textColorHint="@color/black"
+            android:textColor="@color/black"
+            />
 
-        <TextView
+        <EditText
+            android:id="@+id/tv_memo"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:background="@color/white"
-            android:padding="10dp"
-            android:layout_weight="0"
-            android:layout_marginBottom="5dp"
-            android:text="메모" />
-
-        <Button
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:backgroundTint="#b796ff "
-            android:text="저장"
-            android:textSize="18dp"
-            android:textStyle="bold" />
+            android:layout_marginBottom="5dp"
+            android:background="#D8FFFFFF"
+            android:enabled="false"
+            android:hint="메모"
+            android:inputType="text"
+            android:padding="5dp"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black"
+            android:textSize="20dp" />
 
     </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="5dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/linearLayout"
+
+        android:gravity="center"
+
+        android:backgroundTint="#b796ff "
+
+        android:text="저장"
+        android:textSize="18dp"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/btn_delete"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="5dp"
+        android:text="삭제"
+        android:textColor="#FF0000"
+        android:textSize="16dp"
+        android:textStyle="bold"
+        app:backgroundTint="#63624387" />
+
 </RelativeLayout>
