@@ -11,19 +11,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.RefridgeProject"
         tools:targetApi="31">
-        <!--<activity
-            android:name=".FoodToFav"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
 -->
         <activity
             android:name=".FoodAddActivity"
-            android:label="Favorite" />
+            android:label="FoodAdd" />
+        <activity android:name=".FoodInfoActivity"/>
 
         <activity
             android:name=".MainFoodListActivity"

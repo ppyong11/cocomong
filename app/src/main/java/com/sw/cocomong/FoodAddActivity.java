@@ -34,22 +34,18 @@ public class FoodAddActivity extends AppCompatActivity {
         expire=findViewById(R.id.et_infoExpire);
         memo=findViewById(R.id.et_memo);
 
+        save.setVisibility(View.VISIBLE);
         delete.setVisibility(View.GONE);
+        edit.setVisibility(View.GONE);
+
+        foodName.setEnabled(true);
+        category.setEnabled(true);
+        expire.setEnabled(true);
+        memo.setEnabled(true);
 
         back.setOnClickListener(v->{
             Toast.makeText(getApplicationContext(),MainFoodListActivity.foodListItems.get(2).getName(),Toast.LENGTH_SHORT).show();
 
-        });
-
-        edit.setOnClickListener(v->{
-            save.setVisibility(View.VISIBLE);
-            delete.setVisibility(View.GONE);
-            edit.setClickable(false);
-
-            foodName.setEnabled(true);
-            category.setEnabled(true);
-            expire.setEnabled(true);
-            memo.setEnabled(true);
         });
 
         save.setOnClickListener(v->{
@@ -66,9 +62,5 @@ public class FoodAddActivity extends AppCompatActivity {
             save.setVisibility(View.GONE);
 
         });
-
-
-
     }
-
 }

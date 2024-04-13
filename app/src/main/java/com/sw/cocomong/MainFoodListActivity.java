@@ -50,9 +50,9 @@ public class MainFoodListActivity extends AppCompatActivity {
         list.setOnItemClickListener((parent, view, position, id) -> {
             FoodListItem foodListItem=foodListItems.get(position);
             Toast.makeText(MainFoodListActivity.this,foodListItem.getName(),Toast.LENGTH_SHORT).show();
-            /*Intent intent = new Intent(MainFoodListActivity.this, FoodInfoActivity.class);
+            Intent intent = new Intent(MainFoodListActivity.this, FoodInfoActivity.class);
             intent.putExtra("position",position);
-            startActivity(intent);*/
+            startActivity(intent);
         });
 
     }

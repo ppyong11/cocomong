@@ -215,7 +215,6 @@
         android:gravity="center"
 
         android:backgroundTint="#b796ff "
-        android:visibility="invisible"
         android:text="저장"
         android:textSize="18dp"
         android:textStyle="bold" />

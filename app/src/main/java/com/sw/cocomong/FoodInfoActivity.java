@@ -1,71 +1,102 @@
 package com.sw.cocomong;
 
-/*public class FoodToFav extends AppCompatActivity {
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.PersistableBundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.TextView;
+import android.widget.Toast;
 
-    ListView list;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
-    String[] foodname = {
-            "양파",
-            "마늘",
-            "돼지고기"
-    };
+import com.sw.cocomong.fooditem.FoodListItem;
 
-    String[] foodcart = {
-            "채소",
-            "채소",
-            "육류"
-    };
 
-    String[] fooddate = {
-            "2025.02.01",
-            "2024.05.01",
-            "2022.03.02"
-    };
-
+public class FoodInfoActivity extends AppCompatActivity {
+    TextView title;
+    ImageButton back, edit;
+    Button save, delete;
+    EditText foodName, category, expire, memo;
+    FoodListItem foodListItem;
+    int position;
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.food_list);
-
-        Button btn_star = (Button)findViewById(R.id.btn_star);
-
-        CustomList adapter = new CustomList(FoodToFav.this);
-        list=(ListView) findViewById(R.id.list_food);
-        list.setAdapter((ListAdapter) adapter);
+        setContentView(R.layout.food_info);
+        Intent intent=getIntent();
+        Bundle extras=intent.getExtras();
+        position=extras.getInt("position");
 
 
-        btn_star.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(FoodToFav.this, Favorite_layout.class);
-                startActivity(intent);
-            }
+
+        title=findViewById(R.id.tv_infoTitle);
+        back=findViewById(R.id.btn_back);
+        edit=findViewById(R.id.btn_edit);
+        save=findViewById(R.id.btn_save);
+        delete=findViewById(R.id.btn_delete);
+        foodName =findViewById(R.id.et_infoFoodName);
+        category=findViewById(R.id.et_infoCategory);
+        expire=findViewById(R.id.et_infoExpire);
+        memo=findViewById(R.id.et_memo);
+
+        save.setVisibility(View.GONE);
+        delete.setVisibility(View.VISIBLE);
+        edit.setVisibility(View.VISIBLE);
+
+        foodName.setEnabled(false);
+        category.setEnabled(false);
+        expire.setEnabled(false);
+        memo.setEnabled(false);
+
+        back.setOnClickListener(v->{
+            Toast.makeText(getApplicationContext(),MainFoodListActivity.foodListItems.get(2).getName(),Toast.LENGTH_SHORT).show();
         });
 
-    }
 
-    public class CustomList extends ArrayAdapter<String> {
-        private final Activity context;
-        public CustomList(Activity context ) {
-            super(context, R.layout.favorite_item, foodname);
-            this.context = context;
-        }
+        edit.setOnClickListener(v->{
+            save.setVisibility(View.VISIBLE);
+            delete.setVisibility(View.GONE);
+            edit.setClickable(false);
 
-        @Override
-        public View getView(int position, View view, ViewGroup parent) {
-            LayoutInflater inflater = context.getLayoutInflater();
-            View rowView = inflater.inflate(R.layout.favorite_item, null, true);
-            TextView food_name = (TextView) rowView.findViewById(R.id.food_name);
-            TextView food_cart = (TextView) rowView.findViewById(R.id.category);
-            TextView food_date = (TextView) rowView.findViewById(R.id.food_date);
+            foodName.setEnabled(true);
+            category.setEnabled(true);
+            expire.setEnabled(true);
+            memo.setEnabled(true);
+        });
 
-            food_name.setText(foodname[position]);
-            food_cart.setText(foodcart[position]);
-            food_date.setText(fooddate[position]);
+        save.setOnClickListener(v->{
+            //Toast.makeText(getApplicationContext(),"save 눌림",Toast.LENGTH_SHORT).show();
 
-            return rowView;
-        }
+            // 변경불가
+            foodName.setEnabled(false);
+            category.setEnabled(false);
+            expire.setEnabled(false);
+            memo.setEnabled(false);
+
+            // foodListItems에 데이터 추가
+            foodListItem=new FoodListItem(foodName.getText().toString(),category.getText().toString(),expire.getText().toString(),memo.getText().toString());
+            MainFoodListActivity.foodListItems.set(position,foodListItem);
+
+            // 저장 버튼 사라지기
+            save.setVisibility(View.GONE);
+            edit.setClickable(true);
+            delete.setVisibility(View.VISIBLE);
+        });
+
+        delete.setOnClickListener(v->{
+            // 데이터 삭제
+            MainFoodListActivity.foodListItems.remove(position);
+
+            // 액티비티 종류
+            finish();
+        });
+
+
+
     }
 
 }
-*/
