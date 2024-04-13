@@ -20,7 +20,7 @@ public class MainFoodListActivity extends AppCompatActivity {
     FoodListItem onion = new FoodListItem("양파", "채소", "24-4-13", true);
     FoodListItem garlic = new FoodListItem("마늘", "채소", "24-5-1", false);
 
-    List<FoodListItem> foodListItems=new ArrayList<>();
+    public static List<FoodListItem> foodListItems=new ArrayList<>();
 
 
     @Override
