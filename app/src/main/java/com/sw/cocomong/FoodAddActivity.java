@@ -1,5 +1,6 @@
 package com.sw.cocomong;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -45,6 +46,7 @@ public class FoodAddActivity extends AppCompatActivity {
 
         back.setOnClickListener(v->{
             Toast.makeText(getApplicationContext(),MainFoodListActivity.foodListItems.get(2).getName(),Toast.LENGTH_SHORT).show();
+            finish();
 
         });
 
@@ -60,7 +62,8 @@ public class FoodAddActivity extends AppCompatActivity {
             MainFoodListActivity.foodListItems.add(foodListItem);
 
             save.setVisibility(View.GONE);
-
+            finish();
         });
     }
+
 }

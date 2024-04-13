@@ -17,6 +17,7 @@
             android:name=".FoodAddActivity"
             android:label="FoodAdd" />
         <activity android:name=".FoodInfoActivity"/>
+        <activity android:name=".FavoriteActivity"/>
 
         <activity
             android:name=".MainFoodListActivity"

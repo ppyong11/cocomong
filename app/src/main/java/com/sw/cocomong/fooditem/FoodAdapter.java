@@ -1,6 +1,7 @@
 package com.sw.cocomong.fooditem;
 
 import android.app.Activity;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
+import com.sw.cocomong.MainFoodListActivity;
 import com.sw.cocomong.R;
 
 import java.util.List;
@@ -42,6 +44,25 @@ public class FoodAdapter extends ArrayAdapter<FoodListItem>{
         tvExpire.setText(foodListItem.getExpire());
         cbFavorite.setChecked(foodListItem.isFavorite());
 
+        cbFavorite.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            setFavoriteItems(isChecked);
+        });
+
         return rowView;
+    }
+    public void setFavoriteItems(boolean isFavorite){
+        MainFoodListActivity.favoriteItems.clear();
+
+        if(isFavorite){
+           for(FoodListItem item : MainFoodListActivity.foodListItems){
+               // 로직 오류
+               // TODO: 2024-04-14 favoriteItems에 추가하는 로직 이랑 버튼 안되는거 오류잡기
+               //if(item.isFavorite()){
+                    //MainFoodListActivity.favoriteItems.add(item);
+                //}
+            }
+        }
+
+       // notifyDataSetChanged();
     }
 }

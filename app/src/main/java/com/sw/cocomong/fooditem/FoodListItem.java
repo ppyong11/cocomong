@@ -46,17 +46,18 @@ public class FoodListItem{
     public void setMemo(String memo) {
         this.memo = memo;
     }
-    public FoodListItem(String name, String category, String expire, boolean favorite){
+    public FoodListItem(String name, String category, String expire){
         this.category=category;
         this.name=name;
         this.expire = expire;
-        this.favorite=favorite;
+        //favorite=false;
     }
     public FoodListItem(String name, String category, String expire, String memo){
         this.name=name;
         this.expire=expire;
         this.category=category;
         this.memo=memo;
+        //favorite=false;
     }
 
     @Override

@@ -91,7 +91,7 @@ public class FoodInfoActivity extends AppCompatActivity {
             // 데이터 삭제
             MainFoodListActivity.foodListItems.remove(position);
 
-            // 액티비티 종류
+            // 액티비티 종료
             finish();
         });
 

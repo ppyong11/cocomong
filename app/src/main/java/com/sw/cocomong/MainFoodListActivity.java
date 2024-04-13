@@ -16,14 +16,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainFoodListActivity extends AppCompatActivity {
+    private static final int REQUEST_CODE_ADD_FOOD = 8;
     ListView list;
-    Button foodAdd;
+    Button foodAdd, favorite;
 
+    FoodAdapter foodAdapter;
     // 리스트.
-    FoodListItem onion = new FoodListItem("양파", "채소", "24-4-13", true);
-    FoodListItem garlic = new FoodListItem("마늘", "채소", "24-5-1", false);
+    FoodListItem onion = new FoodListItem("양파", "채소", "24-4-13");
+    FoodListItem garlic = new FoodListItem("마늘", "채소", "24-5-1");
 
     public static List<FoodListItem> foodListItems=new ArrayList<>();
+    public static List<FoodListItem> favoriteItems=new ArrayList<>();
 
 
     @Override
@@ -33,20 +36,30 @@ public class MainFoodListActivity extends AppCompatActivity {
 
         list = findViewById(R.id.list_food);
         foodAdd = findViewById(R.id.btn_foodAdd);
+        favorite = findViewById(R.id.btn_listFavorite);
+
 
         // 데이터 추가
         foodListItems.add(onion);
         foodListItems.add(garlic);
 
-        FoodAdapter foodAdapter = new FoodAdapter(MainFoodListActivity.this, foodListItems);
+
+        foodAdapter = new FoodAdapter(MainFoodListActivity.this, foodListItems);
         list.setAdapter(foodAdapter);
+
+
 
         foodAdd.setOnClickListener(v -> {
             Intent intent = new Intent(MainFoodListActivity.this, FoodAddActivity.class);
             startActivity(intent);
         });
 
-        // 안됨.
+        favorite.setOnClickListener(v->{
+            Intent intent = new Intent(MainFoodListActivity.this, FavoriteActivity.class);
+            startActivity(intent);
+        });
+
+        // TODO: 2024-04-14 리스트의 항목별 클릭 안되는 오류 잡기.
         list.setOnItemClickListener((parent, view, position, id) -> {
             FoodListItem foodListItem=foodListItems.get(position);
             Toast.makeText(MainFoodListActivity.this,foodListItem.getName(),Toast.LENGTH_SHORT).show();
@@ -54,6 +67,11 @@ public class MainFoodListActivity extends AppCompatActivity {
             intent.putExtra("position",position);
             startActivity(intent);
         });
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        foodAdapter.notifyDataSetChanged();
     }
 }
