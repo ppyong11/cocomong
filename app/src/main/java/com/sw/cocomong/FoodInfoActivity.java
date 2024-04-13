@@ -1,61 +1,71 @@
 package com.sw.cocomong;
 
-import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.TextView;
-import android.widget.Toast;
+/*public class FoodToFav extends AppCompatActivity {
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
+    ListView list;
 
-public class FoodInfoActivity extends AppCompatActivity {
-    TextView title;
-    ImageButton back, edit;
-    Button save, delete;
-    EditText foodName, category, expire, memo;
+    String[] foodname = {
+            "양파",
+            "마늘",
+            "돼지고기"
+    };
+
+    String[] foodcart = {
+            "채소",
+            "채소",
+            "육류"
+    };
+
+    String[] fooddate = {
+            "2025.02.01",
+            "2024.05.01",
+            "2022.03.02"
+    };
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.food_info);
+        setContentView(R.layout.food_list);
 
-        title=findViewById(R.id.tv_infoTitle);
-        back=findViewById(R.id.btn_back);
-        edit=findViewById(R.id.btn_edit);
-        save=findViewById(R.id.btn_save);
-        delete=findViewById(R.id.btn_delete);
-        foodName =findViewById(R.id.et_infoFoodName);
-        category=findViewById(R.id.et_infoCategory);
-        expire=findViewById(R.id.et_infoExpire);
-        memo=findViewById(R.id.et_memo);
+        Button btn_star = (Button)findViewById(R.id.btn_star);
 
-        back.setOnClickListener(v->{
+        CustomList adapter = new CustomList(FoodToFav.this);
+        list=(ListView) findViewById(R.id.list_food);
+        list.setAdapter((ListAdapter) adapter);
 
+
+        btn_star.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(FoodToFav.this, Favorite_layout.class);
+                startActivity(intent);
+            }
         });
-        edit.setOnClickListener(v->{
-            save.setVisibility(View.VISIBLE);
-            delete.setVisibility(View.GONE);
-
-            foodName.setEnabled(true);
-            category.setEnabled(true);
-            expire.setEnabled(true);
-            memo.setEnabled(true);
-        });
-        delete.setOnClickListener(v->{
-
-        });
-        save.setOnClickListener(v->{
-            //Toast.makeText(getApplicationContext(),"save 눌림",Toast.LENGTH_SHORT).show();
-
-            foodName.setEnabled(false);
-            category.setEnabled(false);
-            expire.setEnabled(false);
-            memo.setEnabled(false);
-        });
-
 
     }
 
+    public class CustomList extends ArrayAdapter<String> {
+        private final Activity context;
+        public CustomList(Activity context ) {
+            super(context, R.layout.favorite_item, foodname);
+            this.context = context;
+        }
+
+        @Override
+        public View getView(int position, View view, ViewGroup parent) {
+            LayoutInflater inflater = context.getLayoutInflater();
+            View rowView = inflater.inflate(R.layout.favorite_item, null, true);
+            TextView food_name = (TextView) rowView.findViewById(R.id.food_name);
+            TextView food_cart = (TextView) rowView.findViewById(R.id.category);
+            TextView food_date = (TextView) rowView.findViewById(R.id.food_date);
+
+            food_name.setText(foodname[position]);
+            food_cart.setText(foodcart[position]);
+            food_date.setText(fooddate[position]);
+
+            return rowView;
+        }
+    }
+
 }
+*/

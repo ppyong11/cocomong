@@ -22,7 +22,7 @@
         </activity>
 -->
         <activity
-            android:name=".FoodInfoActivity"
+            android:name=".FoodAddActivity"
             android:label="Favorite" />
 
         <activity

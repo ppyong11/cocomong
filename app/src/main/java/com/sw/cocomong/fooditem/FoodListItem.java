@@ -4,6 +4,7 @@ public class FoodListItem{
     private String name;
     private String category;
     private String expire;
+    private String memo;
     private boolean favorite;
 
     public String getName() {
@@ -37,10 +38,35 @@ public class FoodListItem{
     public void setFavorite(boolean favorite) {
         this.favorite = favorite;
     }
+
+    public String getMemo() {
+        return memo;
+    }
+
+    public void setMemo(String memo) {
+        this.memo = memo;
+    }
     public FoodListItem(String name, String category, String expire, boolean favorite){
         this.category=category;
         this.name=name;
         this.expire = expire;
         this.favorite=favorite;
+    }
+    public FoodListItem(String name, String category, String expire, String memo){
+        this.name=name;
+        this.expire=expire;
+        this.category=category;
+        this.memo=memo;
+    }
+
+    @Override
+    public String toString() {
+        return "FoodListItem{" +
+                "name='" + name + '\'' +
+                ", category='" + category + '\'' +
+                ", expire='" + expire + '\'' +
+                ", memo='" + memo + '\'' +
+                ", favorite=" + favorite +
+                '}';
     }
 }
