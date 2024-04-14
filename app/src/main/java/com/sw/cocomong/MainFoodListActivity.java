@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainFoodListActivity extends AppCompatActivity {
-    private static final int REQUEST_CODE_ADD_FOOD = 8;
+
     ListView list;
     Button foodAdd, favorite;
 
@@ -68,6 +68,7 @@ public class MainFoodListActivity extends AppCompatActivity {
             startActivity(intent);
         });
     }
+
 
     @Override
     protected void onResume() {

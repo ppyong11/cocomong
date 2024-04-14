@@ -62,18 +62,18 @@ public class FoodAdapter extends ArrayAdapter<FoodListItem>{
             foodListItems.get(position).setFavorite(true);
 
             MainFoodListActivity.favoriteItems.add(foodListItems.get(position));
-            System.out.println("Favorite: "+MainFoodListActivity.favoriteItems);
-            System.out.println("Food: "+MainFoodListActivity.foodListItems);
-            System.out.println("Adapter: "+ foodListItems);
+            //System.out.println("Favorite: "+MainFoodListActivity.favoriteItems);
+            //System.out.println("Food: "+MainFoodListActivity.foodListItems);
+            //System.out.println("Adapter: "+ foodListItems);
 
         }else {
             foodListItems.get(position).setFavorite(false);
             MainFoodListActivity.favoriteItems.remove(foodListItems.get(position));
 
 
-            System.out.println("Favorite: "+MainFoodListActivity.favoriteItems);
-            System.out.println("Food: "+MainFoodListActivity.foodListItems);
-            System.out.println("Adapter: "+ foodListItems);
+            //System.out.println("Favorite: "+MainFoodListActivity.favoriteItems);
+            //System.out.println("Food: "+MainFoodListActivity.foodListItems);
+            //System.out.println("Adapter: "+ foodListItems);
         }
 
        notifyDataSetChanged();
