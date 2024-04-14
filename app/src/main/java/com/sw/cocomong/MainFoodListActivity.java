@@ -47,13 +47,6 @@ public class MainFoodListActivity extends AppCompatActivity {
         foodAdapter = new FoodAdapter(MainFoodListActivity.this, foodListItems);
         list.setAdapter(foodAdapter);
 
-        list.setOnItemClickListener((parent, view, position, id) -> {
-
-            Toast.makeText(this,foodListItems.get(position).getName(),Toast.LENGTH_SHORT).show();
-            //Intent intent = new Intent(MainFoodListActivity.this, FoodInfoActivity.class);
-            //intent.putExtra("position",position);
-            //startActivity(intent);
-        });
 
 
         foodAdd.setOnClickListener(v -> {
@@ -66,11 +59,14 @@ public class MainFoodListActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        System.out.println("----------list.getItemAtPosition---"+list.getItemAtPosition(0));
-
         // TODO: 2024-04-14 리스트의 항목별 클릭 안되는 오류 잡기.
-
-
+        list.setOnItemClickListener((parent, view, position, id) -> {
+            FoodListItem foodListItem=foodListItems.get(position);
+            Toast.makeText(MainFoodListActivity.this,foodListItem.getName(),Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(MainFoodListActivity.this, FoodInfoActivity.class);
+            intent.putExtra("position",position);
+            startActivity(intent);
+        });
     }
 
 
