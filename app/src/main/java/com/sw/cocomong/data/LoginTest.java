@@ -37,7 +37,6 @@ class Test{
         //POST 데이터 설정
         String postData="username=dahee&password=0111";
 
-
         OutputStreamWriter osw = new OutputStreamWriter(httpURLConnection.getOutputStream());
         //POST 데이터 전송
         osw.write(postData);
