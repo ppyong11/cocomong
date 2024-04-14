@@ -1,5 +1,5 @@
 package com.sw.cocomong.data;
-
+/*
 import android.app.DownloadManager;
 
 import java.io.DataOutputStream;
@@ -11,36 +11,37 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+
 public class LoginTest {
-    private static final String LOGIN_URL ="http://172.25.16.1:8080/join";
 
-    URL url = new URL(LOGIN_URL);
-    HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
-
-
-    public LoginTest() throws IOException {
-        httpURLConnection.setRequestMethod("POST");
-        httpURLConnection.setDoOutput(true);
-    }
 }
 class Test{
     static final String LOGIN_URL ="http://172.25.16.1:8080/join";
 
     public static void main(String[] args) throws IOException {
 
-        URL url = new URL(LOGIN_URL);
-        HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
 
-        httpURLConnection.setRequestMethod("POST");
-        httpURLConnection.setDoOutput(true);
+        OkHttpClient client = new OkHttpClient().newBuilder().build();
 
-        //POST 데이터 설정
-        String postData="username=dahee&password=0111";
+        MediaType mediaType = MediaType.parse("text/plain");
 
-        OutputStreamWriter osw = new OutputStreamWriter(httpURLConnection.getOutputStream());
-        //POST 데이터 전송
-        osw.write(postData);
-        osw.flush();
+        RequestBody body = new MultipartBody.Builder().setType(MultipartBody.FORM)
+                .addFormDataPart("username","dahee")
+                .addFormDataPart("password","1234")
+                .build();
+        Request request = new Request.Builder()
+                .url(LOGIN_URL)
+                .method("POST", body)
+                .build();
+        Response response = client.newCall(request).execute();
     }
+
 }
 
+*/
