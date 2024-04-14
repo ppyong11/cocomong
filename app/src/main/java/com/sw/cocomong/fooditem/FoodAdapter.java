@@ -1,6 +1,7 @@
 package com.sw.cocomong.fooditem;
 
 import android.app.Activity;
+import android.hardware.camera2.params.MandatoryStreamCombination;
 import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +9,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.TextView;
+
+import androidx.interpolator.view.animation.FastOutLinearInInterpolator;
 
 import com.sw.cocomong.MainFoodListActivity;
 import com.sw.cocomong.R;
@@ -17,6 +20,7 @@ import java.util.List;
 public class FoodAdapter extends ArrayAdapter<FoodListItem>{
     private final Activity context;
     private List<FoodListItem> foodListItems;
+    FoodListItem foodListItem;
 
 
     public FoodAdapter(Activity context, List<FoodListItem> foodListItems) {
@@ -37,32 +41,41 @@ public class FoodAdapter extends ArrayAdapter<FoodListItem>{
         CheckBox cbFavorite = (CheckBox) rowView.findViewById(R.id.cb_favorite);
 
 
-        FoodListItem foodListItem = foodListItems.get(position);
+        foodListItem = foodListItems.get(position);
 
         tvFoodName.setText(foodListItem.getName());
         tvCategory.setText(foodListItem.getCategory());
         tvExpire.setText(foodListItem.getExpire());
         cbFavorite.setChecked(foodListItem.isFavorite());
 
+
+
         cbFavorite.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            setFavoriteItems(isChecked);
+            setFavoriteItems(position,isChecked);
+
         });
 
         return rowView;
     }
-    public void setFavoriteItems(boolean isFavorite){
-        MainFoodListActivity.favoriteItems.clear();
-
+    public void setFavoriteItems(int position, boolean isFavorite){
         if(isFavorite){
-           for(FoodListItem item : MainFoodListActivity.foodListItems){
-               // 로직 오류
-               // TODO: 2024-04-14 favoriteItems에 추가하는 로직 이랑 버튼 안되는거 오류잡기
-               //if(item.isFavorite()){
-                    //MainFoodListActivity.favoriteItems.add(item);
-                //}
-            }
+            foodListItems.get(position).setFavorite(true);
+
+            MainFoodListActivity.favoriteItems.add(foodListItems.get(position));
+            System.out.println("Favorite: "+MainFoodListActivity.favoriteItems);
+            System.out.println("Food: "+MainFoodListActivity.foodListItems);
+            System.out.println("Adapter: "+ foodListItems);
+
+        }else {
+            foodListItems.get(position).setFavorite(false);
+            MainFoodListActivity.favoriteItems.remove(foodListItems.get(position));
+
+
+            System.out.println("Favorite: "+MainFoodListActivity.favoriteItems);
+            System.out.println("Food: "+MainFoodListActivity.foodListItems);
+            System.out.println("Adapter: "+ foodListItems);
         }
 
-       // notifyDataSetChanged();
+       notifyDataSetChanged();
     }
 }
