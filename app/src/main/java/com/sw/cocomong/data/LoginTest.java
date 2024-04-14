@@ -22,7 +22,6 @@ public class LoginTest {
         httpURLConnection.setRequestMethod("POST");
         httpURLConnection.setDoOutput(true);
     }
-
 }
 class Test{
     static final String LOGIN_URL ="http://172.25.16.1:8080/join";
