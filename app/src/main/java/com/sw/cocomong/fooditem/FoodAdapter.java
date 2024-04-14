@@ -3,6 +3,7 @@ package com.sw.cocomong.fooditem;
 import android.app.Activity;
 import android.hardware.camera2.params.MandatoryStreamCombination;
 import android.os.Build;
+import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,7 @@ public class FoodAdapter extends ArrayAdapter<FoodListItem>{
     FoodListItem foodListItem;
 
 
+
     public FoodAdapter(Activity context, List<FoodListItem> foodListItems) {
         super(context, R.layout.food_item, foodListItems);
         this.context=context;
@@ -34,6 +36,8 @@ public class FoodAdapter extends ArrayAdapter<FoodListItem>{
 
         LayoutInflater inflater = context.getLayoutInflater();
         View rowView = inflater.inflate(R.layout.food_item,null,true);
+
+        rowView.setClickable(true);
 
         TextView tvFoodName =  (TextView) rowView.findViewById(R.id.tv_listFoodName);
         TextView tvCategory = (TextView) rowView.findViewById(R.id.tv_listCategory);
@@ -52,7 +56,6 @@ public class FoodAdapter extends ArrayAdapter<FoodListItem>{
 
         cbFavorite.setOnCheckedChangeListener((buttonView, isChecked) -> {
             setFavoriteItems(position,isChecked);
-
         });
 
         return rowView;
