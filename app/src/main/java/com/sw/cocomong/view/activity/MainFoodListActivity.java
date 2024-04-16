@@ -1,4 +1,4 @@
-package com.sw.cocomong;
+package com.sw.cocomong.view.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,8 +9,9 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.sw.cocomong.fooditem.FoodAdapter;
-import com.sw.cocomong.fooditem.FoodListItem;
+import com.sw.cocomong.R;
+import com.sw.cocomong.view.adapter.FoodAdapter;
+import com.sw.cocomong.view.adapter.FoodListItem;
 
 import java.util.ArrayList;
 import java.util.List;

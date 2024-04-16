@@ -1,4 +1,4 @@
-package com.sw.cocomong;
+package com.sw.cocomong.view.activity;
 
 import android.os.Bundle;
 import android.widget.ListView;
@@ -6,7 +6,8 @@ import android.widget.ListView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.sw.cocomong.fooditem.FoodAdapter;
+import com.sw.cocomong.R;
+import com.sw.cocomong.view.adapter.FoodAdapter;
 
 public class FavoriteActivity extends AppCompatActivity {
     FoodAdapter foodAdapter;

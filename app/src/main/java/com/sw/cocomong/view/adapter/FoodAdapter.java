@@ -1,8 +1,6 @@
-package com.sw.cocomong.fooditem;
+package com.sw.cocomong.view.adapter;
 
 import android.app.Activity;
-import android.hardware.camera2.params.MandatoryStreamCombination;
-import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,9 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
-import androidx.interpolator.view.animation.FastOutLinearInInterpolator;
-
-import com.sw.cocomong.MainFoodListActivity;
+import com.sw.cocomong.view.activity.MainFoodListActivity;
 import com.sw.cocomong.R;
 
 import java.util.List;

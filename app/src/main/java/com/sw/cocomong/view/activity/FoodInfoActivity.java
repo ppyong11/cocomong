@@ -1,4 +1,4 @@
-package com.sw.cocomong;
+package com.sw.cocomong.view.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,7 +13,8 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.sw.cocomong.fooditem.FoodListItem;
+import com.sw.cocomong.R;
+import com.sw.cocomong.view.adapter.FoodListItem;
 
 
 public class FoodInfoActivity extends AppCompatActivity {
@@ -53,7 +54,7 @@ public class FoodInfoActivity extends AppCompatActivity {
         memo.setEnabled(false);
 
         back.setOnClickListener(v->{
-            Toast.makeText(getApplicationContext(),MainFoodListActivity.foodListItems.get(2).getName(),Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), MainFoodListActivity.foodListItems.get(2).getName(),Toast.LENGTH_SHORT).show();
         });
 
 

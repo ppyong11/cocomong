@@ -1,4 +1,4 @@
-package com.sw.cocomong.fooditem;
+package com.sw.cocomong.view.adapter;
 
 public class FoodListItem{
     private String name;
@@ -70,4 +70,5 @@ public class FoodListItem{
                 ", favorite=" + favorite +
                 '}';
     }
+
 }

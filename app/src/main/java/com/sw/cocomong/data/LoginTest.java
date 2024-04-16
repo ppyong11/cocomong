@@ -1,16 +1,6 @@
 package com.sw.cocomong.data;
 /*
-import android.app.DownloadManager;
-
-import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
-
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
@@ -42,6 +32,5 @@ class Test{
         Response response = client.newCall(request).execute();
     }
 
-}
+}*/
 
-*/
