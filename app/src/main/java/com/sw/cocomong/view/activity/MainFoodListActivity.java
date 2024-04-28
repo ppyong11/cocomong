@@ -23,8 +23,8 @@ public class MainFoodListActivity extends AppCompatActivity {
 
     FoodAdapter foodAdapter;
     // 리스트.
-    FoodListItem onion = new FoodListItem("양파", "채소", "24-4-13");
-    FoodListItem garlic = new FoodListItem("마늘", "채소", "24-5-1");
+    //FoodListItem onion = new FoodListItem("양파", "채소", "24-4-13");
+    //FoodListItem garlic = new FoodListItem("마늘", "채소", "24-5-1");
 
     public static List<FoodListItem> foodListItems=new ArrayList<>();
     public static List<FoodListItem> favoriteItems=new ArrayList<>();
@@ -41,8 +41,8 @@ public class MainFoodListActivity extends AppCompatActivity {
 
 
         // 데이터 추가
-        foodListItems.add(onion);
-        foodListItems.add(garlic);
+        //foodListItems.add(onion);
+       // foodListItems.add(garlic);
 
 
         foodAdapter = new FoodAdapter(MainFoodListActivity.this, foodListItems);
