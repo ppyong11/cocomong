@@ -11,7 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.sw.cocomong.R;
 import com.sw.cocomong.view.adapter.FoodAdapter;
-import com.sw.cocomong.view.adapter.FoodListItem;
+import com.sw.cocomong.view.item.FoodListItem;
 
 import java.util.ArrayList;
 import java.util.List;

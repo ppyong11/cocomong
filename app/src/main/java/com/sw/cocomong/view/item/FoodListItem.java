@@ -1,4 +1,4 @@
-package com.sw.cocomong.view.adapter;
+package com.sw.cocomong.view.item;
 
 public class FoodListItem{
     private String name;

@@ -16,7 +16,6 @@ class Test{
 
     public static void main(String[] args) throws IOException {
 
-
         OkHttpClient client = new OkHttpClient().newBuilder().build();
 
         MediaType mediaType = MediaType.parse("text/plain");
@@ -31,6 +30,4 @@ class Test{
                 .build();
         Response response = client.newCall(request).execute();
     }
-
 }*/
-

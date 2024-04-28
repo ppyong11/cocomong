@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.sw.cocomong.view.activity.MainFoodListActivity;
 import com.sw.cocomong.R;
+import com.sw.cocomong.view.item.FoodListItem;
 
 import java.util.List;
 

@@ -14,7 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.sw.cocomong.R;
-import com.sw.cocomong.view.adapter.FoodListItem;
+import com.sw.cocomong.view.item.FoodListItem;
 
 
 public class FoodInfoActivity extends AppCompatActivity {
