@@ -19,7 +19,7 @@ import java.util.List;
 public class MainFoodListActivity extends AppCompatActivity {
 
     ListView list;
-    Button foodAdd, favorite;
+    Button foodAdd, favorite, mypage;
 
     FoodAdapter foodAdapter;
     // 리스트.
@@ -38,6 +38,7 @@ public class MainFoodListActivity extends AppCompatActivity {
         list = findViewById(R.id.list_food);
         foodAdd = findViewById(R.id.btn_foodAdd);
         favorite = findViewById(R.id.btn_listFavorite);
+        mypage = findViewById(R.id.btn_mypage);
 
 
         // 데이터 추가
@@ -57,6 +58,11 @@ public class MainFoodListActivity extends AppCompatActivity {
 
         favorite.setOnClickListener(v->{
             Intent intent = new Intent(MainFoodListActivity.this, FavoriteActivity.class);
+            startActivity(intent);
+        });
+
+        mypage.setOnClickListener(v->{
+            Intent intent = new Intent(MainFoodListActivity.this, LoginActivity.class);
             startActivity(intent);
         });
 
