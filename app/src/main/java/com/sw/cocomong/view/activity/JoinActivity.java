@@ -1,6 +1,5 @@
 package com.sw.cocomong.view.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -11,12 +10,13 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.sw.cocomong.R;
-import com.sw.cocomong.task.LoginTask;
+import com.sw.cocomong.task.JoinTask;
 
-public class LoginActivity extends AppCompatActivity {
+import java.util.concurrent.ExecutionException;
+
+public class JoinActivity extends AppCompatActivity {
     Button login, join, findPw;
     EditText name, pw, pwCheck;
-
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -31,27 +31,20 @@ public class LoginActivity extends AppCompatActivity {
         pw = findViewById(R.id.et_loginPw);
         pwCheck = findViewById(R.id.et_loginPwCheck);
 
-        pwCheck.setVisibility(View.GONE);
+        login.setVisibility(View.GONE);
+        findPw.setVisibility(View.GONE);
 
-        login.setOnClickListener(v -> {
+        join.setOnClickListener(v-> {
+            JoinTask joinTask = new JoinTask(name.getText().toString(),pw.getText().toString());
+            String result= null;
             try {
-
-                LoginTask loginTask = new LoginTask(name.getText().toString(),pw.getText().toString());
-
-                String result= loginTask.execute(name.getText().toString(),pw.getText().toString()).get();
-                Log.w("받은값 (Login): ", result);
-
-                Intent intent = new Intent(LoginActivity.this,RefridgeActivity.class);
-                startActivity(intent);
-                finish();
+                result = joinTask.execute(name.getText().toString(),pw.getText().toString()).get();
             } catch (Exception e){
                 e.printStackTrace();
             }
-        });
+            Log.w("받은 값 (Join): ", result);
 
-        join.setOnClickListener(v -> {
-            Intent intent = new Intent(LoginActivity.this, JoinActivity.class);
-            startActivity(intent);
+            finish();
         });
     }
 }

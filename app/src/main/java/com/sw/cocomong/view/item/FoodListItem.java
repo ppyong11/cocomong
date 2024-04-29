@@ -1,11 +1,15 @@
 package com.sw.cocomong.view.item;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class FoodListItem{
     private String name;
     private String category;
     private String expire;
     private String memo;
     private boolean favorite;
+    private static List<FoodListItem> favoriteItems = new ArrayList<>();
 
     public String getName() {
         return name;

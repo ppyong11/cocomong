@@ -21,10 +21,12 @@
             android:label="FoodAdd" />
         <activity android:name=".view.activity.FoodInfoActivity"/>
         <activity android:name=".view.activity.FavoriteActivity"/>
-        <activity android:name=".view.activity.LoginActivity"/>
+        <activity android:name=".view.activity.MainFoodListActivity"/>
         <activity android:name=".view.activity.RefAddActivity" android:theme="@style/Theme.AppCompat.Dialog"/>
-        <activity android:name=".view.activity.RefridgeActivity"/>        <activity
-            android:name=".view.activity.MainFoodListActivity"
+        <activity android:name=".view.activity.RefridgeActivity"/>
+        <activity android:name=".view.activity.JoinActivity"/>
+        <activity
+            android:name=".view.activity.LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
