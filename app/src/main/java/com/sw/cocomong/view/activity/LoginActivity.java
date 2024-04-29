@@ -39,7 +39,7 @@ public class LoginActivity extends AppCompatActivity {
                 LoginTask loginTask = new LoginTask(name.getText().toString(),pw.getText().toString());
 
                 String result= loginTask.execute(name.getText().toString(),pw.getText().toString()).get();
-                Log.w("받은값 (Login): ", result);
+                // Log.w("받은값 (Login): ", result);
 
                 Intent intent = new Intent(LoginActivity.this,RefridgeActivity.class);
                 startActivity(intent);

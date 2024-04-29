@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -35,16 +36,20 @@ public class JoinActivity extends AppCompatActivity {
         findPw.setVisibility(View.GONE);
 
         join.setOnClickListener(v-> {
-            JoinTask joinTask = new JoinTask(name.getText().toString(),pw.getText().toString());
-            String result= null;
-            try {
-                result = joinTask.execute(name.getText().toString(),pw.getText().toString()).get();
-            } catch (Exception e){
-                e.printStackTrace();
-            }
-            Log.w("받은 값 (Join): ", result);
 
-            finish();
+            if(pw.getText().toString().equals(pwCheck.getText().toString())){
+                JoinTask joinTask = new JoinTask(name.getText().toString(),pw.getText().toString());
+                String result= null;
+                try {
+                    result = joinTask.execute(name.getText().toString(),pw.getText().toString()).get();
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+                Log.d("받은 값 (Join): ", result);
+
+                finish();
+            } else Toast.makeText(this, "비밀번호가 일치하지 않습니다.", Toast.LENGTH_SHORT).show();
         });
     }
+
 }
