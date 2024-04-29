@@ -34,7 +34,7 @@ public class LoginTask extends AsyncTask<String, Void, String> {
             // 서버에 보낼 값 포함해 요청함.
             OutputStreamWriter osw = new OutputStreamWriter(conn.getOutputStream());
             // sendMsg = "id=" + strings[0] + "&pw=" + strings[1]; // GET방식으로 작성해 POST로 보냄 ex) "id=admin&pwd=1234";
-            sendMsg = "id=" + strings[0] + "&pw=" + strings[1]; // GET방식으로 작성해 POST로 보냄 ex) "id=admin&pwd=1234";
+            sendMsg = "username=" + strings[0] + "&password=" + strings[1]; // GET방식으로 작성해 POST로 보냄 ex) "id=admin&pwd=1234";
 
             osw.write(sendMsg);                           // OutputStreamWriter에 담아 전송
             osw.flush();
