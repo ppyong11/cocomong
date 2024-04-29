@@ -14,6 +14,8 @@ import java.net.URL;
 public class LoginTask extends AsyncTask<String, Void, String> {
     String sendMsg, receiveMsg;
     String name, pw;
+
+    HttpURLConnection conn;
     public LoginTask(String name, String pw){
         this.name=name;
         this.pw=pw;
@@ -27,6 +29,7 @@ public class LoginTask extends AsyncTask<String, Void, String> {
             URL url = new URL("http://58.224.91.191:8080/login");  // login 서버
             // ex) http://123.456.789.10:8080/hello/android
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            this.conn=conn;
             conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
             conn.setRequestMethod("POST");                              //데이터를 POST 방식으로 전송합니다.
             conn.setDoOutput(true);
@@ -52,6 +55,7 @@ public class LoginTask extends AsyncTask<String, Void, String> {
                 Log.i("통신 결과", conn.getResponseCode() + "에러");
             }
 
+
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -59,5 +63,11 @@ public class LoginTask extends AsyncTask<String, Void, String> {
         }
         // 서버에서 보낸 값을 리턴합니다.
         return receiveMsg;
+
+
     }
+    public int getResponseCode() throws IOException {
+        return conn.getResponseCode();
+    }
+
 }

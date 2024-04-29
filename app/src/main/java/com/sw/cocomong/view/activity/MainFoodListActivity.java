@@ -39,14 +39,13 @@ public class MainFoodListActivity extends AppCompatActivity {
         favorite = findViewById(R.id.btn_listFavorite);
         mypage = findViewById(R.id.btn_mypage);
 
-
         // 데이터 추가
         //foodListItems.add(onion);
        // foodListItems.add(garlic);
 
-
         foodAdapter = new FoodAdapter(MainFoodListActivity.this, foodListItems);
         list.setAdapter(foodAdapter);
+
 
         // TODO: 2024-04-14 리스트의 항목별 클릭 안되는 오류 잡기.
         list.setOnItemClickListener((parent, view, position, id) -> {
