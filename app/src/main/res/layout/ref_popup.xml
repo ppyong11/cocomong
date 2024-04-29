@@ -30,6 +30,7 @@
             android:textSize="20dp"
             android:maxLength="10"
             android:hint="@string/RefNameHint"
+
             android:inputType="text"
             />
 
