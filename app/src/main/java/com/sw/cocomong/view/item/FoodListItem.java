@@ -10,6 +10,7 @@ public class FoodListItem{
     private String memo;
     private boolean favorite;
     private static List<FoodListItem> favoriteItems = new ArrayList<>();
+    private static List<FoodListItem> foodListItems = new ArrayList<>();
 
     public String getName() {
         return name;
@@ -50,6 +51,15 @@ public class FoodListItem{
     public void setMemo(String memo) {
         this.memo = memo;
     }
+
+    public static List<FoodListItem> getFavoriteItems() {
+        return favoriteItems;
+    }
+
+    public static List<FoodListItem> getFoodListItems() {
+        return foodListItems;
+    }
+
     public FoodListItem(String name, String category, String expire){
         this.category=category;
         this.name=name;

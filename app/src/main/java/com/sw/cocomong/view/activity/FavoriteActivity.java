@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.sw.cocomong.R;
 import com.sw.cocomong.view.adapter.FoodAdapter;
+import com.sw.cocomong.view.item.FoodListItem;
 
 public class FavoriteActivity extends AppCompatActivity {
     FoodAdapter foodAdapter;
@@ -16,13 +17,11 @@ public class FavoriteActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.favorite_list);
+        setContentView(R.layout.food_list);
 
-        list=findViewById(R.id.favoriteList);
-        foodAdapter = new FoodAdapter(FavoriteActivity.this, MainFoodListActivity.favoriteItems);
+        list=findViewById(R.id.list_food);
+        foodAdapter = new FoodAdapter(FavoriteActivity.this, FoodListItem.getFavoriteItems());
         list.setAdapter(foodAdapter);
-
-
 
     }
 }

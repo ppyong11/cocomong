@@ -1,13 +1,16 @@
 package com.sw.cocomong.view.adapter;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.sw.cocomong.view.activity.FoodInfoActivity;
 import com.sw.cocomong.view.activity.MainFoodListActivity;
 import com.sw.cocomong.R;
 import com.sw.cocomong.view.item.FoodListItem;
@@ -45,11 +48,8 @@ public class FoodAdapter extends ArrayAdapter<FoodListItem>{
         tvExpire.setText(foodListItem.getExpire());
         cbFavorite.setChecked(foodListItem.isFavorite());
 
-
-
         cbFavorite.setOnCheckedChangeListener((buttonView, isChecked) -> {
             setFavoriteItems(position,isChecked);
-
         });
 
         return rowView;
@@ -58,14 +58,14 @@ public class FoodAdapter extends ArrayAdapter<FoodListItem>{
         if(isFavorite){
             foodListItems.get(position).setFavorite(true);
 
-            MainFoodListActivity.favoriteItems.add(foodListItems.get(position));
+            FoodListItem.getFavoriteItems().add(foodListItems.get(position));
             //System.out.println("Favorite: "+MainFoodListActivity.favoriteItems);
             //System.out.println("Food: "+MainFoodListActivity.foodListItems);
             //System.out.println("Adapter: "+ foodListItems);
 
         }else {
             foodListItems.get(position).setFavorite(false);
-            MainFoodListActivity.favoriteItems.remove(foodListItems.get(position));
+            FoodListItem.getFavoriteItems().remove(foodListItems.get(position));
 
 
             //System.out.println("Favorite: "+MainFoodListActivity.favoriteItems);

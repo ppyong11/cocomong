@@ -32,13 +32,13 @@ public class RefridgeActivity extends AppCompatActivity {
         list = findViewById(R.id.list_ref);
         refAdd = findViewById(R.id.btn_refplus);
 
-        refListItems.add(new RefListItem("dahee"));
 
         refAdapter = new RefAdapter(RefridgeActivity.this, refListItems);
         list.setAdapter(refAdapter);
 
         list.setOnItemClickListener((parent, view, position, id) -> {
             Toast.makeText(RefridgeActivity.this,refListItems.get(position).getName(),Toast.LENGTH_SHORT).show();
+
         });
 
         refAdd.setOnClickListener(v -> {

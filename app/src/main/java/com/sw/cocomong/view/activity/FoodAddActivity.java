@@ -45,9 +45,7 @@ public class FoodAddActivity extends AppCompatActivity {
         memo.setEnabled(true);
 
         back.setOnClickListener(v->{
-            Toast.makeText(getApplicationContext(), MainFoodListActivity.foodListItems.get(2).getName(),Toast.LENGTH_SHORT).show();
             finish();
-
         });
 
         save.setOnClickListener(v->{
@@ -59,7 +57,7 @@ public class FoodAddActivity extends AppCompatActivity {
             memo.setEnabled(false);
 
             foodListItem=new FoodListItem(foodName.getText().toString(),category.getText().toString(),expire.getText().toString(),memo.getText().toString());
-            MainFoodListActivity.foodListItems.add(foodListItem);
+            FoodListItem.getFoodListItems().add(foodListItem);
 
             save.setVisibility(View.GONE);
             finish();

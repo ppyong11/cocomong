@@ -54,7 +54,7 @@ public class FoodInfoActivity extends AppCompatActivity {
         memo.setEnabled(false);
 
         back.setOnClickListener(v->{
-            Toast.makeText(getApplicationContext(), MainFoodListActivity.foodListItems.get(2).getName(),Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), FoodListItem.getFoodListItems().get(2).getName(),Toast.LENGTH_SHORT).show();
         });
 
 
@@ -80,7 +80,7 @@ public class FoodInfoActivity extends AppCompatActivity {
 
             // foodListItems에 데이터 추가
             foodListItem=new FoodListItem(foodName.getText().toString(),category.getText().toString(),expire.getText().toString(),memo.getText().toString());
-            MainFoodListActivity.foodListItems.set(position,foodListItem);
+            FoodListItem.getFoodListItems().set(position,foodListItem);
 
             // 저장 버튼 사라지기
             save.setVisibility(View.GONE);
@@ -90,7 +90,7 @@ public class FoodInfoActivity extends AppCompatActivity {
 
         delete.setOnClickListener(v->{
             // 데이터 삭제
-            MainFoodListActivity.foodListItems.remove(position);
+            FoodListItem.getFoodListItems().remove(position);
 
             // 액티비티 종료
             finish();

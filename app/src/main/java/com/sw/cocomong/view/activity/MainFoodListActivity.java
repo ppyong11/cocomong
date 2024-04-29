@@ -26,8 +26,7 @@ public class MainFoodListActivity extends AppCompatActivity {
     //FoodListItem onion = new FoodListItem("양파", "채소", "24-4-13");
     //FoodListItem garlic = new FoodListItem("마늘", "채소", "24-5-1");
 
-    public static List<FoodListItem> foodListItems=new ArrayList<>();
-    public static List<FoodListItem> favoriteItems=new ArrayList<>();
+    private List<FoodListItem> foodListItems=FoodListItem.getFoodListItems();
 
 
     @Override
@@ -49,7 +48,15 @@ public class MainFoodListActivity extends AppCompatActivity {
         foodAdapter = new FoodAdapter(MainFoodListActivity.this, foodListItems);
         list.setAdapter(foodAdapter);
 
+        // TODO: 2024-04-14 리스트의 항목별 클릭 안되는 오류 잡기.
+        list.setOnItemClickListener((parent, view, position, id) -> {
+            //FoodListItem foodListItem=foodListItems.get(position);
+            Toast.makeText(MainFoodListActivity.this,foodListItems.get(position).getName(),Toast.LENGTH_SHORT).show();
 
+            //Intent intent = new Intent(MainFoodListActivity.this, FoodInfoActivity.class);
+            //intent.putExtra("position",position);
+            //startActivity(intent);
+        });
 
         foodAdd.setOnClickListener(v -> {
             Intent intent = new Intent(MainFoodListActivity.this, FoodAddActivity.class);
@@ -66,14 +73,7 @@ public class MainFoodListActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        // TODO: 2024-04-14 리스트의 항목별 클릭 안되는 오류 잡기.
-        list.setOnItemClickListener((parent, view, position, id) -> {
-            FoodListItem foodListItem=foodListItems.get(position);
-            Toast.makeText(MainFoodListActivity.this,foodListItem.getName(),Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(MainFoodListActivity.this, FoodInfoActivity.class);
-            intent.putExtra("position",position);
-            startActivity(intent);
-        });
+
     }
 
 
