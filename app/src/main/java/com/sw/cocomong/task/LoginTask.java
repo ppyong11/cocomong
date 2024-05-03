@@ -63,8 +63,6 @@ public class LoginTask extends AsyncTask<String, Void, String> {
         }
         // 서버에서 보낸 값을 리턴합니다.
         return receiveMsg;
-
-
     }
     public int getResponseCode() throws IOException {
         return conn.getResponseCode();
