@@ -39,6 +39,8 @@ public class RefridgeActivity extends AppCompatActivity {
         list.setOnItemClickListener((parent, view, position, id) -> {
             Toast.makeText(RefridgeActivity.this,refListItems.get(position).getName(),Toast.LENGTH_SHORT).show();
 
+            Intent intent = new Intent(RefridgeActivity.this, MainFoodListActivity.class);
+            startActivity(intent);
         });
 
         refAdd.setOnClickListener(v -> {

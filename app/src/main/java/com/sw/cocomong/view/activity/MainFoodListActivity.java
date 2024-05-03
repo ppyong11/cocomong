@@ -2,8 +2,12 @@ package com.sw.cocomong.view.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.PopupMenu;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -19,8 +23,7 @@ import java.util.List;
 public class MainFoodListActivity extends AppCompatActivity {
 
     ListView list;
-    Button refridge, foodAdd, favorite, mypage;
-
+    Button refridge, foodAdd, favorite, mypage, sort;
     FoodAdapter foodAdapter;
     // 리스트.
     //FoodListItem onion = new FoodListItem("양파", "채소", "24-4-13");
@@ -39,6 +42,7 @@ public class MainFoodListActivity extends AppCompatActivity {
         favorite = findViewById(R.id.btn_listFavorite);
         mypage = findViewById(R.id.btn_mypage);
         refridge=findViewById(R.id.btn_refback);
+        sort=findViewById(R.id.btn_sort);
 
         // 데이터 추가
         //foodListItems.add(onion);
@@ -64,6 +68,8 @@ public class MainFoodListActivity extends AppCompatActivity {
         });
 
         favorite.setOnClickListener(v->{
+            //foodAdapter = new FoodAdapter(MainFoodListActivity.this, FoodListItem.getFavoriteItems());
+            //list.setAdapter(foodAdapter);
             Intent intent = new Intent(MainFoodListActivity.this, FavoriteActivity.class);
             startActivity(intent);
         });
@@ -76,6 +82,20 @@ public class MainFoodListActivity extends AppCompatActivity {
         refridge.setOnClickListener(v->{
             Intent intent = new Intent(MainFoodListActivity.this, RefridgeActivity.class);
             startActivity(intent);
+        });
+
+        sort.setOnClickListener(v->{
+            final PopupMenu sortMenu = new PopupMenu(getApplicationContext(),v);
+            getMenuInflater().inflate(R.menu.sort_menu, sortMenu.getMenu());
+            sortMenu.setOnMenuItemClickListener(p->{
+                if(p.getItemId()==R.id.sort_name){
+                    Toast.makeText(this, "이름순 정렬", Toast.LENGTH_SHORT).show();
+                } else if (p.getItemId()==R.id.sort_expire) {
+                    Toast.makeText(this, "유통기한 정렬", Toast.LENGTH_SHORT).show();
+                }
+                return false;
+            });
+            sortMenu.show();
         });
 
     }
