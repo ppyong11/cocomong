@@ -11,7 +11,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.sw.cocomong.R;
-import com.sw.cocomong.view.item.FoodListItem;
 import com.sw.cocomong.view.item.RefListItem;
 
 import java.util.List;

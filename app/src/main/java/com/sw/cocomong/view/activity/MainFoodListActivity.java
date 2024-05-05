@@ -2,10 +2,7 @@ package com.sw.cocomong.view.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.Toast;
@@ -15,9 +12,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.sw.cocomong.R;
 import com.sw.cocomong.view.adapter.FoodAdapter;
-import com.sw.cocomong.view.item.FoodListItem;
+import com.sw.cocomong.dto.FoodListItemDto;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class MainFoodListActivity extends AppCompatActivity {
@@ -29,7 +25,7 @@ public class MainFoodListActivity extends AppCompatActivity {
     //FoodListItem onion = new FoodListItem("양파", "채소", "24-4-13");
     //FoodListItem garlic = new FoodListItem("마늘", "채소", "24-5-1");
 
-    private List<FoodListItem> foodListItems=FoodListItem.getFoodListItems();
+    private List<FoodListItemDto> foodListItemDtos = FoodListItemDto.getFoodListItems();
 
 
     @Override
@@ -48,14 +44,14 @@ public class MainFoodListActivity extends AppCompatActivity {
         //foodListItems.add(onion);
        // foodListItems.add(garlic);
 
-        foodAdapter = new FoodAdapter(MainFoodListActivity.this, foodListItems);
+        foodAdapter = new FoodAdapter(MainFoodListActivity.this, foodListItemDtos);
         list.setAdapter(foodAdapter);
 
 
         // TODO: 2024-04-14 리스트의 항목별 클릭 안되는 오류 잡기.
         list.setOnItemClickListener((parent, view, position, id) -> {
             //FoodListItem foodListItem=foodListItems.get(position);
-            Toast.makeText(MainFoodListActivity.this,foodListItems.get(position).getName(),Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainFoodListActivity.this, foodListItemDtos.get(position).getName(),Toast.LENGTH_SHORT).show();
 
             //Intent intent = new Intent(MainFoodListActivity.this, FoodInfoActivity.class);
             //intent.putExtra("position",position);

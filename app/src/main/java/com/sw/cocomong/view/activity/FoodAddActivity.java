@@ -14,7 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.sw.cocomong.R;
 import com.sw.cocomong.task.BarcodeTask;
-import com.sw.cocomong.view.item.FoodListItem;
+import com.sw.cocomong.dto.FoodListItemDto;
 
 public class FoodAddActivity extends AppCompatActivity {
     TextView title;
@@ -23,7 +23,7 @@ public class FoodAddActivity extends AppCompatActivity {
     Button barcode;
     TextView tv_barcodeNum;
     EditText foodName, category, expire, memo;
-    FoodListItem foodListItem;
+    FoodListItemDto foodListItemDto;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,8 +79,8 @@ public class FoodAddActivity extends AppCompatActivity {
             expire.setEnabled(false);
             memo.setEnabled(false);
 
-            foodListItem=new FoodListItem(foodName.getText().toString(),category.getText().toString(),expire.getText().toString(),memo.getText().toString());
-            FoodListItem.getFoodListItems().add(foodListItem);
+            foodListItemDto =new FoodListItemDto(foodName.getText().toString(),category.getText().toString(),expire.getText().toString(),memo.getText().toString());
+            FoodListItemDto.getFoodListItems().add(foodListItemDto);
 
             save.setVisibility(View.GONE);
             finish();

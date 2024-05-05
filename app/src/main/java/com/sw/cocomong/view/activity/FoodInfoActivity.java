@@ -14,7 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.sw.cocomong.R;
-import com.sw.cocomong.view.item.FoodListItem;
+import com.sw.cocomong.dto.FoodListItemDto;
 
 
 public class FoodInfoActivity extends AppCompatActivity {
@@ -22,7 +22,7 @@ public class FoodInfoActivity extends AppCompatActivity {
     ImageButton back, edit;
     Button save, delete;
     EditText foodName, category, expire, memo;
-    FoodListItem foodListItem;
+    FoodListItemDto foodListItemDto;
     int position;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
@@ -54,7 +54,7 @@ public class FoodInfoActivity extends AppCompatActivity {
         memo.setEnabled(false);
 
         back.setOnClickListener(v->{
-            Toast.makeText(getApplicationContext(), FoodListItem.getFoodListItems().get(2).getName(),Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), FoodListItemDto.getFoodListItems().get(2).getName(),Toast.LENGTH_SHORT).show();
         });
 
 
@@ -79,8 +79,8 @@ public class FoodInfoActivity extends AppCompatActivity {
             memo.setEnabled(false);
 
             // foodListItems에 데이터 추가
-            foodListItem=new FoodListItem(foodName.getText().toString(),category.getText().toString(),expire.getText().toString(),memo.getText().toString());
-            FoodListItem.getFoodListItems().set(position,foodListItem);
+            foodListItemDto =new FoodListItemDto(foodName.getText().toString(),category.getText().toString(),expire.getText().toString(),memo.getText().toString());
+            FoodListItemDto.getFoodListItems().set(position, foodListItemDto);
 
             // 저장 버튼 사라지기
             save.setVisibility(View.GONE);
@@ -90,7 +90,7 @@ public class FoodInfoActivity extends AppCompatActivity {
 
         delete.setOnClickListener(v->{
             // 데이터 삭제
-            FoodListItem.getFoodListItems().remove(position);
+            FoodListItemDto.getFoodListItems().remove(position);
 
             // 액티비티 종료
             finish();

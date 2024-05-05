@@ -59,7 +59,7 @@ public class BarcodeTask extends AsyncTask<String, Void, String> {
             e.printStackTrace();
         }
         // TODO: 2024-05-04 필요한 인자값 저장하기.
-        /*
+
         try {
             JSONArray jsonArray=new JSONArray(receiveMsg);
 
@@ -76,7 +76,7 @@ public class BarcodeTask extends AsyncTask<String, Void, String> {
         } catch (Exception e) {
             e.printStackTrace();
         }
-         */
+
         return receiveMsg;
     }
     public int getResponseCode() throws IOException {

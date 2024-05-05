@@ -1,32 +1,28 @@
 package com.sw.cocomong.view.adapter;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.sw.cocomong.view.activity.FoodInfoActivity;
-import com.sw.cocomong.view.activity.MainFoodListActivity;
 import com.sw.cocomong.R;
-import com.sw.cocomong.view.item.FoodListItem;
+import com.sw.cocomong.dto.FoodListItemDto;
 
 import java.util.List;
 
-public class FoodAdapter extends ArrayAdapter<FoodListItem>{
+public class FoodAdapter extends ArrayAdapter<FoodListItemDto>{
     private final Activity context;
-    private List<FoodListItem> foodListItems;
-    FoodListItem foodListItem;
+    private List<FoodListItemDto> foodListItemDtos;
+    FoodListItemDto foodListItemDto;
 
 
-    public FoodAdapter(Activity context, List<FoodListItem> foodListItems) {
-        super(context, R.layout.food_item, foodListItems);
+    public FoodAdapter(Activity context, List<FoodListItemDto> foodListItemDtos) {
+        super(context, R.layout.food_item, foodListItemDtos);
         this.context=context;
-        this.foodListItems=foodListItems;
+        this.foodListItemDtos = foodListItemDtos;
     }
 
     @Override
@@ -41,12 +37,12 @@ public class FoodAdapter extends ArrayAdapter<FoodListItem>{
         CheckBox cbFavorite = (CheckBox) rowView.findViewById(R.id.cb_favorite);
 
 
-        foodListItem = foodListItems.get(position);
+        foodListItemDto = foodListItemDtos.get(position);
 
-        tvFoodName.setText(foodListItem.getName());
-        tvCategory.setText(foodListItem.getCategory());
-        tvExpire.setText(foodListItem.getExpire());
-        cbFavorite.setChecked(foodListItem.isFavorite());
+        tvFoodName.setText(foodListItemDto.getName());
+        tvCategory.setText(foodListItemDto.getCategory());
+        tvExpire.setText(foodListItemDto.getExpire());
+        cbFavorite.setChecked(foodListItemDto.isFavorite());
 
         cbFavorite.setOnCheckedChangeListener((buttonView, isChecked) -> {
             setFavoriteItems(position,isChecked);
@@ -56,16 +52,16 @@ public class FoodAdapter extends ArrayAdapter<FoodListItem>{
     }
     public void setFavoriteItems(int position, boolean isFavorite){
         if(isFavorite){
-            foodListItems.get(position).setFavorite(true);
+            foodListItemDtos.get(position).setFavorite(true);
 
-            FoodListItem.getFavoriteItems().add(foodListItems.get(position));
+            FoodListItemDto.getFavoriteItems().add(foodListItemDtos.get(position));
             //System.out.println("Favorite: "+MainFoodListActivity.favoriteItems);
             //System.out.println("Food: "+MainFoodListActivity.foodListItems);
             //System.out.println("Adapter: "+ foodListItems);
 
         }else {
-            foodListItems.get(position).setFavorite(false);
-            FoodListItem.getFavoriteItems().remove(foodListItems.get(position));
+            foodListItemDtos.get(position).setFavorite(false);
+            FoodListItemDto.getFavoriteItems().remove(foodListItemDtos.get(position));
 
 
             //System.out.println("Favorite: "+MainFoodListActivity.favoriteItems);

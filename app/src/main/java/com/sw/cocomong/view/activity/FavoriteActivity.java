@@ -8,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.sw.cocomong.R;
 import com.sw.cocomong.view.adapter.FoodAdapter;
-import com.sw.cocomong.view.item.FoodListItem;
+import com.sw.cocomong.dto.FoodListItemDto;
 
 public class FavoriteActivity extends AppCompatActivity {
     FoodAdapter foodAdapter;
@@ -20,7 +20,7 @@ public class FavoriteActivity extends AppCompatActivity {
         setContentView(R.layout.food_list);
 
         list=findViewById(R.id.list_food);
-        foodAdapter = new FoodAdapter(FavoriteActivity.this, FoodListItem.getFavoriteItems());
+        foodAdapter = new FoodAdapter(FavoriteActivity.this, FoodListItemDto.getFavoriteItems());
         list.setAdapter(foodAdapter);
 
     }
