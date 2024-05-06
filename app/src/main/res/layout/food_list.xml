@@ -86,7 +86,6 @@
                 android:id="@+id/btn_sort"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAlignment="textStart"
                 android:layout_alignParentEnd="true"
                 android:layout_marginTop="5dp"
                 android:layout_marginEnd="5dp"
@@ -94,9 +93,10 @@
                 android:background="@android:drawable/btn_dropdown"
                 android:paddingTop="0dp"
                 android:text="정렬"
+                android:textAlignment="textStart"
                 android:textColor="@color/purple_500"
-                app:backgroundTint="#00FFFFFF"
-                app:backgroundTintMode="src_over" />
+                app:backgroundTint="#9CFFFFFF"
+                app:backgroundTintMode="src_atop" />
         </RelativeLayout>
 
         <ListView

@@ -1,5 +1,6 @@
 package com.sw.cocomong.view.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -17,13 +18,14 @@ import com.sw.cocomong.task.BarcodeTask;
 import com.sw.cocomong.dto.FoodListItemDto;
 
 public class FoodAddActivity extends AppCompatActivity {
-    TextView title;
+    TextView title, category;
     ImageButton back, edit;
     Button save, delete;
-    Button barcode;
+    Button barcode, BtnCategory;
     TextView tv_barcodeNum;
-    EditText foodName, category, expire, memo;
+    EditText foodName,  expire, memo;
     FoodListItemDto foodListItemDto;
+    String categoryName;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,7 +56,10 @@ public class FoodAddActivity extends AppCompatActivity {
         save=findViewById(R.id.btn_save);
         delete=findViewById(R.id.btn_delete);
         foodName =findViewById(R.id.et_infoFoodName);
-        category=findViewById(R.id.et_infoCategory);
+
+        category=findViewById(R.id.tv_category);
+        BtnCategory=findViewById(R.id.btn_infoCategory);
+
         expire=findViewById(R.id.et_infoExpire);
         memo=findViewById(R.id.et_memo);
 
@@ -63,7 +68,7 @@ public class FoodAddActivity extends AppCompatActivity {
         edit.setVisibility(View.GONE);
 
         foodName.setEnabled(true);
-        category.setEnabled(true);
+        BtnCategory.setEnabled(true);
         expire.setEnabled(true);
         memo.setEnabled(true);
 
@@ -75,7 +80,7 @@ public class FoodAddActivity extends AppCompatActivity {
             //Toast.makeText(getApplicationContext(),"save 눌림",Toast.LENGTH_SHORT).show();
 
             foodName.setEnabled(false);
-            category.setEnabled(false);
+            BtnCategory.setEnabled(false);
             expire.setEnabled(false);
             memo.setEnabled(false);
 
@@ -85,6 +90,25 @@ public class FoodAddActivity extends AppCompatActivity {
             save.setVisibility(View.GONE);
             finish();
         });
+
+        BtnCategory.setOnClickListener(v->{
+            Intent intentCategory = new Intent(FoodAddActivity.this, CategorySelectActivity.class);
+            startActivityForResult(intentCategory,1212);
+        });
+
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode==1212&&resultCode==RESULT_OK){
+            if(data!=null){
+                String selectedCategory = data.getStringExtra("category");
+                category.findViewById(R.id.tv_category);
+                category.setText(selectedCategory);
+            }
+        }
+    }
+
 
 }

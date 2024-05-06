@@ -25,6 +25,7 @@
         <activity android:name=".view.activity.RefAddActivity" android:theme="@style/Theme.AppCompat.Dialog"/>
         <activity android:name=".view.activity.LoginActivity"/>
         <activity android:name=".view.activity.JoinActivity"/>
+        <activity android:name=".view.activity.CategorySelectActivity" android:theme="@style/Theme.AppCompat.Dialog"/>
         <activity
             android:name=".view.activity.RefridgeActivity"
             android:exported="true">
