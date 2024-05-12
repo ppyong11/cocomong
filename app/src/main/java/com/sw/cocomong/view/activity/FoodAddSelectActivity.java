@@ -1,5 +1,6 @@
 package com.sw.cocomong.view.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Window;
 import android.widget.ImageButton;
@@ -39,6 +40,8 @@ public class FoodAddSelectActivity extends AppCompatActivity {
 
         barcode.setOnClickListener(v->{
             Toast.makeText(this, "바코드 클릭", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(FoodAddSelectActivity.this, FoodAddActivity.class);
+            startActivity(intent);
         });
     }
 }

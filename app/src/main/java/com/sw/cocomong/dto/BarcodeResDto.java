@@ -4,6 +4,11 @@ public class BarcodeResDto {
     private String productName;
     private String dayCount;
     private String category;
+    public BarcodeResDto(String productName, String dayCount, String category){
+        this.productName=productName;
+        this.dayCount=dayCount;
+        this.category=category;
+    }
 
     public String getProductName() {
         return productName;

@@ -14,8 +14,11 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.sw.cocomong.R;
+import com.sw.cocomong.dto.BarcodeResDto;
 import com.sw.cocomong.task.BarcodeTask;
 import com.sw.cocomong.dto.FoodListItemDto;
+
+import java.util.List;
 
 public class FoodAddActivity extends AppCompatActivity {
     TextView title, category;
@@ -37,8 +40,8 @@ public class FoodAddActivity extends AppCompatActivity {
             String barcodeNum=tv_barcodeNum.getText().toString();
             BarcodeTask barcodeTask = new BarcodeTask(barcodeNum);
             try {
-                String result = barcodeTask.execute(barcodeNum).get();
-                Log.d("Barcode" , result);
+                BarcodeResDto result = barcodeTask.execute(barcodeNum).get();
+                //Log.d("Barcode" , result);
 
                 if (barcodeTask.getResponseCode() == 200) {
                     Toast.makeText(this, "성공", Toast.LENGTH_SHORT).show();
@@ -47,7 +50,6 @@ public class FoodAddActivity extends AppCompatActivity {
             } catch (Exception e){
                 e.printStackTrace();
             }
-
         });
 
         title=findViewById(R.id.tv_infoTitle);
