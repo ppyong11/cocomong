@@ -28,7 +28,6 @@ public class FoodAddActivity extends AppCompatActivity {
     TextView tv_barcodeNum;
     EditText foodName,  expire, memo;
     FoodListItemDto foodListItemDto;
-    String categoryName;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,21 +35,7 @@ public class FoodAddActivity extends AppCompatActivity {
 
         tv_barcodeNum =findViewById(R.id.tv_barcodeNum);
         barcode= findViewById(R.id.btn_barcode);
-        barcode.setOnClickListener(v->{
-            String barcodeNum=tv_barcodeNum.getText().toString();
-            BarcodeTask barcodeTask = new BarcodeTask(barcodeNum);
-            try {
-                BarcodeResDto result = barcodeTask.execute(barcodeNum).get();
-                //Log.d("Barcode" , result);
 
-                if (barcodeTask.getResponseCode() == 200) {
-                    Toast.makeText(this, "성공", Toast.LENGTH_SHORT).show();
-                } else Toast.makeText(this, "실패", Toast.LENGTH_SHORT).show();
-
-            } catch (Exception e){
-                e.printStackTrace();
-            }
-        });
 
         title=findViewById(R.id.tv_infoTitle);
         back=findViewById(R.id.btn_back);
@@ -98,6 +83,25 @@ public class FoodAddActivity extends AppCompatActivity {
             startActivityForResult(intentCategory,1212);
         });
 
+        barcode.setOnClickListener(v->{
+            String barcodeNum=tv_barcodeNum.getText().toString();
+            BarcodeTask barcodeTask = new BarcodeTask(barcodeNum);
+            try {
+                BarcodeResDto result = barcodeTask.execute(barcodeNum).get();
+
+                foodName.setText(result.getProductName());
+                category.setText(result.getCategory());
+                expire.setText(result.getDayCount());
+
+                if (barcodeTask.getResponseCode() == 200| result==null) {
+                    Toast.makeText(this, "성공", Toast.LENGTH_SHORT).show();
+                } else Toast.makeText(this, "실패", Toast.LENGTH_SHORT).show();
+
+            } catch (Exception e){
+                e.printStackTrace();
+            }
+        });
+
     }
 
     @Override
@@ -112,5 +116,10 @@ public class FoodAddActivity extends AppCompatActivity {
         }
     }
 
+    // TODO: 2024-05-13 바코드 인식 후 카테고리 설정해주는 로직
+    public String setCategory(String categoryName){
+
+        return "";
+    }
 
 }

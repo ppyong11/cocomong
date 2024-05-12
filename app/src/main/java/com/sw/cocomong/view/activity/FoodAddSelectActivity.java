@@ -30,8 +30,10 @@ public class FoodAddSelectActivity extends AppCompatActivity {
             sortMenu.setOnMenuItemClickListener(p->{
                 if(p.getItemId()==R.id.select_photo){
                     Toast.makeText(this, "사진 가져오기 선택", Toast.LENGTH_SHORT).show();
+                    finish();
                 } else if (p.getItemId()==R.id.select_camera) {
                     Toast.makeText(this, "카메라 찍기 선택", Toast.LENGTH_SHORT).show();
+                    finish();
                 }
                 return false;
             });
@@ -42,6 +44,7 @@ public class FoodAddSelectActivity extends AppCompatActivity {
             Toast.makeText(this, "바코드 클릭", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(FoodAddSelectActivity.this, FoodAddActivity.class);
             startActivity(intent);
+            finish();
         });
     }
 }

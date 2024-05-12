@@ -43,8 +43,8 @@ public class BarcodeTask extends AsyncTask<String, Void, BarcodeResDto> {
     String resultMessage="";
 
     public BarcodeTask(String barcodeNum){
-        this.barcodeNum="8801094013004";
-        //this.barcodeNum = barcodeNum;
+        // 코카콜라 바코드 번호 = "8801094013004"
+        this.barcodeNum = barcodeNum;
     }
     @Override
     protected BarcodeResDto doInBackground(String... strings) {
@@ -52,9 +52,8 @@ public class BarcodeTask extends AsyncTask<String, Void, BarcodeResDto> {
         String barcodeNum = strings[0];
 
         try {
-            // http://openapi.foodsafetykorea.go.kr/api/keyId/serviceId/dataType/startIdx/endIdx/PRDT_NM=값&BRCD_NO=값
             sendMsg="http://openapi.foodsafetykorea.go.kr/api"+setExpireUrl();
-            //sendMsg = "https://openapi.foodsafetykorea.go.kr/api/38dbcef5223a4a4ebd09/C005/xml/1/1/BRCD_NO=8801382124849";
+
             URL url = new URL(sendMsg);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             this.conn=conn;
@@ -62,6 +61,7 @@ public class BarcodeTask extends AsyncTask<String, Void, BarcodeResDto> {
             conn.setRequestMethod("GET");
             conn.setDoOutput(true);
 
+            // 응답처리
             XmlPullParser parser = Xml.newPullParser();
             parser.setInput(new InputStreamReader(conn.getInputStream(), "UTF-8"));
 
@@ -102,8 +102,6 @@ public class BarcodeTask extends AsyncTask<String, Void, BarcodeResDto> {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-
-
             }
             else {    // 통신이 실패한 이유를 찍기위한 로그
                 Log.i("통신 결과", conn.getResponseCode() + "에러");

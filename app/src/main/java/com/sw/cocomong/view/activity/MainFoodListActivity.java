@@ -28,6 +28,7 @@ public class MainFoodListActivity extends AppCompatActivity {
     private List<FoodListItemDto> foodListItemDtos = FoodListItemDto.getFoodListItems();
 
 
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,6 +41,7 @@ public class MainFoodListActivity extends AppCompatActivity {
         refridge=findViewById(R.id.btn_refback);
         sort=findViewById(R.id.btn_sort);
 
+
         // 데이터 추가
         //foodListItems.add(onion);
        // foodListItems.add(garlic);
@@ -50,12 +52,13 @@ public class MainFoodListActivity extends AppCompatActivity {
 
         // TODO: 2024-04-14 리스트의 항목별 클릭 안되는 오류 잡기.
         list.setOnItemClickListener((parent, view, position, id) -> {
-            //FoodListItem foodListItem=foodListItems.get(position);
-            Toast.makeText(MainFoodListActivity.this, foodListItemDtos.get(position).getName(),Toast.LENGTH_SHORT).show();
 
-            //Intent intent = new Intent(MainFoodListActivity.this, FoodInfoActivity.class);
-            //intent.putExtra("position",position);
-            //startActivity(intent);
+            FoodListItemDto foodListItem=foodListItemDtos.get(position);
+            Toast.makeText(MainFoodListActivity.this, "음식 선택",Toast.LENGTH_SHORT).show();
+
+            Intent intent = new Intent(MainFoodListActivity.this, FoodInfoActivity.class);
+            intent.putExtra("position",position);
+            startActivity(intent);
         });
 
         foodAdd.setOnClickListener(v -> {
