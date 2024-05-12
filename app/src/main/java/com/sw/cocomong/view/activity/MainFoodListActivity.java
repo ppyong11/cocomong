@@ -59,7 +59,7 @@ public class MainFoodListActivity extends AppCompatActivity {
         });
 
         foodAdd.setOnClickListener(v -> {
-            Intent intent = new Intent(MainFoodListActivity.this, FoodAddActivity.class);
+            Intent intent = new Intent(MainFoodListActivity.this, FoodAddSelectActivity.class);
             startActivity(intent);
         });
 

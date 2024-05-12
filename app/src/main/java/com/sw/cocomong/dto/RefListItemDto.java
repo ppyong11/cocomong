@@ -1,11 +1,11 @@
-package com.sw.cocomong.view.item;
+package com.sw.cocomong.dto;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class RefListItem {
+public class RefListItemDto {
     private String name;
-    public static List<RefListItem> refListItems = new ArrayList<>();
+    public static List<RefListItemDto> refListItemDtos = new ArrayList<>();
 
     public String getName() {
         return name;
@@ -14,7 +14,7 @@ public class RefListItem {
     public void setName(String name) {
         this.name = name;
     }
-    public RefListItem(String name){
+    public RefListItemDto(String name){
         this.name=name;
     }
 }

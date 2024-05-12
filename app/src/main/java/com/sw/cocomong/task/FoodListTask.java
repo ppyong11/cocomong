@@ -3,6 +3,8 @@ package com.sw.cocomong.task;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import androidx.loader.content.AsyncTaskLoader;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -11,13 +13,12 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class JoinTask extends AsyncTask<String, Void, String> {
+public class FoodListTask extends AsyncTask<String, Void, String> {
     String sendMsg, receiveMsg;
-    String name, pw;
-
-    public JoinTask(String name, String pw){
-        this.name=name;
-        this.pw=pw;
+    String refName;
+    HttpURLConnection conn;
+    public FoodListTask(String refName){
+        this.refName=refName;
     }
 
     @Override
@@ -28,8 +29,10 @@ public class JoinTask extends AsyncTask<String, Void, String> {
             URL url = new URL("http://58.224.91.191:8080/join");  // 어떤 서버에 요청할지(localhost 안됨.)
             // ex) http://123.456.789.10:8080/hello/android
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            this.conn=conn;
+
             conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-            conn.setRequestMethod("POST");                              //데이터를 POST 방식으로 전송합니다.
+            conn.setRequestMethod("GET");                              //데이터를 POST 방식으로 전송합니다.
             conn.setDoOutput(true);
 
             // 서버에 보낼 값 포함해 요청함.

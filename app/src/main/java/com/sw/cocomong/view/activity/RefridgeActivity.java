@@ -11,7 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.sw.cocomong.R;
 import com.sw.cocomong.view.adapter.RefAdapter;
-import com.sw.cocomong.view.item.RefListItem;
+import com.sw.cocomong.dto.RefListItemDto;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +22,7 @@ public class RefridgeActivity extends AppCompatActivity {
     Button refAdd;
 
     RefAdapter refAdapter;
-    public static List<RefListItem> refListItems = new ArrayList<>();
+    public static List<RefListItemDto> refListItemDtos = new ArrayList<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -33,11 +33,11 @@ public class RefridgeActivity extends AppCompatActivity {
         refAdd = findViewById(R.id.btn_refplus);
 
 
-        refAdapter = new RefAdapter(RefridgeActivity.this, refListItems);
+        refAdapter = new RefAdapter(RefridgeActivity.this, refListItemDtos);
         list.setAdapter(refAdapter);
 
         list.setOnItemClickListener((parent, view, position, id) -> {
-            Toast.makeText(RefridgeActivity.this,refListItems.get(position).getName(),Toast.LENGTH_SHORT).show();
+            Toast.makeText(RefridgeActivity.this, refListItemDtos.get(position).getName(),Toast.LENGTH_SHORT).show();
 
             Intent intent = new Intent(RefridgeActivity.this, MainFoodListActivity.class);
             startActivity(intent);

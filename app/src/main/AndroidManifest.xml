@@ -17,8 +17,7 @@
 
 -->
         <activity
-            android:name=".view.activity.FoodAddActivity"
-            android:label="FoodAdd" />
+            android:name=".view.activity.FoodAddActivity" android:label="FoodAdd" />
         <activity android:name=".view.activity.FoodInfoActivity"/>
         <activity android:name=".view.activity.FavoriteActivity"/>
         <activity android:name=".view.activity.MainFoodListActivity"/>
@@ -26,6 +25,7 @@
         <activity android:name=".view.activity.LoginActivity"/>
         <activity android:name=".view.activity.JoinActivity"/>
         <activity android:name=".view.activity.CategorySelectActivity" android:theme="@style/Theme.AppCompat.Dialog"/>
+        <activity android:name=".view.activity.FoodAddSelectActivity" android:theme="@style/Theme.AppCompat.Dialog"/>
         <activity
             android:name=".view.activity.RefridgeActivity"
             android:exported="true">
