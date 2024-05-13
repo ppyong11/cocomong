@@ -3,7 +3,9 @@ package com.sw.cocomong.view.activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.Toast;
@@ -17,7 +19,7 @@ import com.sw.cocomong.view.adapter.FoodAdapter;
 
 import java.util.List;
 
-public class UserActivity {
+public class UserActivity extends AppCompatActivity {
     public static class MainFoodListActivity extends AppCompatActivity {
 
         ListView list;
@@ -101,6 +103,8 @@ public class UserActivity {
                 sortMenu.show();
             });
 
+
+
         }
 
 
@@ -110,4 +114,7 @@ public class UserActivity {
             foodAdapter.notifyDataSetChanged();
         }
     }
+
+
+
 }

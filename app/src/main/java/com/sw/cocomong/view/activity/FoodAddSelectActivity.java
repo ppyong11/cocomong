@@ -88,11 +88,6 @@ public class FoodAddSelectActivity extends AppCompatActivity {
 
         checkPermission();
 
-        /*카메라 띄우기*/
-
-
-
-
 
     }
 
@@ -132,11 +127,8 @@ public class FoodAddSelectActivity extends AppCompatActivity {
 
 
     /* View 설정 */
-    private void initView(){
-        setContentView(R.layout.food_add_select_popup);
-
-        ImageButton btn_photo = (ImageButton)findViewById(R.id.btn_photo);
-        btn_photo.setOnClickListener(new View.OnClickListener() {
+    public void initView(){
+        photo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(onRequestPermissionsCheck()){
@@ -145,12 +137,19 @@ public class FoodAddSelectActivity extends AppCompatActivity {
             }
         });
 
-
+        barcode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(onRequestPermissionsCheck()){
+                    goNext(true);
+                }
+            }
+        });
     }
 
 
     /* 권한 요청 코드 -> ~ 권한 허용하시겠습니까? 팝업 표시 */
-    private boolean onRequestPermissionsCheck() {
+    public boolean onRequestPermissionsCheck() {
         if (!neededPermissionList.isEmpty()) {
             ActivityCompat.requestPermissions(this, neededPermissionList.toArray(new String[neededPermissionList.size()]), PERMISSION_REQUEST_CODE);
             return false;
@@ -188,7 +187,7 @@ public class FoodAddSelectActivity extends AppCompatActivity {
 
 
     /* 권한 요청에 따른 결과 Toast 표시 */
-    private void goNext(boolean successFlag){
+    public void goNext(boolean successFlag){
         Log.d(TAG, "***** goNext() - successFlag : "+successFlag);
         if(successFlag) {
             Toast.makeText(context, "모든 권한을 허용했네요!", Toast.LENGTH_SHORT).show();
