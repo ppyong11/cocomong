@@ -10,7 +10,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.sw.cocomong.R;
-import com.sw.cocomong.dto.FoodListItemDto;
 import com.sw.cocomong.view.adapter.RefAdapter;
 import com.sw.cocomong.dto.RefListItemDto;
 
@@ -41,7 +40,7 @@ public class RefridgeActivity extends AppCompatActivity {
             Toast.makeText(RefridgeActivity.this, refListItemDtos.get(position).getName(),Toast.LENGTH_SHORT).show();
 
 
-            Intent intent = new Intent(RefridgeActivity.this, MainFoodListActivity.class);
+            Intent intent = new Intent(RefridgeActivity.this, UserActivity.MainFoodListActivity.class);
             startActivity(intent);
         });
 
