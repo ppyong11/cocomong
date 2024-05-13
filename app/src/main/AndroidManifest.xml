@@ -29,7 +29,7 @@
             android:name=".view.activity.FoodAddActivity" android:label="FoodAdd" />
         <activity android:name=".view.activity.FoodInfoActivity"/>
         <activity android:name=".view.activity.FavoriteActivity"/>
-        <activity android:name=".view.activity.UserActivity$MainFoodListActivity"/>
+        <activity android:name=".view.activity.UserActivity"/>
         <activity android:name=".view.activity.RefAddActivity" android:theme="@style/Theme.AppCompat.Dialog"/>
         <activity android:name=".view.activity.LoginActivity"/>
         <activity android:name=".view.activity.JoinActivity"/>

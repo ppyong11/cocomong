@@ -1,5 +1,6 @@
 package com.sw.cocomong.view.activity;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.View;
@@ -7,6 +8,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,6 +45,7 @@ public class FoodAddActivity extends AppCompatActivity {
 
         foodimage=findViewById(R.id.food_image);
 
+
         save.setVisibility(View.VISIBLE);
         delete.setVisibility(View.GONE);
         edit.setVisibility(View.GONE);
@@ -55,7 +58,7 @@ public class FoodAddActivity extends AppCompatActivity {
         foodimage.setImageBitmap(CameraCapture.moveBitmap());
 
         back.setOnClickListener(v->{
-            Toast.makeText(getApplicationContext(), UserActivity.MainFoodListActivity.foodListItemDtos.get(2).getName(),Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), UserActivity.foodListItemDtos.get(2).getName(),Toast.LENGTH_SHORT).show();
             finish();
 
         });
@@ -70,7 +73,7 @@ public class FoodAddActivity extends AppCompatActivity {
 
 
             foodListItemDto=new FoodListItemDto(foodName.getText().toString(),category.getText().toString(),expire.getText().toString(),memo.getText().toString());
-            UserActivity.MainFoodListActivity.foodListItemDtos.add(foodListItemDto);
+            UserActivity.foodListItemDtos.add(foodListItemDto);
 
             save.setVisibility(View.GONE);
             finish();

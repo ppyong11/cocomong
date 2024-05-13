@@ -40,7 +40,7 @@ public class RefridgeActivity extends AppCompatActivity {
             Toast.makeText(RefridgeActivity.this, refListItemDtos.get(position).getName(),Toast.LENGTH_SHORT).show();
 
 
-            Intent intent = new Intent(RefridgeActivity.this, UserActivity.MainFoodListActivity.class);
+            Intent intent = new Intent(RefridgeActivity.this, UserActivity.class);
             startActivity(intent);
         });
 

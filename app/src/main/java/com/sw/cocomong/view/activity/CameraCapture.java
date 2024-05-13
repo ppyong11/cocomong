@@ -64,6 +64,7 @@ public class CameraCapture extends Activity {
             public void onClick(View view) {
                 Intent intent = new Intent(CameraCapture.this, FoodAddActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
 

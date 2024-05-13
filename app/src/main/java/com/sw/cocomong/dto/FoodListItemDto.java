@@ -60,12 +60,6 @@ public class FoodListItemDto {
         return foodListItemDtos;
     }
 
-    public FoodListItemDto(String name, String category, String expire){
-        this.category=category;
-        this.name=name;
-        this.expire = expire;
-        //favorite=false;
-    }
     public FoodListItemDto(String name, String category, String expire, String memo){
         this.name=name;
         this.expire=expire;
