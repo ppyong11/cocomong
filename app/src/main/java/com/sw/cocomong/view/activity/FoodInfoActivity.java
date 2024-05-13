@@ -33,7 +33,6 @@ public class FoodInfoActivity extends AppCompatActivity {
         position=extras.getInt("position");
 
 
-
         title=findViewById(R.id.tv_infoTitle);
         back=findViewById(R.id.btn_back);
         edit=findViewById(R.id.btn_edit);
