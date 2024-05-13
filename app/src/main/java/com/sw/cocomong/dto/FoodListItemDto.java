@@ -1,9 +1,12 @@
 package com.sw.cocomong.dto;
 
+import android.graphics.Bitmap;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class FoodListItemDto {
+    private Bitmap foodImage;
     private String name;
     private String category;
     private String expire;
@@ -11,6 +14,14 @@ public class FoodListItemDto {
     private boolean favorite;
     private static List<FoodListItemDto> favoriteItems = new ArrayList<>();
     private static List<FoodListItemDto> foodListItemDtos = new ArrayList<>();
+
+    public Bitmap getFoodImage() {
+        return foodImage;
+    }
+
+    public void setFoodImage(Bitmap foodImage) {
+        this.foodImage = foodImage;
+    }
 
     public String getName() {
         return name;
@@ -60,7 +71,8 @@ public class FoodListItemDto {
         return foodListItemDtos;
     }
 
-    public FoodListItemDto(String name, String category, String expire, String memo){
+    public FoodListItemDto(Bitmap foodImage, String name, String category, String expire, String memo){
+        this.foodImage=foodImage;
         this.name=name;
         this.expire=expire;
         this.category=category;

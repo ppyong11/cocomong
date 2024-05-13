@@ -24,26 +24,28 @@ public class FoodAddActivity extends AppCompatActivity {
     ImageView foodimage;
     TextView title, category;
     ImageButton back, edit;
-    Button save, delete;
+    Button save, delete, btnCategory;
     EditText foodName, expire, memo;
     FoodListItemDto foodListItemDto;
+    Bitmap foodImageBitmap;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.food_info);
 
-        title=findViewById(R.id.tv_infoTitle);
-        back=findViewById(R.id.btn_back);
-        edit=findViewById(R.id.btn_edit);
-        save=findViewById(R.id.btn_save);
-        delete=findViewById(R.id.btn_delete);
-        foodName =findViewById(R.id.et_infoFoodName);
-        category=findViewById(R.id.tv_category);
-        expire=findViewById(R.id.et_infoExpire);
-        memo=findViewById(R.id.et_memo);
+        title = findViewById(R.id.tv_infoTitle);
+        back = findViewById(R.id.btn_back);
+        edit = findViewById(R.id.btn_edit);
+        save = findViewById(R.id.btn_save);
+        delete = findViewById(R.id.btn_delete);
+        foodName = findViewById(R.id.et_infoFoodName);
+        btnCategory = findViewById(R.id.btn_infoCategory);
+        category = findViewById(R.id.tv_category);
+        expire = findViewById(R.id.et_infoExpire);
+        memo = findViewById(R.id.et_memo);
 
-        foodimage=findViewById(R.id.food_image);
+        foodimage = findViewById(R.id.food_image);
 
 
         save.setVisibility(View.VISIBLE);
@@ -51,34 +53,53 @@ public class FoodAddActivity extends AppCompatActivity {
         edit.setVisibility(View.GONE);
 
         foodName.setEnabled(true);
-        category.setEnabled(true);
+        btnCategory.setEnabled(true);
         expire.setEnabled(true);
         memo.setEnabled(true);
 
-        foodimage.setImageBitmap(CameraCapture.moveBitmap());
+        foodImageBitmap=CameraCapture.moveBitmap();
+        foodimage.setImageBitmap(foodImageBitmap);
 
-        back.setOnClickListener(v->{
-            Toast.makeText(getApplicationContext(), UserActivity.foodListItemDtos.get(2).getName(),Toast.LENGTH_SHORT).show();
-            finish();
-
+        btnCategory.setOnClickListener(v->{
+            Intent intentCategory = new Intent(FoodAddActivity.this, CategorySelectActivity.class);
+            startActivityForResult(intentCategory,1212);
         });
 
-        save.setOnClickListener(v->{
-            //Toast.makeText(getApplicationContext(),"save 눌림",Toast.LENGTH_SHORT).show();
+        back.setOnClickListener(v -> {
+            finish();
+        });
+
+        save.setOnClickListener(v -> {
 
             foodName.setEnabled(false);
             category.setEnabled(false);
+            btnCategory.setEnabled(false);
             expire.setEnabled(false);
             memo.setEnabled(false);
 
-
-            foodListItemDto=new FoodListItemDto(foodName.getText().toString(),category.getText().toString(),expire.getText().toString(),memo.getText().toString());
+            foodListItemDto = new FoodListItemDto(foodImageBitmap,foodName.getText().toString(), category.getText().toString(), expire.getText().toString(), memo.getText().toString());
             UserActivity.foodListItemDtos.add(foodListItemDto);
 
             save.setVisibility(View.GONE);
             finish();
         });
-
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode==1212&&resultCode==RESULT_OK){
+            if(data!=null){
+                String selectedCategory = data.getStringExtra("category");
+                category.findViewById(R.id.tv_category);
+                category.setText(selectedCategory);
+            }
+        }
+    }
+
+    // TODO: 2024-05-13 바코드 인식 후 카테고리 설정해주는 로직
+    public String setCategory(String categoryName){
+
+        return "";
+    }
 }

@@ -56,11 +56,6 @@ public class FoodAddSelectActivity extends AppCompatActivity {
         photo=findViewById(R.id.btn_photo);
         barcode=findViewById(R.id.btn_barcode);
 
-
-
-
-
-
         photo.setOnClickListener(v->{
             Toast.makeText(this, "사진 클릭", Toast.LENGTH_SHORT).show();
             final PopupMenu sortMenu = new PopupMenu(getApplicationContext(),v);
@@ -83,15 +78,12 @@ public class FoodAddSelectActivity extends AppCompatActivity {
 
         barcode.setOnClickListener(v->{
             Toast.makeText(this, "바코드 클릭", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(FoodAddSelectActivity.this, FoodAddActivity.class);
+            startActivity(intent);
             finish();
         });
-
         checkPermission();
-
-
     }
-
-
 
     public static String[] requiredPermissionList = new String[]{  //필요한 권한들
             Manifest.permission.ACCESS_COARSE_LOCATION,
@@ -99,8 +91,6 @@ public class FoodAddSelectActivity extends AppCompatActivity {
     };
 
     ArrayList<String> neededPermissionList = new ArrayList<>(); //권한 요청이 필요한 리스트
-
-
 
     /* 권한 요청 체크 */
     public void checkPermission() {
@@ -124,7 +114,6 @@ public class FoodAddSelectActivity extends AppCompatActivity {
             goNext(true);
         }
     }
-
 
     /* View 설정 */
     public void initView(){

@@ -64,8 +64,7 @@
                 android:layout_height="150dp"
                 android:layout_marginRight="5dp"
                 android:background="@color/white"
-                app:srcCompat="@android:drawable/ic_menu_gallery"
-                android:onClick="onClick" />
+                app:srcCompat="@android:drawable/ic_menu_gallery"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
