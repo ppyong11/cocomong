@@ -1,7 +1,6 @@
 package com.sw.cocomong.view.activity;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
@@ -9,12 +8,12 @@ import android.widget.EditText;
 import androidx.annotation.Nullable;
 
 import com.sw.cocomong.R;
-import com.sw.cocomong.view.item.RefListItem;
+import com.sw.cocomong.dto.RefListItemDto;
 
 public class RefAddActivity extends Activity {
     EditText et_refName;
     Button btn_cancel, btn_ok;
-    RefListItem refListItem;
+    RefListItemDto refListItemDto;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -32,8 +31,8 @@ public class RefAddActivity extends Activity {
         });
 
         btn_ok.setOnClickListener(v->{
-            refListItem=new RefListItem(et_refName.getText().toString());
-            RefridgeActivity.refListItems.add(refListItem);
+            refListItemDto =new RefListItemDto(et_refName.getText().toString());
+            RefridgeActivity.refListItemDtos.add(refListItemDto);
             finish();
         });
 

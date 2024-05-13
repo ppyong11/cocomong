@@ -11,20 +11,19 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.sw.cocomong.R;
-import com.sw.cocomong.view.item.FoodListItem;
-import com.sw.cocomong.view.item.RefListItem;
+import com.sw.cocomong.dto.RefListItemDto;
 
 import java.util.List;
 
-public class RefAdapter extends ArrayAdapter<RefListItem> {
+public class RefAdapter extends ArrayAdapter<RefListItemDto> {
     private final Activity context;
-    private List<RefListItem> refListItems;
-    RefListItem refListItem;
+    private List<RefListItemDto> refListItemDtos;
+    RefListItemDto refListItemDto;
 
-    public RefAdapter(Activity context, List<RefListItem> refListItems){
-        super(context, R.layout.ref_item, refListItems);
+    public RefAdapter(Activity context, List<RefListItemDto> refListItemDtos){
+        super(context, R.layout.ref_item, refListItemDtos);
         this.context=context;
-        this.refListItems=refListItems;
+        this.refListItemDtos = refListItemDtos;
     }
 
     @NonNull
@@ -36,9 +35,9 @@ public class RefAdapter extends ArrayAdapter<RefListItem> {
 
         TextView tvRefName= (TextView) rowView.findViewById(R.id.tv_refname);
 
-        refListItem = refListItems.get(position);
+        refListItemDto = refListItemDtos.get(position);
 
-        tvRefName.setText(refListItem.getName());
+        tvRefName.setText(refListItemDto.getName());
 
         return rowView;
     }

@@ -1,11 +1,16 @@
-package com.sw.cocomong.view.item;
+package com.sw.cocomong.dto;
 
-public class FoodListItem{
+import java.util.ArrayList;
+import java.util.List;
+
+public class FoodListItemDto {
     private String name;
     private String category;
     private String expire;
     private String memo;
     private boolean favorite;
+    private static List<FoodListItemDto> favoriteItems = new ArrayList<>();
+    private static List<FoodListItemDto> foodListItemDtos = new ArrayList<>();
 
     public String getName() {
         return name;
@@ -46,13 +51,22 @@ public class FoodListItem{
     public void setMemo(String memo) {
         this.memo = memo;
     }
-    public FoodListItem(String name, String category, String expire){
+
+    public static List<FoodListItemDto> getFavoriteItems() {
+        return favoriteItems;
+    }
+
+    public static List<FoodListItemDto> getFoodListItems() {
+        return foodListItemDtos;
+    }
+
+    public FoodListItemDto(String name, String category, String expire){
         this.category=category;
         this.name=name;
         this.expire = expire;
         //favorite=false;
     }
-    public FoodListItem(String name, String category, String expire, String memo){
+    public FoodListItemDto(String name, String category, String expire, String memo){
         this.name=name;
         this.expire=expire;
         this.category=category;

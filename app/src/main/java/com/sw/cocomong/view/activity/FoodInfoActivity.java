@@ -14,15 +14,15 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.sw.cocomong.R;
-import com.sw.cocomong.view.item.FoodListItem;
+import com.sw.cocomong.dto.FoodListItemDto;
 
 
 public class FoodInfoActivity extends AppCompatActivity {
-    TextView title;
+    TextView title, category;
     ImageButton back, edit;
-    Button save, delete;
-    EditText foodName, category, expire, memo;
-    FoodListItem foodListItem;
+    Button save, delete, BtnCategory;
+    EditText foodName, expire, memo;
+    FoodListItemDto foodListItemDto;
     int position;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
@@ -40,7 +40,8 @@ public class FoodInfoActivity extends AppCompatActivity {
         save=findViewById(R.id.btn_save);
         delete=findViewById(R.id.btn_delete);
         foodName =findViewById(R.id.et_infoFoodName);
-        category=findViewById(R.id.et_infoCategory);
+        BtnCategory =findViewById(R.id.btn_infoCategory);
+        category=findViewById(R.id.tv_category);
         expire=findViewById(R.id.et_infoExpire);
         memo=findViewById(R.id.et_memo);
 
@@ -49,12 +50,12 @@ public class FoodInfoActivity extends AppCompatActivity {
         edit.setVisibility(View.VISIBLE);
 
         foodName.setEnabled(false);
-        category.setEnabled(false);
+        BtnCategory.setEnabled(false);
         expire.setEnabled(false);
         memo.setEnabled(false);
 
         back.setOnClickListener(v->{
-            Toast.makeText(getApplicationContext(), MainFoodListActivity.foodListItems.get(2).getName(),Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), FoodListItemDto.getFoodListItems().get(2).getName(),Toast.LENGTH_SHORT).show();
         });
 
 
@@ -64,7 +65,7 @@ public class FoodInfoActivity extends AppCompatActivity {
             edit.setClickable(false);
 
             foodName.setEnabled(true);
-            category.setEnabled(true);
+            BtnCategory.setEnabled(true);
             expire.setEnabled(true);
             memo.setEnabled(true);
         });
@@ -74,13 +75,13 @@ public class FoodInfoActivity extends AppCompatActivity {
 
             // 변경불가
             foodName.setEnabled(false);
-            category.setEnabled(false);
+            BtnCategory.setEnabled(false);
             expire.setEnabled(false);
             memo.setEnabled(false);
 
             // foodListItems에 데이터 추가
-            foodListItem=new FoodListItem(foodName.getText().toString(),category.getText().toString(),expire.getText().toString(),memo.getText().toString());
-            MainFoodListActivity.foodListItems.set(position,foodListItem);
+            foodListItemDto =new FoodListItemDto(foodName.getText().toString(), category.getText().toString(),expire.getText().toString(),memo.getText().toString());
+            FoodListItemDto.getFoodListItems().set(position, foodListItemDto);
 
             // 저장 버튼 사라지기
             save.setVisibility(View.GONE);
@@ -90,13 +91,11 @@ public class FoodInfoActivity extends AppCompatActivity {
 
         delete.setOnClickListener(v->{
             // 데이터 삭제
-            MainFoodListActivity.foodListItems.remove(position);
+            FoodListItemDto.getFoodListItems().remove(position);
 
             // 액티비티 종료
             finish();
         });
-
-
 
     }
 
