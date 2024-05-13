@@ -16,7 +16,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.sw.cocomong.R;
 import com.sw.cocomong.dto.FoodListItemDto;
 
-
 public class FoodInfoActivity extends AppCompatActivity {
     TextView title, category;
     ImageButton back, edit;
