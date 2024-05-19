@@ -6,8 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FoodListItemDto {
+    private int id;
+    private int refNum;
     private Bitmap foodImage;
-    private String name;
+    private String foodname;
     private String category;
     private String expire;
     private String memo;
@@ -23,12 +25,12 @@ public class FoodListItemDto {
         this.foodImage = foodImage;
     }
 
-    public String getName() {
-        return name;
+    public String getFoodname() {
+        return foodname;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFoodname(String foodname) {
+        this.foodname = foodname;
     }
 
     public String getCategory() {
@@ -71,9 +73,10 @@ public class FoodListItemDto {
         return foodListItemDtos;
     }
 
-    public FoodListItemDto(Bitmap foodImage, String name, String category, String expire, String memo){
+    public FoodListItemDto(Bitmap foodImage, String foodname, int refNum, String category, String expire, String memo){
         this.foodImage=foodImage;
-        this.name=name;
+        this.foodname =foodname;
+        this.refNum=refNum;
         this.expire=expire;
         this.category=category;
         this.memo=memo;
@@ -83,7 +86,7 @@ public class FoodListItemDto {
     @Override
     public String toString() {
         return "FoodListItem{" +
-                "name='" + name + '\'' +
+                "name='" + foodname + '\'' +
                 ", category='" + category + '\'' +
                 ", expire='" + expire + '\'' +
                 ", memo='" + memo + '\'' +

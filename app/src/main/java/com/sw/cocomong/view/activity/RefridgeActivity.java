@@ -41,6 +41,7 @@ public class RefridgeActivity extends AppCompatActivity {
 
 
             Intent intent = new Intent(RefridgeActivity.this, UserActivity.class);
+            intent.putExtra("refPosition", position);
             startActivity(intent);
         });
 

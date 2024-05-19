@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.sw.cocomong.R;
 import com.sw.cocomong.dto.FoodListItemDto;
+import com.sw.cocomong.dto.RefListItemDto;
 import com.sw.cocomong.view.adapter.FoodAdapter;
 import com.sw.cocomong.view.activity.FoodAddActivity;
 
@@ -26,6 +27,8 @@ public class UserActivity extends AppCompatActivity {
     ListView list;
     Button refridge, foodAdd, favorite, mypage, sort;
     FoodAdapter foodAdapter;
+    RefListItemDto refListItemDto;
+    int position;
 
     public static List<FoodListItemDto> foodListItemDtos = FoodListItemDto.getFoodListItems();
 
@@ -33,6 +36,11 @@ public class UserActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.food_list);
+
+        Intent intent=getIntent();
+        Bundle extras=intent.getExtras();
+        position=extras.getInt("refPosition");
+        refListItemDto= RefListItemDto.refListItemDtos.get(position);
 
         list = findViewById(R.id.list_food);
         foodAdd = findViewById(R.id.btn_foodAdd);
@@ -46,29 +54,29 @@ public class UserActivity extends AppCompatActivity {
 
         list.setOnItemClickListener((parent, view, position, id) -> {
 
-            Intent intent = new Intent(UserActivity.this, FoodInfoActivity.class);
-            intent.putExtra("position",position);
-            startActivity(intent);
+            Intent foodIntent = new Intent(UserActivity.this, FoodInfoActivity.class);
+            foodIntent.putExtra("foodPosition",position);
+            startActivity(foodIntent);
         });
 
         foodAdd.setOnClickListener(v -> {
-            Intent intent = new Intent(UserActivity.this, FoodAddSelectActivity.class);
-            startActivity(intent);
+            Intent foodAddIntent = new Intent(UserActivity.this, FoodAddSelectActivity.class);
+            startActivity(foodAddIntent);
         });
 
         favorite.setOnClickListener(v->{
-            Intent intent = new Intent(UserActivity.this, FavoriteActivity.class);
-            startActivity(intent);
+            Intent favoriteIntent = new Intent(UserActivity.this, FavoriteActivity.class);
+            startActivity(favoriteIntent);
         });
 
         mypage.setOnClickListener(v->{
-            Intent intent = new Intent(UserActivity.this, LoginActivity.class);
-            startActivity(intent);
+            Intent mypateIntent = new Intent(UserActivity.this, LoginActivity.class);
+            startActivity(mypateIntent);
         });
 
         refridge.setOnClickListener(v->{
-            Intent intent = new Intent(UserActivity.this, RefridgeActivity.class);
-            startActivity(intent);
+            Intent refIntent = new Intent(UserActivity.this, RefridgeActivity.class);
+            startActivity(refIntent);
         });
 
         sort.setOnClickListener(v->{

@@ -45,7 +45,7 @@ public class FoodAdapter extends ArrayAdapter<FoodListItemDto>{
 
         foodListItemDto = foodListItemDtos.get(position);
 
-        tvFoodName.setText(foodListItemDto.getName());
+        tvFoodName.setText(foodListItemDto.getFoodname());
         tvCategory.setText(foodListItemDto.getCategory());
         tvExpire.setText(foodListItemDto.getExpire());
         cbFavorite.setChecked(foodListItemDto.isFavorite());

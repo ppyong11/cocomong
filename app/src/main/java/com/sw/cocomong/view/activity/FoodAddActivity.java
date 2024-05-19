@@ -16,23 +16,34 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.sw.cocomong.R;
+import com.sw.cocomong.dto.BarcodeResDto;
 import com.sw.cocomong.dto.FoodListItemDto;
+import com.sw.cocomong.task.BarcodeTask;
 import com.sw.cocomong.view.activity.CameraCapture;
+
+import java.sql.Time;
+import java.util.Date;
 
 public class FoodAddActivity extends AppCompatActivity {
 
     ImageView foodimage;
-    TextView title, category;
+    TextView title, category, barcode;
     ImageButton back, edit;
-    Button save, delete, btnCategory;
+    Button save, delete, btnCategory, barcodeTest;
     EditText foodName, expire, memo;
     FoodListItemDto foodListItemDto;
     Bitmap foodImageBitmap;
-
+    int foodPosition, refPosition;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.food_info);
+
+        Intent intent=getIntent();
+        Bundle extras=intent.getExtras();
+        foodPosition=extras.getInt("foodPosition");
+        refPosition=extras.getInt("refPostition");
+        foodListItemDto=FoodListItemDto.getFoodListItems().get(foodPosition);
 
         title = findViewById(R.id.tv_infoTitle);
         back = findViewById(R.id.btn_back);
@@ -44,6 +55,8 @@ public class FoodAddActivity extends AppCompatActivity {
         category = findViewById(R.id.tv_category);
         expire = findViewById(R.id.et_infoExpire);
         memo = findViewById(R.id.et_memo);
+        barcodeTest=findViewById(R.id.btn_barcode);
+        barcode=findViewById(R.id.tv_barcodeNum);
 
         foodimage = findViewById(R.id.food_image);
 
@@ -62,6 +75,7 @@ public class FoodAddActivity extends AppCompatActivity {
 
         btnCategory.setOnClickListener(v->{
             Intent intentCategory = new Intent(FoodAddActivity.this, CategorySelectActivity.class);
+            // FoodAddTask 실행?
             startActivityForResult(intentCategory,1212);
         });
 
@@ -77,11 +91,32 @@ public class FoodAddActivity extends AppCompatActivity {
             expire.setEnabled(false);
             memo.setEnabled(false);
 
-            foodListItemDto = new FoodListItemDto(foodImageBitmap,foodName.getText().toString(), category.getText().toString(), expire.getText().toString(), memo.getText().toString());
+            foodListItemDto = new FoodListItemDto(foodImageBitmap,foodName.getText().toString(),refPosition, category.getText().toString(), expire.getText().toString(), memo.getText().toString());
             UserActivity.foodListItemDtos.add(foodListItemDto);
 
             save.setVisibility(View.GONE);
             finish();
+        });
+        barcodeTest.setOnClickListener(v->{
+            String barcodeNum=barcode.getText().toString();
+            BarcodeTask barcodeTask = new BarcodeTask(barcodeNum);
+            try {
+                BarcodeResDto result = barcodeTask.execute(barcodeNum).get();
+
+                foodName.setText(result.getProductName());
+                long time = System.currentTimeMillis();
+                Date date = new Date(time);
+                expire.setText(date.toString());
+                category.setText(result.getCategory());
+                memo.setText(result.getDayCount());
+
+                if (barcodeTask.getResponseCode() == 200| result==null) {
+                    Toast.makeText(this, "성공", Toast.LENGTH_SHORT).show();
+                } else Toast.makeText(this, "실패", Toast.LENGTH_SHORT).show();
+
+            } catch (Exception e){
+                e.printStackTrace();
+            }
         });
     }
 

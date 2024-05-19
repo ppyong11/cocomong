@@ -81,9 +81,6 @@ public class CameraCapture extends Activity {
 
     }
 
-
-
-
     public void capture(){
         surfaceView.capture(new Camera.PictureCallback() {
             @Override
