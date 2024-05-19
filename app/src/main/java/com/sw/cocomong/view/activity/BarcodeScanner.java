@@ -34,12 +34,13 @@ import com.sw.cocomong.task.BarcodeTask;
 import java.util.Date;
 import java.util.concurrent.ExecutionException;
 
+// 바코드를 통해서 음식을 추가함.
 public class BarcodeScanner extends AppCompatActivity {
 
     ImageView foodimage;
-    TextView title, category, barcode;
+    TextView title, category, barcodeTest,barcode;
     ImageButton back, edit;
-    Button save, delete, btnCategory, barcodeTest;
+    Button save, delete, btnCategory;
     EditText foodName, expire, memo;
     FoodListItemDto foodListItemDto;
     Bitmap foodImageBitmap=null;
@@ -123,7 +124,6 @@ public class BarcodeScanner extends AppCompatActivity {
             }
         }else{
             IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
-
             if (result != null) {
                 if (result.getContents() != null) {
                     String text = result.getContents();
@@ -143,6 +143,7 @@ public class BarcodeScanner extends AppCompatActivity {
                     } catch (Exception e){
                         e.printStackTrace();
                     }
+                    // TODO: 2024-05-20 수정하기
                 }else{
                     String text = barcode.getText().toString();
                     BarcodeTask barcodeTask = new BarcodeTask(text);
@@ -156,7 +157,9 @@ public class BarcodeScanner extends AppCompatActivity {
 
                         if (barcodeTask.getResponseCode() == 200| taskResult==null) {
                             Toast.makeText(this, "성공", Toast.LENGTH_SHORT).show();
-                        } else Toast.makeText(this, "실패", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(this, "실패", Toast.LENGTH_SHORT).show();
+                        }
 
                     } catch (Exception e){
                         e.printStackTrace();

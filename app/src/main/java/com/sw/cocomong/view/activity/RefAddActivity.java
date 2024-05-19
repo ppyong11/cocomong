@@ -8,7 +8,10 @@ import android.widget.EditText;
 import androidx.annotation.Nullable;
 
 import com.sw.cocomong.R;
+import com.sw.cocomong.dto.RefFoodMap;
 import com.sw.cocomong.dto.RefListItemDto;
+
+import java.util.ArrayList;
 
 public class RefAddActivity extends Activity {
     EditText et_refName;
@@ -32,6 +35,7 @@ public class RefAddActivity extends Activity {
 
         btn_ok.setOnClickListener(v->{
             refListItemDto =new RefListItemDto(et_refName.getText().toString());
+            RefFoodMap.getRefFoodMap().put(refListItemDto,new ArrayList<>());
             RefridgeActivity.refListItemDtos.add(refListItemDto);
             finish();
         });

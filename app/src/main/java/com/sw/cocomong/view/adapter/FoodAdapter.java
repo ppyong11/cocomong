@@ -18,7 +18,7 @@ import java.util.List;
 public class FoodAdapter extends ArrayAdapter<FoodListItemDto>{
     private final Activity context;
     private List<FoodListItemDto> foodListItemDtos;
-    FoodListItemDto foodListItemDto;
+    private FoodListItemDto foodListItemDto;
 
 
     public FoodAdapter(Activity context, List<FoodListItemDto> foodListItemDtos) {

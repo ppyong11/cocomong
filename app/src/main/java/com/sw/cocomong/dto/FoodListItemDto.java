@@ -17,6 +17,16 @@ public class FoodListItemDto {
     private static List<FoodListItemDto> favoriteItems = new ArrayList<>();
     private static List<FoodListItemDto> foodListItemDtos = new ArrayList<>();
 
+    public FoodListItemDto(Bitmap foodImage, String foodname, int refNum, String category, String expire, String memo){
+        this.foodImage=foodImage;
+        this.foodname =foodname;
+        this.refNum=refNum;
+        this.expire=expire;
+        this.category=category;
+        this.memo=memo;
+        //favorite=false;
+    }
+
     public Bitmap getFoodImage() {
         return foodImage;
     }
@@ -89,15 +99,7 @@ public class FoodListItemDto {
         this.refNum = refNum;
     }
 
-    public FoodListItemDto(Bitmap foodImage, String foodname, int refNum, String category, String expire, String memo){
-        this.foodImage=foodImage;
-        this.foodname =foodname;
-        this.refNum=refNum;
-        this.expire=expire;
-        this.category=category;
-        this.memo=memo;
-        //favorite=false;
-    }
+
 
     @Override
     public String toString() {

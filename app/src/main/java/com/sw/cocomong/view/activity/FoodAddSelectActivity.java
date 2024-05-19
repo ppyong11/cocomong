@@ -33,6 +33,7 @@ import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.journeyapps.barcodescanner.CaptureActivity;
 import com.sw.cocomong.R;
+import com.sw.cocomong.dto.RefListItemDto;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -45,12 +46,17 @@ public class FoodAddSelectActivity extends AppCompatActivity {
     private Context context = FoodAddSelectActivity.this;
     final int PERMISSION_REQUEST_CODE = 1;
 
+    int refPosition;
 
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.food_add_select_popup);
+
+        Intent intent=getIntent();
+        Bundle extras=intent.getExtras();
+        refPosition=extras.getInt("refPosition");
 
         photo=findViewById(R.id.btn_photo);
         barcode=findViewById(R.id.btn_barcode);
@@ -66,8 +72,9 @@ public class FoodAddSelectActivity extends AppCompatActivity {
 
                 } else if (p.getItemId()==R.id.select_camera) {
                     Toast.makeText(this, "카메라 찍기 선택", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(FoodAddSelectActivity.this, CameraCapture.class);
-                    startActivity(intent);
+                    Intent cameraIntent = new Intent(FoodAddSelectActivity.this, CameraCapture.class);
+                    cameraIntent.putExtra("refPosition",refPosition);
+                    startActivity(cameraIntent);
                     finish();
                 }
                 return false;
@@ -81,8 +88,8 @@ public class FoodAddSelectActivity extends AppCompatActivity {
 //            integrator.setOrientationLocked(false); //스캔 방향전환을 위한 설정
 //            integrator.setCaptureActivity(BarcodeScanner.class);
 //            integrator.initiateScan();
-            Intent intent = new Intent(FoodAddSelectActivity.this, BarcodeScanner.class);
-            startActivity(intent);
+            Intent barcodeIntent = new Intent(FoodAddSelectActivity.this, BarcodeScanner.class);
+            startActivity(barcodeIntent);
             finish();
         });
         checkPermission();

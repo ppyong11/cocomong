@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.sw.cocomong.R;
 import com.sw.cocomong.dto.FoodListItemDto;
 
+// foodList를 통해서 들어와서 수정
 public class FoodInfoActivity extends AppCompatActivity {
     TextView title, category;
     ImageButton back, edit;
@@ -114,7 +115,6 @@ public class FoodInfoActivity extends AppCompatActivity {
             // 액티비티 종료
             finish();
         });
-
     }
 
     @Override
@@ -128,7 +128,5 @@ public class FoodInfoActivity extends AppCompatActivity {
                 category.setText(selectedCategory);
             }
         }
-
-
     }
 }

@@ -16,11 +16,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.sw.cocomong.R;
 import com.sw.cocomong.dto.FoodListItemDto;
+import com.sw.cocomong.dto.RefFoodMap;
 import com.sw.cocomong.dto.RefListItemDto;
 import com.sw.cocomong.view.adapter.FoodAdapter;
 import com.sw.cocomong.view.activity.FoodAddActivity;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class UserActivity extends AppCompatActivity {
 
@@ -30,7 +33,8 @@ public class UserActivity extends AppCompatActivity {
     RefListItemDto refListItemDto;
     int refPosition;
 
-    public static List<FoodListItemDto> foodListItemDtos = FoodListItemDto.getFoodListItems();
+    public static List<FoodListItemDto> foodListItemDtos;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -41,6 +45,9 @@ public class UserActivity extends AppCompatActivity {
         Bundle extras=intent.getExtras();
         refPosition=extras.getInt("refPosition");
         refListItemDto= RefListItemDto.getRefListItemDtos().get(refPosition);
+
+
+        foodListItemDtos= RefFoodMap.getRefFoodMap().get(refListItemDto);
 
         list = findViewById(R.id.list_food);
         foodAdd = findViewById(R.id.btn_foodAdd);
@@ -56,11 +63,13 @@ public class UserActivity extends AppCompatActivity {
 
             Intent foodIntent = new Intent(UserActivity.this, FoodInfoActivity.class);
             foodIntent.putExtra("foodPosition",position);
+            foodIntent.putExtra("refPosition",refPosition);
             startActivity(foodIntent);
         });
 
         foodAdd.setOnClickListener(v -> {
             Intent foodAddIntent = new Intent(UserActivity.this, FoodAddSelectActivity.class);
+            foodAddIntent.putExtra("refPosition",refPosition);
             startActivity(foodAddIntent);
         });
 

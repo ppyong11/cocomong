@@ -18,26 +18,35 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.sw.cocomong.R;
 import com.sw.cocomong.dto.BarcodeResDto;
 import com.sw.cocomong.dto.FoodListItemDto;
+import com.sw.cocomong.dto.RefListItemDto;
 import com.sw.cocomong.task.BarcodeTask;
 import com.sw.cocomong.view.activity.CameraCapture;
 
 import java.sql.Time;
 import java.util.Date;
 
+// 사진을 통해서 음식을 추가함.
 public class FoodAddActivity extends AppCompatActivity {
 
     ImageView foodimage;
-    TextView title, category, barcode;
+    TextView title, category, barcode, barcodeTest;
     ImageButton back, edit;
-    Button save, delete, btnCategory, barcodeTest;
+    Button save, delete, btnCategory;
     EditText foodName, expire, memo;
     FoodListItemDto foodListItemDto;
+    RefListItemDto refListItemDto;
     Bitmap foodImageBitmap;
     int foodPosition, refPosition;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.food_info);
+
+        Intent intent=getIntent();
+        Bundle extras=intent.getExtras();
+        //refPosition=extras.getInt("refPosition");
+       // refListItemDto= RefListItemDto.getRefListItemDtos().get(refPosition);
+
 
         title = findViewById(R.id.tv_infoTitle);
         back = findViewById(R.id.btn_back);
@@ -85,6 +94,7 @@ public class FoodAddActivity extends AppCompatActivity {
             memo.setEnabled(false);
 
             foodListItemDto = new FoodListItemDto(foodImageBitmap,foodName.getText().toString(),refPosition, category.getText().toString(), expire.getText().toString(), memo.getText().toString());
+
             UserActivity.foodListItemDtos.add(foodListItemDto);
 
             save.setVisibility(View.GONE);
