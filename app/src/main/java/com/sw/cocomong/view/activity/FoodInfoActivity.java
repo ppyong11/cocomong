@@ -19,46 +19,46 @@ import com.sw.cocomong.dto.FoodListItemDto;
 public class FoodInfoActivity extends AppCompatActivity {
     TextView title, category;
     ImageButton back, edit;
-    Button save, delete, BtnCategory;
+    Button save, delete, btnCategory;
     EditText foodName, expire, memo;
     FoodListItemDto foodListItemDto;
     ImageView foodImage;
     Bitmap foodImageBitmap;
-    int foodPosition;
-    int refPosition;
+    int foodPosition, refPosition;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.food_info);
 
-        Intent intent=getIntent();
-        Bundle extras=intent.getExtras();
-        foodPosition=extras.getInt("foodPosition");
-        refPosition=extras.getInt("refPostition");
-        foodListItemDto=FoodListItemDto.getFoodListItems().get(foodPosition);
+        Intent intent = getIntent();
+        Bundle extras = intent.getExtras();
+        foodPosition = extras.getInt("foodPosition");
+        refPosition = extras.getInt("refPostition");
+        foodListItemDto = FoodListItemDto.getFoodListItems().get(foodPosition);
 
-        foodImage=findViewById(R.id.food_image);
-        title=findViewById(R.id.tv_infoTitle);
-        back=findViewById(R.id.btn_back);
-        edit=findViewById(R.id.btn_edit);
-        save=findViewById(R.id.btn_save);
-        delete=findViewById(R.id.btn_delete);
-        foodName =findViewById(R.id.et_infoFoodName);
-        BtnCategory =findViewById(R.id.btn_infoCategory);
-        category=findViewById(R.id.tv_category);
-        expire=findViewById(R.id.et_infoExpire);
-        memo=findViewById(R.id.et_memo);
+        foodImage = findViewById(R.id.food_image);
+        title = findViewById(R.id.tv_infoTitle);
+        back = findViewById(R.id.btn_back);
+        edit = findViewById(R.id.btn_edit);
+        save = findViewById(R.id.btn_save);
+        delete = findViewById(R.id.btn_delete);
+        foodName = findViewById(R.id.et_infoFoodName);
+        btnCategory = findViewById(R.id.btn_infoCategory);
+        category = findViewById(R.id.tv_category);
+        expire = findViewById(R.id.et_infoExpire);
+        memo = findViewById(R.id.et_memo);
 
         save.setVisibility(View.GONE);
         delete.setVisibility(View.VISIBLE);
         edit.setVisibility(View.VISIBLE);
 
         foodName.setEnabled(false);
-        BtnCategory.setEnabled(false);
+        btnCategory.setEnabled(false);
         expire.setEnabled(false);
         memo.setEnabled(false);
 
-        foodImageBitmap= foodListItemDto.getFoodImage();
+        foodImageBitmap = foodListItemDto.getFoodImage();
         foodImage.setImageBitmap(foodImageBitmap);
         title.setText(foodListItemDto.getFoodname());
         foodName.setText(foodListItemDto.getFoodname());
@@ -66,31 +66,37 @@ public class FoodInfoActivity extends AppCompatActivity {
         expire.setText(foodListItemDto.getExpire());
         memo.setText(foodListItemDto.getMemo());
 
-        back.setOnClickListener(v->{
+        back.setOnClickListener(v -> {
             finish();
         });
 
-        edit.setOnClickListener(v->{
+        edit.setOnClickListener(v -> {
             save.setVisibility(View.VISIBLE);
             delete.setVisibility(View.GONE);
             edit.setVisibility(View.GONE);
 
             foodName.setEnabled(true);
-            BtnCategory.setEnabled(true);
+            btnCategory.setEnabled(true);
             expire.setEnabled(true);
             memo.setEnabled(true);
         });
 
-        save.setOnClickListener(v->{
+        btnCategory.setOnClickListener(v -> {
+            Intent intentCategory = new Intent(FoodInfoActivity.this, CategorySelectActivity.class);
+            // FoodAddTask 실행?
+            startActivityForResult(intentCategory, 1212);
+        });
+
+        save.setOnClickListener(v -> {
 
             // 변경불가
             foodName.setEnabled(false);
-            BtnCategory.setEnabled(false);
+            btnCategory.setEnabled(false);
             expire.setEnabled(false);
             memo.setEnabled(false);
 
             // foodListItems에 데이터 추가
-            foodListItemDto =new FoodListItemDto(foodImageBitmap,foodName.getText().toString(), refPosition, category.getText().toString(),expire.getText().toString(),memo.getText().toString());
+            foodListItemDto = new FoodListItemDto(foodImageBitmap, foodName.getText().toString(), refPosition, category.getText().toString(), expire.getText().toString(), memo.getText().toString());
             FoodListItemDto.getFoodListItems().set(foodPosition, foodListItemDto);
 
             // 저장 버튼 사라지기
@@ -101,7 +107,7 @@ public class FoodInfoActivity extends AppCompatActivity {
             finish();
         });
 
-        delete.setOnClickListener(v->{
+        delete.setOnClickListener(v -> {
             // 데이터 삭제
             FoodListItemDto.getFoodListItems().remove(foodPosition);
 
@@ -111,4 +117,18 @@ public class FoodInfoActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent intent) {
+        super.onActivityResult(requestCode, resultCode, intent);
+
+        if (requestCode == 1212 && resultCode == RESULT_OK) {
+            if (intent != null) {
+                String selectedCategory = intent.getStringExtra("category");
+                category.findViewById(R.id.tv_category);
+                category.setText(selectedCategory);
+            }
+        }
+
+
+    }
 }

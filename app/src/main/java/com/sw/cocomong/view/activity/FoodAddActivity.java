@@ -90,6 +90,7 @@ public class FoodAddActivity extends AppCompatActivity {
             save.setVisibility(View.GONE);
             finish();
         });
+
         barcodeTest.setOnClickListener(v->{
             String barcodeNum=barcode.getText().toString();
             BarcodeTask barcodeTask = new BarcodeTask(barcodeNum);
@@ -97,9 +98,7 @@ public class FoodAddActivity extends AppCompatActivity {
                 BarcodeResDto result = barcodeTask.execute(barcodeNum).get();
 
                 foodName.setText(result.getProductName());
-                long time = System.currentTimeMillis();
-                Date date = new Date(time);
-                expire.setText(date.toString());
+                category.setText(result.getCategory());
                 category.setText(result.getCategory());
                 memo.setText(result.getDayCount());
 

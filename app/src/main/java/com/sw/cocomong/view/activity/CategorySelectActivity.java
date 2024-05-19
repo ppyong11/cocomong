@@ -19,7 +19,6 @@ public class CategorySelectActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.category_popup);
 
-
         fruit=findViewById(R.id.btn_fruit);
         vegetable=findViewById(R.id.btn_vegetable);
         dairy=findViewById(R.id.btn_Dairy);

@@ -40,7 +40,7 @@ public class UserActivity extends AppCompatActivity {
         Intent intent=getIntent();
         Bundle extras=intent.getExtras();
         refPosition=extras.getInt("refPosition");
-        refListItemDto= RefListItemDto.refListItemDtos.get(refPosition);
+        refListItemDto= RefListItemDto.getRefListItemDtos().get(refPosition);
 
         list = findViewById(R.id.list_food);
         foodAdd = findViewById(R.id.btn_foodAdd);

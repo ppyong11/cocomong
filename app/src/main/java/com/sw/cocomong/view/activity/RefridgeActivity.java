@@ -22,7 +22,7 @@ public class RefridgeActivity extends AppCompatActivity {
     Button refAdd;
 
     RefAdapter refAdapter;
-    public static List<RefListItemDto> refListItemDtos = RefListItemDto.refListItemDtos;
+    public static List<RefListItemDto> refListItemDtos = RefListItemDto.getRefListItemDtos();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

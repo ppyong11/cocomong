@@ -16,6 +16,7 @@ import android.widget.Toast;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.zxing.integration.android.IntentIntegrator;
@@ -59,6 +60,7 @@ public class BarcodeScanner extends AppCompatActivity {
         category = findViewById(R.id.tv_category);
         expire = findViewById(R.id.et_infoExpire);
         memo = findViewById(R.id.et_memo);
+
         barcodeTest=findViewById(R.id.btn_barcode);
         barcode=findViewById(R.id.tv_barcodeNum);
 
@@ -110,7 +112,7 @@ public class BarcodeScanner extends AppCompatActivity {
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
 
         if (requestCode==1212&&resultCode==RESULT_OK){
@@ -119,33 +121,49 @@ public class BarcodeScanner extends AppCompatActivity {
                 category.findViewById(R.id.tv_category);
                 category.setText(selectedCategory);
             }
-        }
+        }else{
+            IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
 
-        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
+            if (result != null) {
+                if (result.getContents() != null) {
+                    String text = result.getContents();
+                    BarcodeTask barcodeTask = new BarcodeTask(text);
+                    try {
+                        BarcodeResDto taskResult = barcodeTask.execute(text).get();
 
-        if (result != null) {
-            if (result.getContents() != null) {
-                String text = result.getContents();
-                BarcodeTask barcodeTask = new BarcodeTask(text);
-                try {
-                    BarcodeResDto taskResult = barcodeTask.execute(text).get();
+                        barcode.setText(text);
+                        foodName.setText(taskResult.getProductName());
+                        category.setText(taskResult.getCategory());
+                        memo.setText(taskResult.getDayCount());
 
-                    barcode.setText(text);
-                    foodName.setText(taskResult.getProductName());
-                    long time = System.currentTimeMillis();
-                    Date date = new Date(time);
-                    expire.setText(date.toString());
-                    category.setText(taskResult.getCategory());
-                    memo.setText(taskResult.getDayCount());
+                        if (barcodeTask.getResponseCode() == 200| taskResult==null) {
+                            Toast.makeText(this, "성공", Toast.LENGTH_SHORT).show();
+                        } else Toast.makeText(this, "실패", Toast.LENGTH_SHORT).show();
 
-                    if (barcodeTask.getResponseCode() == 200| taskResult==null) {
-                        Toast.makeText(this, "성공", Toast.LENGTH_SHORT).show();
-                    } else Toast.makeText(this, "실패", Toast.LENGTH_SHORT).show();
+                    } catch (Exception e){
+                        e.printStackTrace();
+                    }
+                }else{
+                    String text = barcode.getText().toString();
+                    BarcodeTask barcodeTask = new BarcodeTask(text);
+                    try {
+                        BarcodeResDto taskResult = barcodeTask.execute(text).get();
 
-                } catch (Exception e){
-                    e.printStackTrace();
+                        barcode.setText(text);
+                        foodName.setText(taskResult.getProductName());
+                        category.setText(taskResult.getCategory());
+                        memo.setText(taskResult.getDayCount());
+
+                        if (barcodeTask.getResponseCode() == 200| taskResult==null) {
+                            Toast.makeText(this, "성공", Toast.LENGTH_SHORT).show();
+                        } else Toast.makeText(this, "실패", Toast.LENGTH_SHORT).show();
+
+                    } catch (Exception e){
+                        e.printStackTrace();
+                    }
                 }
             }
         }
+
     }
 }
