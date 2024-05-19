@@ -29,16 +29,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
+import com.journeyapps.barcodescanner.CaptureActivity;
 import com.sw.cocomong.R;
 
 import java.io.File;
 import java.util.ArrayList;
 
 public class FoodAddSelectActivity extends AppCompatActivity {
-
-
-
-
 
     ImageButton photo, barcode;
 
@@ -78,7 +77,11 @@ public class FoodAddSelectActivity extends AppCompatActivity {
 
         barcode.setOnClickListener(v->{
             Toast.makeText(this, "바코드 클릭", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(FoodAddSelectActivity.this, FoodAddActivity.class);
+//            IntentIntegrator integrator = new IntentIntegrator(FoodAddSelectActivity.this);
+//            integrator.setOrientationLocked(false); //스캔 방향전환을 위한 설정
+//            integrator.setCaptureActivity(BarcodeScanner.class);
+//            integrator.initiateScan();
+            Intent intent = new Intent(FoodAddSelectActivity.this, BarcodeScanner.class);
             startActivity(intent);
             finish();
         });
@@ -185,9 +188,22 @@ public class FoodAddSelectActivity extends AppCompatActivity {
         }
     }
 
-
-
-
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+        if (result != null) {
+            if (result.getContents() == null) {
+                // 스캔 취소됨
+                // 여기에서 스캔 취소 시 처리할 작업을 추가할 수 있습니다.
+            } else {
+                // 스캔 성공
+                String scannedData = result.getContents();
+                // 여기에서 스캔된 데이터를 처리할 작업을 추가할 수 있습니다.
+            }
+        } else {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
+    }
 
 }
 

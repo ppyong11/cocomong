@@ -28,7 +28,7 @@ public class UserActivity extends AppCompatActivity {
     Button refridge, foodAdd, favorite, mypage, sort;
     FoodAdapter foodAdapter;
     RefListItemDto refListItemDto;
-    int position;
+    int refPosition;
 
     public static List<FoodListItemDto> foodListItemDtos = FoodListItemDto.getFoodListItems();
 
@@ -39,8 +39,8 @@ public class UserActivity extends AppCompatActivity {
 
         Intent intent=getIntent();
         Bundle extras=intent.getExtras();
-        position=extras.getInt("refPosition");
-        refListItemDto= RefListItemDto.refListItemDtos.get(position);
+        refPosition=extras.getInt("refPosition");
+        refListItemDto= RefListItemDto.refListItemDtos.get(refPosition);
 
         list = findViewById(R.id.list_food);
         foodAdd = findViewById(R.id.btn_foodAdd);

@@ -3,28 +3,37 @@ package com.sw.cocomong.view.activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.Nullable;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
+import com.journeyapps.barcodescanner.BarcodeResult;
+import com.journeyapps.barcodescanner.CaptureManager;
+import com.journeyapps.barcodescanner.DecoratedBarcodeView;
+import com.journeyapps.barcodescanner.ScanContract;
+import com.journeyapps.barcodescanner.ScanOptions;
 import com.sw.cocomong.R;
 import com.sw.cocomong.dto.BarcodeResDto;
 import com.sw.cocomong.dto.FoodListItemDto;
 import com.sw.cocomong.task.BarcodeTask;
-import com.sw.cocomong.view.activity.CameraCapture;
 
-import java.sql.Time;
 import java.util.Date;
+import java.util.concurrent.ExecutionException;
 
-public class FoodAddActivity extends AppCompatActivity {
+public class BarcodeScanner extends AppCompatActivity {
 
     ImageView foodimage;
     TextView title, category, barcode;
@@ -32,10 +41,11 @@ public class FoodAddActivity extends AppCompatActivity {
     Button save, delete, btnCategory, barcodeTest;
     EditText foodName, expire, memo;
     FoodListItemDto foodListItemDto;
-    Bitmap foodImageBitmap;
+    Bitmap foodImageBitmap=null;
     int foodPosition, refPosition;
+
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.food_info);
 
@@ -54,6 +64,7 @@ public class FoodAddActivity extends AppCompatActivity {
 
         foodimage = findViewById(R.id.food_image);
 
+
         save.setVisibility(View.VISIBLE);
         delete.setVisibility(View.GONE);
         edit.setVisibility(View.GONE);
@@ -63,11 +74,9 @@ public class FoodAddActivity extends AppCompatActivity {
         expire.setEnabled(true);
         memo.setEnabled(true);
 
-        foodImageBitmap=CameraCapture.moveBitmap();
-        foodimage.setImageBitmap(foodImageBitmap);
 
         btnCategory.setOnClickListener(v->{
-            Intent intentCategory = new Intent(FoodAddActivity.this, CategorySelectActivity.class);
+            Intent intentCategory = new Intent(BarcodeScanner.this, CategorySelectActivity.class);
             // FoodAddTask 실행?
             startActivityForResult(intentCategory,1212);
         });
@@ -90,44 +99,53 @@ public class FoodAddActivity extends AppCompatActivity {
             save.setVisibility(View.GONE);
             finish();
         });
-        barcodeTest.setOnClickListener(v->{
-            String barcodeNum=barcode.getText().toString();
-            BarcodeTask barcodeTask = new BarcodeTask(barcodeNum);
-            try {
-                BarcodeResDto result = barcodeTask.execute(barcodeNum).get();
+        startScan();
+    }
 
-                foodName.setText(result.getProductName());
-                long time = System.currentTimeMillis();
-                Date date = new Date(time);
-                expire.setText(date.toString());
-                category.setText(result.getCategory());
-                memo.setText(result.getDayCount());
-
-                if (barcodeTask.getResponseCode() == 200| result==null) {
-                    Toast.makeText(this, "성공", Toast.LENGTH_SHORT).show();
-                } else Toast.makeText(this, "실패", Toast.LENGTH_SHORT).show();
-
-            } catch (Exception e){
-                e.printStackTrace();
-            }
-        });
+    private void startScan() {
+        IntentIntegrator integrator = new IntentIntegrator(this);
+        integrator.setPrompt("Scan a barcode");
+        integrator.setOrientationLocked(false);
+        integrator.initiateScan();
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+    protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        super.onActivityResult(requestCode, resultCode, intent);
+
         if (requestCode==1212&&resultCode==RESULT_OK){
-            if(data!=null){
-                String selectedCategory = data.getStringExtra("category");
+            if(intent!=null){
+                String selectedCategory = intent.getStringExtra("category");
                 category.findViewById(R.id.tv_category);
                 category.setText(selectedCategory);
             }
         }
-    }
 
-    // TODO: 2024-05-13 바코드 인식 후 카테고리 설정해주는 로직
-    public String setCategory(String categoryName){
+        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
 
-        return "";
+        if (result != null) {
+            if (result.getContents() != null) {
+                String text = result.getContents();
+                BarcodeTask barcodeTask = new BarcodeTask(text);
+                try {
+                    BarcodeResDto taskResult = barcodeTask.execute(text).get();
+
+                    barcode.setText(text);
+                    foodName.setText(taskResult.getProductName());
+                    long time = System.currentTimeMillis();
+                    Date date = new Date(time);
+                    expire.setText(date.toString());
+                    category.setText(taskResult.getCategory());
+                    memo.setText(taskResult.getDayCount());
+
+                    if (barcodeTask.getResponseCode() == 200| taskResult==null) {
+                        Toast.makeText(this, "성공", Toast.LENGTH_SHORT).show();
+                    } else Toast.makeText(this, "실패", Toast.LENGTH_SHORT).show();
+
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 }

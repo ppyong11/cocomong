@@ -107,15 +107,12 @@ public class CameraCapture extends Activity {
                 matrix.postRotate(90);
 
 
-
                 resizedBitmap = Bitmap.createBitmap(bitmap, 0,0,width,height,matrix,true);
                 //BitmapDrawable bmd = new BitmapDrawable(resizedBitmap);
 
 
                 food_image_test.setImageBitmap(resizedBitmap);//이미지뷰에 사진 보여주기
                 camera.startPreview();
-
-
 
             }
         });

@@ -72,11 +72,11 @@ public class FoodAddTask extends AsyncTask<String, Void, BarcodeResDto> {
 
                 // 값 추출
                 int id = jsonObject.getInt("id");
-                String foodname = jsonObject.getString("foodname");
+                foodname = jsonObject.getString("foodname");
                 int refNum = jsonObject.getInt("ref_num");
-                String expiredate = jsonObject.getString("expiredate");
-                String category = jsonObject.getString("category");
-                String memo = jsonObject.getString("memo");
+                expiredate = jsonObject.getString("expiredate");
+                category = jsonObject.getString("category");
+                memo = jsonObject.getString("memo");
 
                 // 테스트를 위해 값 출력
                 System.out.println("id: " + id);
@@ -88,9 +88,7 @@ public class FoodAddTask extends AsyncTask<String, Void, BarcodeResDto> {
                 }catch (Exception e){
                      e.printStackTrace();
                 }
-
             }
-
             else {    // 통신이 실패한 이유를 찍기위한 로그
                 Log.i("통신 결과", conn.getResponseCode() + "에러");
             }
@@ -103,7 +101,8 @@ public class FoodAddTask extends AsyncTask<String, Void, BarcodeResDto> {
                 System.out.println("---------conn.disconeect()-------");
             }
         }
-        //foodListItemDto=new FoodListItemDto( ,foodname,refNum, expiredate, category, memo);
+        // TODO: 2024-05-19 비트맵 어케 받아올 지. (bitmap string 변환 알아봐야하나)
+        //foodListItemDto=new FoodListItemDto( , foodname,refNum, expiredate, category, memo);
         //return foodListItemDto;
         return null;
     }

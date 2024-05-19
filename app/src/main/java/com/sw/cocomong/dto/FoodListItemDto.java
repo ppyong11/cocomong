@@ -73,6 +73,22 @@ public class FoodListItemDto {
         return foodListItemDtos;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getRefNum() {
+        return refNum;
+    }
+
+    public void setRefNum(int refNum) {
+        this.refNum = refNum;
+    }
+
     public FoodListItemDto(Bitmap foodImage, String foodname, int refNum, String category, String expire, String memo){
         this.foodImage=foodImage;
         this.foodname =foodname;

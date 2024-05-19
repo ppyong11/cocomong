@@ -97,6 +97,8 @@ public class FoodInfoActivity extends AppCompatActivity {
             save.setVisibility(View.GONE);
             edit.setVisibility(View.VISIBLE);
             delete.setVisibility(View.VISIBLE);
+
+            finish();
         });
 
         delete.setOnClickListener(v->{
