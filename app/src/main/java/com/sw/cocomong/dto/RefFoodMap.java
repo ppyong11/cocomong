@@ -1,7 +1,5 @@
 package com.sw.cocomong.dto;
 
-import com.sw.cocomong.view.activity.FavoriteActivity;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

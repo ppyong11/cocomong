@@ -34,7 +34,6 @@
         <activity android:name=".view.activity.FoodInfoActivity"/>
         <activity android:name=".view.activity.CameraCapture"/>
         <activity android:name=".view.activity.BarcodeScanner" android:theme="@style/Theme.AppCompat"/>
-        <activity android:name=".view.activity.FavoriteActivity"/>
         <activity android:name=".view.activity.UserActivity"/>
         <activity android:name=".view.activity.RefAddActivity" android:theme="@style/Theme.AppCompat.Dialog"/>
         <activity android:name=".view.activity.LoginActivity"/>
