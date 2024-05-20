@@ -6,7 +6,6 @@ import java.util.List;
 public class RefListItemDto {
     private int refId;
     private String name;
-    private static List<RefListItemDto> refListItemDtos = new ArrayList<>();
     public RefListItemDto(String name){
         this.name=name;
     }
@@ -27,8 +26,4 @@ public class RefListItemDto {
         this.refId = refId;
     }
 
-
-    public static List<RefListItemDto> getRefListItemDtos() {
-        return refListItemDtos;
-    }
 }

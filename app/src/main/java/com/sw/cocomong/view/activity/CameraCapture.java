@@ -24,6 +24,7 @@ public class CameraCapture extends Activity {
     Button image_ok, image_deny;
 
     static Bitmap resizedBitmap;
+    int refPosition;
 
 
     @SuppressLint({"MissingInflatedId", "Range"})
@@ -31,6 +32,10 @@ public class CameraCapture extends Activity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.camera_surface);
+        Intent intent=getIntent();
+        Bundle extras=intent.getExtras();
+        refPosition=extras.getInt("refPosition");
+
 
         food_image_test=findViewById(R.id.photo_test);
         image_ok=findViewById(R.id.photo_ok);
@@ -63,6 +68,7 @@ public class CameraCapture extends Activity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(CameraCapture.this, FoodAddActivity.class);
+                intent.putExtra("refPosition",refPosition);
                 startActivity(intent);
                 finish();
             }

@@ -12,6 +12,8 @@ import android.widget.TextView;
 
 import com.sw.cocomong.R;
 import com.sw.cocomong.dto.FoodListItemDto;
+import com.sw.cocomong.dto.RefFoodMap;
+import com.sw.cocomong.dto.RefListItemDto;
 
 import java.util.List;
 
@@ -19,12 +21,14 @@ public class FoodAdapter extends ArrayAdapter<FoodListItemDto>{
     private final Activity context;
     private List<FoodListItemDto> foodListItemDtos;
     private FoodListItemDto foodListItemDto;
+    private RefListItemDto refListItemDto;
 
 
-    public FoodAdapter(Activity context, List<FoodListItemDto> foodListItemDtos) {
+    public FoodAdapter(Activity context, List<FoodListItemDto> foodListItemDtos, RefListItemDto refListItemDto) {
         super(context, R.layout.food_item, foodListItemDtos);
         this.context=context;
         this.foodListItemDtos = foodListItemDtos;
+        this.refListItemDto=refListItemDto;
     }
 
     public static AdapterView<?> createFromResource(Context applicationContext, int position) {
@@ -60,14 +64,11 @@ public class FoodAdapter extends ArrayAdapter<FoodListItemDto>{
         if(isFavorite){
             foodListItemDtos.get(position).setFavorite(true);
 
-            FoodListItemDto.getFavoriteItems().add(foodListItemDtos.get(position));
-            //System.out.println("Favorite: "+MainFoodListActivity.favoriteItems);
-            //System.out.println("Food: "+MainFoodListActivity.foodListItems);
-            //System.out.println("Adapter: "+ foodListItems);
+            RefFoodMap.getFavoriteItems(refListItemDto).add(foodListItemDtos.get(position));
 
         }else {
             foodListItemDtos.get(position).setFavorite(false);
-            FoodListItemDto.getFavoriteItems().remove(foodListItemDtos.get(position));
+            RefFoodMap.getFavoriteItems(refListItemDto).remove(foodListItemDtos.get(position));
 
 
             //System.out.println("Favorite: "+MainFoodListActivity.favoriteItems);

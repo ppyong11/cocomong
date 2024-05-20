@@ -15,6 +15,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.sw.cocomong.R;
 import com.sw.cocomong.dto.FoodListItemDto;
+import com.sw.cocomong.dto.RefFoodMap;
+import com.sw.cocomong.dto.RefListItemDto;
 
 // foodList를 통해서 들어와서 수정
 public class FoodInfoActivity extends AppCompatActivity {
@@ -23,6 +25,7 @@ public class FoodInfoActivity extends AppCompatActivity {
     Button save, delete, btnCategory;
     EditText foodName, expire, memo;
     FoodListItemDto foodListItemDto;
+    RefListItemDto refListItemDto;
     ImageView foodImage;
     Bitmap foodImageBitmap;
     int foodPosition, refPosition;
@@ -36,7 +39,9 @@ public class FoodInfoActivity extends AppCompatActivity {
         Bundle extras = intent.getExtras();
         foodPosition = extras.getInt("foodPosition");
         refPosition = extras.getInt("refPostition");
-        foodListItemDto = FoodListItemDto.getFoodListItems().get(foodPosition);
+        refListItemDto=RefFoodMap.getRefListItemDtos().get(refPosition);
+
+        foodListItemDto = RefFoodMap.getFoodListItemDtos(refListItemDto).get(foodPosition);
 
         foodImage = findViewById(R.id.food_image);
         title = findViewById(R.id.tv_infoTitle);
@@ -97,8 +102,8 @@ public class FoodInfoActivity extends AppCompatActivity {
             memo.setEnabled(false);
 
             // foodListItems에 데이터 추가
-            foodListItemDto = new FoodListItemDto(foodImageBitmap, foodName.getText().toString(), refPosition, category.getText().toString(), expire.getText().toString(), memo.getText().toString());
-            FoodListItemDto.getFoodListItems().set(foodPosition, foodListItemDto);
+            foodListItemDto = new FoodListItemDto(foodImageBitmap, foodName.getText().toString(), category.getText().toString(), expire.getText().toString(), memo.getText().toString());
+            RefFoodMap.getFoodListItemDtos(refListItemDto).set(foodPosition, foodListItemDto);
 
             // 저장 버튼 사라지기
             save.setVisibility(View.GONE);
@@ -110,7 +115,7 @@ public class FoodInfoActivity extends AppCompatActivity {
 
         delete.setOnClickListener(v -> {
             // 데이터 삭제
-            FoodListItemDto.getFoodListItems().remove(foodPosition);
+            RefFoodMap.getFoodListItemDtos(refListItemDto).remove(foodPosition);
 
             // 액티비티 종료
             finish();

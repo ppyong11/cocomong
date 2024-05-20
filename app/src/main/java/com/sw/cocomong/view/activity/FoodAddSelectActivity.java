@@ -89,6 +89,7 @@ public class FoodAddSelectActivity extends AppCompatActivity {
 //            integrator.setCaptureActivity(BarcodeScanner.class);
 //            integrator.initiateScan();
             Intent barcodeIntent = new Intent(FoodAddSelectActivity.this, BarcodeScanner.class);
+            barcodeIntent.putExtra("refPosition",refPosition);
             startActivity(barcodeIntent);
             finish();
         });

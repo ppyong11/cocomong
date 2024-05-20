@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.sw.cocomong.R;
+import com.sw.cocomong.dto.RefFoodMap;
 import com.sw.cocomong.view.adapter.RefAdapter;
 import com.sw.cocomong.dto.RefListItemDto;
 
@@ -22,8 +23,7 @@ public class RefridgeActivity extends AppCompatActivity {
     Button refAdd;
 
     RefAdapter refAdapter;
-    public static List<RefListItemDto> refListItemDtos = RefListItemDto.getRefListItemDtos();
-
+    List<RefListItemDto> refListItemDtos=RefFoodMap.getRefListItemDtos();
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,7 +33,7 @@ public class RefridgeActivity extends AppCompatActivity {
         refAdd = findViewById(R.id.btn_refplus);
 
 
-        refAdapter = new RefAdapter(RefridgeActivity.this, refListItemDtos);
+        refAdapter = new RefAdapter(RefridgeActivity.this, refListItemDtos );
         list.setAdapter(refAdapter);
 
         list.setOnItemClickListener((parent, view, position, id) -> {

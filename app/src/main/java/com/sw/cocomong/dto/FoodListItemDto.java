@@ -6,21 +6,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FoodListItemDto {
-    private int id;
-    private int refNum;
     private Bitmap foodImage;
     private String foodname;
     private String category;
     private String expire;
     private String memo;
     private boolean favorite;
-    private static List<FoodListItemDto> favoriteItems = new ArrayList<>();
-    private static List<FoodListItemDto> foodListItemDtos = new ArrayList<>();
 
-    public FoodListItemDto(Bitmap foodImage, String foodname, int refNum, String category, String expire, String memo){
+    public FoodListItemDto(Bitmap foodImage, String foodname, String category, String expire, String memo){
         this.foodImage=foodImage;
         this.foodname =foodname;
-        this.refNum=refNum;
         this.expire=expire;
         this.category=category;
         this.memo=memo;
@@ -74,32 +69,6 @@ public class FoodListItemDto {
     public void setMemo(String memo) {
         this.memo = memo;
     }
-
-    public static List<FoodListItemDto> getFavoriteItems() {
-        return favoriteItems;
-    }
-
-    public static List<FoodListItemDto> getFoodListItems() {
-        return foodListItemDtos;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public int getRefNum() {
-        return refNum;
-    }
-
-    public void setRefNum(int refNum) {
-        this.refNum = refNum;
-    }
-
-
 
     @Override
     public String toString() {

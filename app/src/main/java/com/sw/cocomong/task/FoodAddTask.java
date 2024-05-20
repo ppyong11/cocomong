@@ -102,7 +102,7 @@ public class FoodAddTask extends AsyncTask<String, Void, BarcodeResDto> {
             }
         }
         // TODO: 2024-05-19 비트맵 어케 받아올 지. (bitmap string 변환 알아봐야하나)
-        //foodListItemDto=new FoodListItemDto( , foodname,refNum, expiredate, category, memo);
+        //foodListItemDto=new FoodListItemDto( , foodname, expiredate, category, memo);
         //return foodListItemDto;
         return null;
     }

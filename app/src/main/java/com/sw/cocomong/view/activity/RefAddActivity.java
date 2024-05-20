@@ -35,10 +35,8 @@ public class RefAddActivity extends Activity {
 
         btn_ok.setOnClickListener(v->{
             refListItemDto =new RefListItemDto(et_refName.getText().toString());
-            RefFoodMap.getRefFoodMap().put(refListItemDto,new ArrayList<>());
-            RefridgeActivity.refListItemDtos.add(refListItemDto);
+            RefFoodMap.addRefListItemDto(refListItemDto);
             finish();
         });
-
     }
 }

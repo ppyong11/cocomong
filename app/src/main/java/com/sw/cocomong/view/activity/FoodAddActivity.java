@@ -18,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.sw.cocomong.R;
 import com.sw.cocomong.dto.BarcodeResDto;
 import com.sw.cocomong.dto.FoodListItemDto;
+import com.sw.cocomong.dto.RefFoodMap;
 import com.sw.cocomong.dto.RefListItemDto;
 import com.sw.cocomong.task.BarcodeTask;
 import com.sw.cocomong.view.activity.CameraCapture;
@@ -44,9 +45,8 @@ public class FoodAddActivity extends AppCompatActivity {
 
         Intent intent=getIntent();
         Bundle extras=intent.getExtras();
-        //refPosition=extras.getInt("refPosition");
-       // refListItemDto= RefListItemDto.getRefListItemDtos().get(refPosition);
-
+        refPosition=extras.getInt("refPosition");
+        refListItemDto= RefFoodMap.getRefListItemDtos().get(refPosition);
 
         title = findViewById(R.id.tv_infoTitle);
         back = findViewById(R.id.btn_back);
@@ -93,9 +93,9 @@ public class FoodAddActivity extends AppCompatActivity {
             expire.setEnabled(false);
             memo.setEnabled(false);
 
-            foodListItemDto = new FoodListItemDto(foodImageBitmap,foodName.getText().toString(),refPosition, category.getText().toString(), expire.getText().toString(), memo.getText().toString());
+            foodListItemDto = new FoodListItemDto(foodImageBitmap,foodName.getText().toString(), category.getText().toString(), expire.getText().toString(), memo.getText().toString());
 
-            UserActivity.foodListItemDtos.add(foodListItemDto);
+            RefFoodMap.getFoodListItemDtos(refListItemDto).add(foodListItemDto);
 
             save.setVisibility(View.GONE);
             finish();

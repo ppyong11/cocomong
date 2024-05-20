@@ -29,6 +29,8 @@ import com.journeyapps.barcodescanner.ScanOptions;
 import com.sw.cocomong.R;
 import com.sw.cocomong.dto.BarcodeResDto;
 import com.sw.cocomong.dto.FoodListItemDto;
+import com.sw.cocomong.dto.RefFoodMap;
+import com.sw.cocomong.dto.RefListItemDto;
 import com.sw.cocomong.task.BarcodeTask;
 
 import java.util.Date;
@@ -43,6 +45,7 @@ public class BarcodeScanner extends AppCompatActivity {
     Button save, delete, btnCategory;
     EditText foodName, expire, memo;
     FoodListItemDto foodListItemDto;
+    RefListItemDto refListItemDto;
     Bitmap foodImageBitmap=null;
     int foodPosition, refPosition;
 
@@ -50,6 +53,11 @@ public class BarcodeScanner extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.food_info);
+
+        Intent intent=getIntent();
+        Bundle extras=intent.getExtras();
+        refPosition=extras.getInt("refPosition");
+        refListItemDto= RefFoodMap.getRefListItemDtos().get(refPosition);
 
         title = findViewById(R.id.tv_infoTitle);
         back = findViewById(R.id.btn_back);
@@ -96,8 +104,8 @@ public class BarcodeScanner extends AppCompatActivity {
             expire.setEnabled(false);
             memo.setEnabled(false);
 
-            foodListItemDto = new FoodListItemDto(foodImageBitmap,foodName.getText().toString(),refPosition, category.getText().toString(), expire.getText().toString(), memo.getText().toString());
-            UserActivity.foodListItemDtos.add(foodListItemDto);
+            foodListItemDto = new FoodListItemDto(foodImageBitmap,foodName.getText().toString(), category.getText().toString(), expire.getText().toString(), memo.getText().toString());
+            RefFoodMap.getFoodListItemDtos(refListItemDto).add(foodListItemDto);
 
             save.setVisibility(View.GONE);
             finish();
