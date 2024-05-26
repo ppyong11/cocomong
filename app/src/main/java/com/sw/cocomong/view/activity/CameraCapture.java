@@ -1,6 +1,6 @@
 package com.sw.cocomong.view.activity;
 
-import static com.sw.cocomong.view.activity.FoodAddActivity.foodimage;
+//import static com.sw.cocomong.view.activity.FoodAddActivity.foodimage;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;

@@ -17,6 +17,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.sw.cocomong.R;
 import com.sw.cocomong.dto.FoodListItemDto;
+import com.sw.cocomong.dto.RefFoodMap;
+import com.sw.cocomong.dto.RefListItemDto;
 import com.sw.cocomong.view.activity.CameraCapture;
 
 public class FoodAddActivity extends AppCompatActivity {
@@ -27,6 +29,7 @@ public class FoodAddActivity extends AppCompatActivity {
     Button save, delete, btnCategory;
     EditText foodName, expire, memo;
     FoodListItemDto foodListItemDto;
+    RefListItemDto refListItemDto;
     Bitmap foodImageBitmap;
 
     @Override
@@ -57,7 +60,7 @@ public class FoodAddActivity extends AppCompatActivity {
         expire.setEnabled(true);
         memo.setEnabled(true);
 
-        foodImageBitmap=CameraCapture.moveBitmap();
+        foodImageBitmap=CameraCapture.moveCameraBitmap();
         foodimage.setImageBitmap(foodImageBitmap);
 
         btnCategory.setOnClickListener(v->{
@@ -78,7 +81,7 @@ public class FoodAddActivity extends AppCompatActivity {
             memo.setEnabled(false);
 
             foodListItemDto = new FoodListItemDto(foodImageBitmap,foodName.getText().toString(), category.getText().toString(), expire.getText().toString(), memo.getText().toString());
-            UserActivity.foodListItemDtos.add(foodListItemDto);
+            RefFoodMap.getFoodListItemDtos(refListItemDto).add(foodListItemDto);
 
             save.setVisibility(View.GONE);
             finish();
