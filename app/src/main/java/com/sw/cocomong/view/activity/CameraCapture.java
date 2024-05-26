@@ -1,5 +1,7 @@
 package com.sw.cocomong.view.activity;
 
+import static com.sw.cocomong.view.activity.FoodAddActivity.foodimage;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
@@ -124,9 +126,8 @@ public class CameraCapture extends Activity {
         });
     }
 
-    public static Bitmap moveBitmap(){
-        return resizedBitmap;
-    }
+
+    public static Bitmap moveCameraBitmap(){return resizedBitmap;}
 
 
 }
