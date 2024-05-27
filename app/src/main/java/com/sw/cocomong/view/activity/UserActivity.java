@@ -82,12 +82,15 @@ public class UserActivity extends AppCompatActivity {
                 isFavorite = true;
                 list.setAdapter(favAdapter);
                 favorite.setText("돌아가기");
-                favorite.setBackgroundColor(getResources().getColor(R.color.purple_500));
+                favorite.setBackgroundColor(getResources().getColor(R.color.purple_200));
+                favorite.setTextColor(getResources().getColor(R.color.white));
             }else {
                 isFavorite=false;
                 list.setAdapter(foodAdapter);
                 favorite.setText("즐겨찾기");
-                favorite.setBackgroundColor(getResources().getColor(R.color.purple_200));
+                favorite.setBackgroundColor(getResources().getColor(R.color.purple_100));
+                favorite.setTextColor(getResources().getColor(R.color.black));
+
             }
         });
 
@@ -96,15 +99,12 @@ public class UserActivity extends AppCompatActivity {
                 isCategory=true;
                 Intent categoryIntent = new Intent(UserActivity.this, CategorySelectActivity.class);
                 startActivityForResult(categoryIntent,1300);
-
-
-                category.setText("돌아가기");
-                category.setBackgroundColor(getResources().getColor(R.color.purple_500));
             }else{
                 isCategory=false;
                 list.setAdapter(foodAdapter);
                 category.setText("카테고리");
-                category.setBackgroundColor(getResources().getColor(R.color.purple_200));
+                category.setBackgroundColor(getResources().getColor(R.color.purple_100));
+                category.setTextColor(getResources().getColor(R.color.black));
             }
         });
 
@@ -152,6 +152,9 @@ public class UserActivity extends AppCompatActivity {
                 }
                 categoryAdapter = new FoodAdapter(UserActivity.this, categoryList, refListItemDto);
                 list.setAdapter(categoryAdapter);
+                category.setText(selectedCategory);
+                category.setBackgroundColor(getResources().getColor(R.color.purple_200));
+                category.setTextColor(getResources().getColor(R.color.white));
             }
 
 
