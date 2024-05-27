@@ -25,18 +25,18 @@ public class CameraCapture extends Activity {
     ImageView food_image_test;
     Button image_ok, image_deny;
 
-    static Bitmap resizedBitmap;
-    int refPosition;
-
+    static Bitmap resizedBitmap; //bitmap 객체 저장
+    String method;
 
     @SuppressLint({"MissingInflatedId", "Range"})
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.camera_surface);
-        Intent intent=getIntent();
-        Bundle extras=intent.getExtras();
-        refPosition=extras.getInt("refPosition");
+
+
+        //FoodAdd에서 method값 받아옴
+        method= getIntent().getStringExtra("method");
 
 
         food_image_test=findViewById(R.id.photo_test);
@@ -60,8 +60,6 @@ public class CameraCapture extends Activity {
                 image_ok.setVisibility(View.VISIBLE);
                 image_deny.setVisibility(View.VISIBLE);
                 food_image_test.setVisibility(View.VISIBLE);
-                /*Intent intent = new Intent(CameraCapture.this, FoodAddActivity.class);
-                startActivity(intent);*/
 
             }
         });
@@ -70,7 +68,7 @@ public class CameraCapture extends Activity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(CameraCapture.this, FoodAddActivity.class);
-                intent.putExtra("refPosition",refPosition);
+                intent.putExtra("method", method);
                 startActivity(intent);
                 finish();
             }
@@ -89,45 +87,24 @@ public class CameraCapture extends Activity {
 
     }
 
-    public void capture(){
+    public void capture() {
         surfaceView.capture(new Camera.PictureCallback() {
             @Override
             public void onPictureTaken(byte[] data, Camera camera) {
-                //bytearray 형식으로 전달
-                //이걸이용해서 이미지뷰로 보여주거나 파일로 저장
                 BitmapFactory.Options options = new BitmapFactory.Options();
                 options.inSampleSize = 8; // 1/8사이즈로 보여주기
-                Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length); //data 어레이 안에 있는 데이터 불러와서 비트맵에 저장
-
-
-                int width = bitmap.getWidth();
-                int height = bitmap.getHeight();
-                int newWidth = 200;
-                int newHeight = 200;
-
-                float scaleWidth = ((float) newWidth) / width;
-                float scaleHeight = ((float) newHeight) / height;
+                Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length, options); //data 어레이 안에 있는 데이터 불러와서 비트맵에 저장
 
                 Matrix matrix = new Matrix();
-
-                matrix.postScale(scaleWidth, scaleHeight);
-
                 matrix.postRotate(90);
 
+                // 이미지 크기 조정 및 회전
+                resizedBitmap = Bitmap.createScaledBitmap(bitmap, 224, 224, true);
+                resizedBitmap = Bitmap.createBitmap(resizedBitmap, 0, 0, resizedBitmap.getWidth(), resizedBitmap.getHeight(), matrix, true);
 
-                resizedBitmap = Bitmap.createBitmap(bitmap, 0,0,width,height,matrix,true);
-                //BitmapDrawable bmd = new BitmapDrawable(resizedBitmap);
-
-
-                food_image_test.setImageBitmap(resizedBitmap);//이미지뷰에 사진 보여주기
+                food_image_test.setImageBitmap(resizedBitmap); // 이미지뷰에 사진 보여주기
                 camera.startPreview();
-
             }
         });
     }
-
-
-    public static Bitmap moveCameraBitmap(){return resizedBitmap;}
-
-
 }
