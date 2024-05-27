@@ -1,12 +1,8 @@
 package com.sw.cocomong.view.activity;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.Toast;
@@ -19,17 +15,14 @@ import com.sw.cocomong.dto.FoodListItemDto;
 import com.sw.cocomong.dto.RefFoodMap;
 import com.sw.cocomong.dto.RefListItemDto;
 import com.sw.cocomong.view.adapter.FoodAdapter;
-import com.sw.cocomong.view.activity.FoodAddActivity;
 
-import java.sql.Array;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class UserActivity extends AppCompatActivity {
 
     ListView list;
-    Button refridge, foodAdd, favorite, mypage, sort, category;
+    Button refridge, foodAdd, favorite, recipe, sort, category;
     FoodAdapter foodAdapter, favAdapter, categoryAdapter;
     RefListItemDto refListItemDto;
     int foodPosition, refPosition;
@@ -51,7 +44,7 @@ public class UserActivity extends AppCompatActivity {
         list = findViewById(R.id.list_food);
         foodAdd = findViewById(R.id.btn_foodAdd);
         favorite = findViewById(R.id.btn_listFavorite);
-        mypage = findViewById(R.id.btn_mypage);
+        recipe = findViewById(R.id.btn_mypage);
         refridge=findViewById(R.id.btn_refback);
         sort=findViewById(R.id.btn_sort);
         category=findViewById(R.id.btn_list_category);
@@ -96,7 +89,7 @@ public class UserActivity extends AppCompatActivity {
 
         category.setOnClickListener(v->{
             if(!isCategory){
-                isCategory=true;
+
                 Intent categoryIntent = new Intent(UserActivity.this, CategorySelectActivity.class);
                 startActivityForResult(categoryIntent,1300);
             }else{
@@ -108,7 +101,7 @@ public class UserActivity extends AppCompatActivity {
             }
         });
 
-        mypage.setOnClickListener(v->{
+        recipe.setOnClickListener(v->{
             list.setAdapter(foodAdapter);
             Intent mypageIntent = new Intent(UserActivity.this, LoginActivity.class);
             startActivity(mypageIntent);
@@ -150,6 +143,7 @@ public class UserActivity extends AppCompatActivity {
                 for(FoodListItemDto foodListItemDto : foodListItemDtos){
                     if(foodListItemDto.getCategory().equals(selectedCategory)) categoryList.add(foodListItemDto);
                 }
+                isCategory=true;
                 categoryAdapter = new FoodAdapter(UserActivity.this, categoryList, refListItemDto);
                 list.setAdapter(categoryAdapter);
                 category.setText(selectedCategory);
