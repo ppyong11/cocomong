@@ -1,8 +1,13 @@
 package com.sw.cocomong.view.activity;
 
+import static com.sw.cocomong.task.TensorTask.STRINGS_CLASSES;
+
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,12 +26,12 @@ import com.sw.cocomong.dto.FoodListItemDto;
 import com.sw.cocomong.dto.RefFoodMap;
 import com.sw.cocomong.dto.RefListItemDto;
 import com.sw.cocomong.task.BarcodeTask;
+import com.sw.cocomong.task.TensorTask;
 import com.sw.cocomong.view.activity.CameraCapture;
 
-import java.sql.Time;
-import java.util.Date;
+import java.util.ArrayList;
 
-// 사진을 통해서 음식을 추가함.
+// 사진으로 받아오는 액티비티
 public class FoodAddActivity extends AppCompatActivity {
 
     ImageView foodimage;
@@ -38,6 +43,9 @@ public class FoodAddActivity extends AppCompatActivity {
     RefListItemDto refListItemDto;
     Bitmap foodImageBitmap;
     int foodPosition, refPosition;
+    Uri imageUri;
+    static  final String[] CATEGORY= {"과일", "축산물", "해산물", "채소"};
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,14 +80,15 @@ public class FoodAddActivity extends AppCompatActivity {
         expire.setEnabled(true);
         memo.setEnabled(true);
 
-        foodImageBitmap=CameraCapture.moveCameraBitmap();
-        foodimage.setImageBitmap(foodImageBitmap);
+//        foodImageBitmap=CameraCapture.moveCameraBitmap();
+//        foodimage.setImageBitmap(foodImageBitmap);
 
         btnCategory.setOnClickListener(v->{
             Intent intentCategory = new Intent(FoodAddActivity.this, CategorySelectActivity.class);
             // FoodAddTask 실행?
             startActivityForResult(intentCategory,1212);
         });
+
 
         back.setOnClickListener(v -> {
             finish();
@@ -101,6 +110,7 @@ public class FoodAddActivity extends AppCompatActivity {
             finish();
         });
 
+
         barcodeTest.setOnClickListener(v->{
             String barcodeNum=barcode.getText().toString();
             BarcodeTask barcodeTask = new BarcodeTask(barcodeNum);
@@ -120,6 +130,21 @@ public class FoodAddActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         });
+        //촬영: "camera", 갤러리: "gallery"
+        Intent tensorIntent= getIntent();
+        String method= tensorIntent.getStringExtra("method");
+        Log.d("method", method);
+
+        if (method.equals("camera")) {
+            //CameraCaptureActivity의 촬영 후 bitmap 변수 참조
+            Bitmap bitmap= CameraCapture.resizedBitmap;
+            cameraPredict(bitmap);
+        }
+        else if (method.equals("gallery")){
+            String imageUriString= FoodAddSelectActivity.uriString;
+            Log.d("foodAdduri", imageUriString);
+            galleryPredict(imageUriString);
+        }
     }
 
     @Override
@@ -138,5 +163,31 @@ public class FoodAddActivity extends AppCompatActivity {
     public String setCategory(String categoryName){
 
         return "";
+    }
+
+    //이미지 가져오기, 촬영 선택 시 모델 실행
+    protected void galleryPredict(String imageUriString){
+        // Context와 이미지 uri를 사용하여 TensorTask 인스턴스를 생성하고 초기화
+        if (imageUriString != null) {
+            Uri imageUri = Uri.parse(imageUriString);
+            foodimage.setImageURI(imageUri); //분류하는 이미지 보이기
+            // URI를 사용하여 이미지 분류 실행
+            TensorTask tensorTask = new TensorTask(this);
+            int classificationResult = tensorTask.classifyUri(imageUri);
+            // 반환된 분류결과로 카테고리 설정
+            category.setText(CATEGORY[classificationResult]);
+        }
+    }
+
+    protected void cameraPredict(Bitmap bitmap){
+        //bitmap을 이용해 이미지 분류
+        if(bitmap != null){
+            foodimage.setImageBitmap(bitmap);
+            Log.d("method", "이미지 세팅ㅇ");
+            TensorTask tensorTask = new TensorTask(this);
+            int classificationResult= tensorTask.classifyBitmap(bitmap);
+            // 반환된 분류결과로 카테고리 설정
+            category.setText(CATEGORY[classificationResult]);
+        }
     }
 }

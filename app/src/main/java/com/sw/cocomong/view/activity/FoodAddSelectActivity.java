@@ -2,27 +2,23 @@ package com.sw.cocomong.view.activity;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
-import android.graphics.drawable.BitmapDrawable;
-import android.hardware.Camera;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.PopupMenu;
 import android.widget.Toast;
+
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -31,21 +27,21 @@ import androidx.core.content.ContextCompat;
 
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
-import com.journeyapps.barcodescanner.CaptureActivity;
 import com.sw.cocomong.R;
-import com.sw.cocomong.dto.RefListItemDto;
+import com.sw.cocomong.task.TensorTask;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class FoodAddSelectActivity extends AppCompatActivity {
 
     ImageButton photo, barcode;
+    static String uriString; //foodAdd액티비티에서 참조할 uri
 
     private String TAG = FoodAddSelectActivity.class.getSimpleName();
     private Context context = FoodAddSelectActivity.this;
     final int PERMISSION_REQUEST_CODE = 1;
-
     int refPosition;
 
     @SuppressLint("MissingInflatedId")
@@ -68,6 +64,10 @@ public class FoodAddSelectActivity extends AppCompatActivity {
             sortMenu.setOnMenuItemClickListener(p->{
                 if(p.getItemId()==R.id.select_photo){
                     Toast.makeText(this, "사진 가져오기 선택", Toast.LENGTH_SHORT).show();
+                    //갤러리 이동
+                    Intent galleryIntent = new Intent(Intent.ACTION_PICK);
+                    galleryIntent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
+                    activityResultLauncher.launch(galleryIntent);
                     finish();
 
                 } else if (p.getItemId()==R.id.select_camera) {
@@ -95,6 +95,32 @@ public class FoodAddSelectActivity extends AppCompatActivity {
         });
         checkPermission();
     }
+    //ActivityResultLauncher 초기화, 갤러리 이동 인텐트, img to bitmap 후 넘김
+    private ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    // URI를 FoodAddActivity로 전달
+                    if(result.getResultCode() == RESULT_OK) {
+                        Intent intent = result.getData();
+                        if (intent != null) {
+                            Uri uri = intent.getData();
+                            //FoodAddActivity에서 갤러리, 카메라 선택에 따라 달리 구현하기 위해 데이터 넘겨줌
+                            if (uri != null) {
+                                Log.d("uri", "uri 받아옴");
+                                // URI를 String으로 변환하여 TensorTask로 전달
+                                uriString = uri.toString();
+                                Log.d("uri", uriString);
+                                Intent foodAddIntent = new Intent(FoodAddSelectActivity.this, FoodAddActivity.class);
+                                foodAddIntent.putExtra("method", "gallery");
+                                startActivity(foodAddIntent);
+                            }
+                        }
+                    }
+                }
+            }
+    );
 
     public static String[] requiredPermissionList = new String[]{  //필요한 권한들
             Manifest.permission.ACCESS_COARSE_LOCATION,
