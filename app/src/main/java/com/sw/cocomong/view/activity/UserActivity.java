@@ -21,6 +21,7 @@ import com.sw.cocomong.dto.RefListItemDto;
 import com.sw.cocomong.view.adapter.FoodAdapter;
 import com.sw.cocomong.view.activity.FoodAddActivity;
 
+import java.sql.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -28,13 +29,13 @@ import java.util.Map;
 public class UserActivity extends AppCompatActivity {
 
     ListView list;
-    Button refridge, foodAdd, favorite, mypage, sort;
-    FoodAdapter foodAdapter, favAdapter;
+    Button refridge, foodAdd, favorite, mypage, sort, category;
+    FoodAdapter foodAdapter, favAdapter, categoryAdapter;
     RefListItemDto refListItemDto;
     int foodPosition, refPosition;
-    public List<FoodListItemDto> foodListItemDtos,favoriteList;
+    public List<FoodListItemDto> foodListItemDtos,favoriteList, categoryList;
     boolean isFavorite=false;
-
+    boolean isCategory=false;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +54,7 @@ public class UserActivity extends AppCompatActivity {
         mypage = findViewById(R.id.btn_mypage);
         refridge=findViewById(R.id.btn_refback);
         sort=findViewById(R.id.btn_sort);
+        category=findViewById(R.id.btn_list_category);
 
 
         foodAdapter = new FoodAdapter(UserActivity.this, foodListItemDtos, refListItemDto);
@@ -79,9 +81,30 @@ public class UserActivity extends AppCompatActivity {
             if(!isFavorite) {
                 isFavorite = true;
                 list.setAdapter(favAdapter);
+                favorite.setText("돌아가기");
+                favorite.setBackgroundColor(getResources().getColor(R.color.purple_500));
             }else {
                 isFavorite=false;
                 list.setAdapter(foodAdapter);
+                favorite.setText("즐겨찾기");
+                favorite.setBackgroundColor(getResources().getColor(R.color.purple_200));
+            }
+        });
+
+        category.setOnClickListener(v->{
+            if(!isCategory){
+                isCategory=true;
+                Intent categoryIntent = new Intent(UserActivity.this, CategorySelectActivity.class);
+                startActivityForResult(categoryIntent,1300);
+
+
+                category.setText("돌아가기");
+                category.setBackgroundColor(getResources().getColor(R.color.purple_500));
+            }else{
+                isCategory=false;
+                list.setAdapter(foodAdapter);
+                category.setText("카테고리");
+                category.setBackgroundColor(getResources().getColor(R.color.purple_200));
             }
         });
 
@@ -115,6 +138,24 @@ public class UserActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         foodAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode==1300&&resultCode==RESULT_OK){
+            if(data!=null){
+                String selectedCategory = data.getStringExtra("category");
+                categoryList=new ArrayList<>();
+                for(FoodListItemDto foodListItemDto : foodListItemDtos){
+                    if(foodListItemDto.getCategory().equals(selectedCategory)) categoryList.add(foodListItemDto);
+                }
+                categoryAdapter = new FoodAdapter(UserActivity.this, categoryList, refListItemDto);
+                list.setAdapter(categoryAdapter);
+            }
+
+
+        }
     }
 
 }

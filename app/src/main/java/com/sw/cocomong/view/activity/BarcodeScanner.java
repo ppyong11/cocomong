@@ -141,7 +141,7 @@ public class BarcodeScanner extends AppCompatActivity {
 
                         barcode.setText(text);
                         foodName.setText(taskResult.getProductName());
-                        category.setText(taskResult.getCategory());
+                        category.setText(barcodeCategory(taskResult.getCategory()));
                         memo.setText(taskResult.getDayCount());
 
                         if (barcodeTask.getResponseCode() == 200| taskResult==null) {
@@ -176,5 +176,15 @@ public class BarcodeScanner extends AppCompatActivity {
             }
         }
 
+    }
+    private String barcodeCategory(String category){
+        if(category.equals("과일")) return "과일";
+        else if (category.equals("채소")) return "채소";
+        else if (category.equals("유제품")) return "유제품";
+        else if (category.equals("축산품")) return "축산품";
+        else if (category.equals("해산물")) return "해산물";
+        else if (category.equals("가공식품")) return "가공식품";
+        else if (category.equals("음료수")) return "음료수";
+        else return "기타";
     }
 }

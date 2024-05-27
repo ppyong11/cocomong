@@ -4,16 +4,14 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
-import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
 import com.sw.cocomong.R;
 
+
 public class CategorySelectActivity extends Activity {
-
-    Button fruit, vegetable, dairy, meat, seafood, processedFood, beverage;
-
+    Button fruit, vegetable, dairy, meat, seafood, processedFood, beverage, ect;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,6 +24,7 @@ public class CategorySelectActivity extends Activity {
         seafood=findViewById(R.id.btn_Seafood);
         processedFood=findViewById(R.id.btn_ProcessedFood);
         beverage=findViewById(R.id.btn_Beverage);
+        ect = findViewById(R.id.btn_ect);
 
         fruit.setOnClickListener(v->{
             Intent resultIntent = new Intent();
@@ -48,7 +47,7 @@ public class CategorySelectActivity extends Activity {
         });
         meat.setOnClickListener(v->{
             Intent resultIntent = new Intent();
-            resultIntent.putExtra("category","육류 및 가공 육류");
+            resultIntent.putExtra("category","축산품");
             setResult(RESULT_OK,resultIntent);
             finish();
         });
@@ -71,6 +70,11 @@ public class CategorySelectActivity extends Activity {
             finish();
         });
 
-
+        ect.setOnClickListener(v->{
+            Intent resultIntent = new Intent();
+            resultIntent.putExtra("category","기타");
+            setResult(RESULT_OK,resultIntent);
+            finish();
+        });
     }
 }

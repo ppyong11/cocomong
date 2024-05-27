@@ -21,16 +21,20 @@ android:background="@color/white">
         android:background="@color/purple_200"/>
 
 
-    <Button
-        android:id="@+id/btn_fruit"
-        android:layout_width="wrap_content"
-        android:layout_height="45dp"
-        android:layout_gravity="center"
-        android:layout_margin="5dp"
-        android:backgroundTint="@color/white"
-        android:text="과일"
-        android:textColor="@color/purple_200"
-        android:textSize="15dp" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/btn_fruit"
+            android:layout_width="wrap_content"
+            android:layout_height="45dp"
+            android:layout_gravity="center"
+            android:layout_margin="5dp"
+            android:backgroundTint="@color/white"
+            android:text="과일"
+            android:textColor="@color/purple_200"
+            android:textSize="15dp" />
         <Button
             android:id="@+id/btn_vegetable"
             android:layout_width="wrap_content"
@@ -41,7 +45,12 @@ android:background="@color/white">
             android:text="채소"
             android:textColor="@color/purple_200"
             android:textSize="15dp"/>
+    </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
         <Button
             android:id="@+id/btn_Dairy"
             android:layout_width="wrap_content"
@@ -60,10 +69,15 @@ android:background="@color/white">
             android:layout_gravity="center"
             android:layout_margin="5dp"
             android:backgroundTint="@color/white"
-            android:text="육류 및 가공 육류"
+            android:text="축산물"
             android:textColor="@color/purple_200"
             android:textSize="15dp"/>
+    </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
         <Button
             android:id="@+id/btn_Seafood"
             android:layout_width="wrap_content"
@@ -85,6 +99,12 @@ android:background="@color/white">
             android:text="가공식품"
             android:textColor="@color/purple_200"
             android:textSize="15dp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
         <Button
             android:id="@+id/btn_Beverage"
             android:layout_width="wrap_content"
@@ -95,6 +115,18 @@ android:background="@color/white">
             android:text="음료수"
             android:textColor="@color/purple_200"
             android:textSize="15dp"/>
+        <Button
+            android:id="@+id/btn_ect"
+            android:layout_width="wrap_content"
+            android:layout_height="45dp"
+            android:layout_gravity="center"
+            android:layout_margin="5dp"
+            android:backgroundTint="@color/white"
+            android:text="기타"
+            android:textColor="@color/purple_200"
+            android:textSize="15dp"/>
+
+    </LinearLayout>
 
 </LinearLayout>
 

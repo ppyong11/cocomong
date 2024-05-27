@@ -94,12 +94,12 @@
                 android:textSize="11dp" />
 
             <Button
-                android:id="@+id/btn_tag"
+                android:id="@+id/btn_list_category"
                 android:layout_width="wrap_content"
                 android:layout_height="60dp"
                 android:layout_weight="1"
                 android:backgroundTint="#dac9ff"
-                android:text="태그"
+                android:text="카테고리"
                 android:textColor="#000000"
                 android:textSize="11dp" />
 

@@ -110,7 +110,7 @@ public class FoodAddActivity extends AppCompatActivity {
             finish();
         });
 
-
+/*
         barcodeTest.setOnClickListener(v->{
             String barcodeNum=barcode.getText().toString();
             BarcodeTask barcodeTask = new BarcodeTask(barcodeNum);
@@ -130,6 +130,7 @@ public class FoodAddActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         });
+ */
         //촬영: "camera", 갤러리: "gallery"
         Intent tensorIntent= getIntent();
         String method= tensorIntent.getStringExtra("method");

@@ -74,6 +74,7 @@ public class FoodAddSelectActivity extends AppCompatActivity {
                     Toast.makeText(this, "카메라 찍기 선택", Toast.LENGTH_SHORT).show();
                     Intent cameraIntent = new Intent(FoodAddSelectActivity.this, CameraCapture.class);
                     cameraIntent.putExtra("refPosition",refPosition);
+                    cameraIntent.putExtra("method","camera");
                     startActivity(cameraIntent);
                     finish();
                 }
