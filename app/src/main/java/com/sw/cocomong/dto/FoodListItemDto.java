@@ -6,20 +6,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FoodListItemDto {
+    private String userName;
     private Bitmap foodImage;
     private String foodname;
     private String category;
     private String expire;
     private String memo;
     private boolean favorite;
+    private int refNum;
 
-    public FoodListItemDto(Bitmap foodImage, String foodname, String category, String expire, String memo){
-        this.foodImage=foodImage;
+    public FoodListItemDto( Bitmap foodImage, String foodname, String category, String expire, String memo, boolean favorite, int refNum){
         this.foodname =foodname;
+        this.foodImage=foodImage;
         this.expire=expire;
         this.category=category;
         this.memo=memo;
-        //favorite=false;
+        this.favorite=favorite;
+        this.refNum = refNum;
     }
 
     public Bitmap getFoodImage() {
@@ -28,6 +31,22 @@ public class FoodListItemDto {
 
     public void setFoodImage(Bitmap foodImage) {
         this.foodImage = foodImage;
+    }
+
+    public int getRefNum() {
+        return refNum;
+    }
+
+    public void setRefNum(int refNum) {
+        this.refNum = refNum;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public String getFoodname() {

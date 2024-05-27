@@ -102,7 +102,7 @@ public class FoodInfoActivity extends AppCompatActivity {
             memo.setEnabled(false);
 
             // foodListItems에 데이터 추가
-            foodListItemDto = new FoodListItemDto(foodImageBitmap, foodName.getText().toString(), category.getText().toString(), expire.getText().toString(), memo.getText().toString());
+            foodListItemDto = new FoodListItemDto(foodImageBitmap, foodName.getText().toString(), category.getText().toString(), expire.getText().toString(), memo.getText().toString(), false, refListItemDto.getRefId());
             RefFoodMap.getFoodListItemDtos(refListItemDto).set(foodPosition, foodListItemDto);
 
             // 저장 버튼 사라지기

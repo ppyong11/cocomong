@@ -29,11 +29,11 @@ public class UserActivity extends AppCompatActivity {
 
     ListView list;
     Button refridge, foodAdd, favorite, mypage, sort;
-    FoodAdapter foodAdapter;
+    FoodAdapter foodAdapter, favAdapter;
     RefListItemDto refListItemDto;
     int foodPosition, refPosition;
-
-    public List<FoodListItemDto> foodListItemDtos;
+    public List<FoodListItemDto> foodListItemDtos,favoriteList;
+    boolean isFavorite=false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -43,11 +43,9 @@ public class UserActivity extends AppCompatActivity {
         Intent intent=getIntent();
         Bundle extras=intent.getExtras();
         refPosition=extras.getInt("refPosition");
-
         refListItemDto= RefFoodMap.getRefListItemDtos().get(refPosition);
-
         foodListItemDtos= RefFoodMap.getRefFoodMap().get(refListItemDto);
-        System.out.println(foodListItemDtos);
+        favoriteList = RefFoodMap.getRefFavMap().get(refListItemDto);
 
         list = findViewById(R.id.list_food);
         foodAdd = findViewById(R.id.btn_foodAdd);
@@ -56,7 +54,9 @@ public class UserActivity extends AppCompatActivity {
         refridge=findViewById(R.id.btn_refback);
         sort=findViewById(R.id.btn_sort);
 
+
         foodAdapter = new FoodAdapter(UserActivity.this, foodListItemDtos, refListItemDto);
+        favAdapter = new FoodAdapter(UserActivity.this, favoriteList,refListItemDto);
         list.setAdapter(foodAdapter);
 
         list.setOnItemClickListener((parent, view, position, id) -> {
@@ -68,18 +68,25 @@ public class UserActivity extends AppCompatActivity {
         });
 
         foodAdd.setOnClickListener(v -> {
+            list.setAdapter(foodAdapter);
             Intent foodAddIntent = new Intent(UserActivity.this, FoodAddSelectActivity.class);
             foodAddIntent.putExtra("refPosition", refPosition);
             startActivity(foodAddIntent);
         });
 
+
         favorite.setOnClickListener(v->{
-            Intent favoriteIntent = new Intent(UserActivity.this, FavoriteActivity.class);
-            favoriteIntent.putExtra("refPosition",refPosition);
-            startActivity(favoriteIntent);
+            if(!isFavorite) {
+                isFavorite = true;
+                list.setAdapter(favAdapter);
+            }else {
+                isFavorite=false;
+                list.setAdapter(foodAdapter);
+            }
         });
 
         mypage.setOnClickListener(v->{
+            list.setAdapter(foodAdapter);
             Intent mypageIntent = new Intent(UserActivity.this, LoginActivity.class);
             startActivity(mypageIntent);
         });

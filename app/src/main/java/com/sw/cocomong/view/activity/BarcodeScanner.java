@@ -104,7 +104,7 @@ public class BarcodeScanner extends AppCompatActivity {
             expire.setEnabled(false);
             memo.setEnabled(false);
 
-            foodListItemDto = new FoodListItemDto(foodImageBitmap,foodName.getText().toString(), category.getText().toString(), expire.getText().toString(), memo.getText().toString());
+            foodListItemDto = new FoodListItemDto(foodImageBitmap, foodName.getText().toString(), category.getText().toString(), expire.getText().toString(), memo.getText().toString(), false, refListItemDto.getRefId());
             RefFoodMap.getFoodListItemDtos(refListItemDto).add(foodListItemDto);
 
             save.setVisibility(View.GONE);
