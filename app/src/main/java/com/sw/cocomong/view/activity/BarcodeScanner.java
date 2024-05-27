@@ -3,6 +3,8 @@ package com.sw.cocomong.view.activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -48,6 +50,7 @@ public class BarcodeScanner extends AppCompatActivity {
     RefListItemDto refListItemDto;
     Bitmap foodImageBitmap=null;
     int foodPosition, refPosition;
+    String dateRegex = "^(?:(?:19|20)\\d{2})/(?:(?:0[1-9]|1[0-2]))/(?:(?:0[1-9]|1\\d|2[0-8])|(?:29|30)(?!/02)|31(?=/0[13578]|1[02])|(?:29(?=/02(?:(?:19|20)(?:[02468][048]|[13579][26])))))$\n";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,6 +114,51 @@ public class BarcodeScanner extends AppCompatActivity {
             finish();
         });
         startScan();
+
+        expire.addTextChangedListener(new TextWatcher(){
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (expire.isFocusable() && !s.toString().isEmpty()) {
+                    int textlength = 0;
+                    try {
+                        textlength = expire.getText().toString().length();
+                    } catch (NumberFormatException e) {
+                        e.printStackTrace();
+                        return;
+                    }
+
+                    String currentText = expire.getText().toString();
+
+                    if (textlength == 4 && before != 1) {
+                        currentText += "/";
+                        expire.setText(currentText);
+                        expire.setSelection(currentText.length());
+                    } else if (textlength == 7 && before != 1) {
+                        currentText += "/";
+                        expire.setText(currentText);
+                        expire.setSelection(currentText.length());
+                    } else if (textlength == 5 && !currentText.contains("/")) {
+                        currentText = currentText.substring(0, 4) + "." + currentText.substring(4);
+                        expire.setText(currentText);
+                        expire.setSelection(currentText.length());
+                    } else if (textlength == 8 && !currentText.substring(7, 8).equals("/")) {
+                        currentText = currentText.substring(0, 7) + "." + currentText.substring(7);
+                        expire.setText(currentText);
+                        expire.setSelection(currentText.length());
+                    }
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
     }
 
     private void startScan() {
