@@ -70,7 +70,6 @@ public class FoodAdapter extends ArrayAdapter<FoodListItemDto>{
             foodListItemDtos.get(position).setFavorite(false);
             RefFoodMap.getFavoriteItems(refListItemDto).remove(foodListItemDtos.get(position));
 
-
             //System.out.println("Favorite: "+MainFoodListActivity.favoriteItems);
             //System.out.println("Food: "+MainFoodListActivity.foodListItems);
             //System.out.println("Adapter: "+ foodListItems);

@@ -56,6 +56,7 @@ public class BarcodeScanner extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.food_info);
+        startScan();
 
         Intent intent=getIntent();
         Bundle extras=intent.getExtras();
@@ -113,7 +114,7 @@ public class BarcodeScanner extends AppCompatActivity {
             save.setVisibility(View.GONE);
             finish();
         });
-        startScan();
+
 
         expire.addTextChangedListener(new TextWatcher(){
             @Override
@@ -223,7 +224,6 @@ public class BarcodeScanner extends AppCompatActivity {
                 }
             }
         }
-
     }
     private String barcodeCategory(String category){
         if(category.equals("과일")) return "과일";

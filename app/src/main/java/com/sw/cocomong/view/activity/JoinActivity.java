@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -18,6 +19,7 @@ import java.util.concurrent.ExecutionException;
 public class JoinActivity extends AppCompatActivity {
     Button login, join, findPw;
     EditText name, pw, pwCheck;
+    TextView title;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -27,6 +29,7 @@ public class JoinActivity extends AppCompatActivity {
         login = findViewById(R.id.btn_login);
         join = findViewById(R.id.btn_join);
         findPw = findViewById(R.id.btn_findPw);
+        title = findViewById(R.id.login_title);
 
         name = findViewById(R.id.et_loginName);
         pw = findViewById(R.id.et_loginPw);

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.PopupMenu;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -22,6 +23,7 @@ import java.util.List;
 public class UserActivity extends AppCompatActivity {
 
     ListView list;
+    TextView refName;
     Button refridge, foodAdd, favorite, recipe, sort, category;
     FoodAdapter foodAdapter, favAdapter, categoryAdapter;
     RefListItemDto refListItemDto;
@@ -41,6 +43,9 @@ public class UserActivity extends AppCompatActivity {
         foodListItemDtos= RefFoodMap.getRefFoodMap().get(refListItemDto);
         favoriteList = RefFoodMap.getRefFavMap().get(refListItemDto);
 
+        refName=findViewById(R.id.ref_name);
+        refName.setText(refListItemDto.getName());
+
         list = findViewById(R.id.list_food);
         foodAdd = findViewById(R.id.btn_foodAdd);
         favorite = findViewById(R.id.btn_listFavorite);
@@ -48,7 +53,6 @@ public class UserActivity extends AppCompatActivity {
         refridge=findViewById(R.id.btn_refback);
         sort=findViewById(R.id.btn_sort);
         category=findViewById(R.id.btn_list_category);
-
 
         foodAdapter = new FoodAdapter(UserActivity.this, foodListItemDtos, refListItemDto);
         favAdapter = new FoodAdapter(UserActivity.this, favoriteList,refListItemDto);
@@ -150,8 +154,6 @@ public class UserActivity extends AppCompatActivity {
                 category.setBackgroundColor(getResources().getColor(R.color.purple_200));
                 category.setTextColor(getResources().getColor(R.color.white));
             }
-
-
         }
     }
 
