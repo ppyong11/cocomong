@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -30,6 +32,7 @@ import com.sw.cocomong.task.TensorTask;
 import com.sw.cocomong.view.activity.CameraCapture;
 
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 // 사진으로 받아오는 액티비티
 public class FoodAddActivity extends AppCompatActivity {
@@ -45,6 +48,8 @@ public class FoodAddActivity extends AppCompatActivity {
     int foodPosition, refPosition;
     Uri imageUri;
     static  final String[] CATEGORY= {"과일", "축산물", "해산물", "채소"};
+    String dateRegex = "^(?:(?:19|20)\\d{2})/(0[1-9]|1[0-2])/(0[1-9]|1\\d|2[0-8]|29(?!/02)|30(?!/02|/04|/06|/09|/11)|31(?=/0[13578]|/1[02]))$|^(?:(?:19|20)(?:[02468][048]|[13579][26]))/02/29$";
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -95,20 +100,67 @@ public class FoodAddActivity extends AppCompatActivity {
         });
 
         save.setOnClickListener(v -> {
+            String expireCheck=expire.getText().toString();
+            boolean isMatch = Pattern.matches(dateRegex,expireCheck);
+            if(isMatch) {
+                foodName.setEnabled(false);
+                category.setEnabled(false);
+                btnCategory.setEnabled(false);
+                expire.setEnabled(false);
+                memo.setEnabled(false);
 
-            foodName.setEnabled(false);
-            category.setEnabled(false);
-            btnCategory.setEnabled(false);
-            expire.setEnabled(false);
-            memo.setEnabled(false);
+                foodListItemDto = new FoodListItemDto(foodImageBitmap, foodName.getText().toString(), category.getText().toString(), expire.getText().toString(), memo.getText().toString(), false, refListItemDto.getRefId());
+                RefFoodMap.getFoodListItemDtos(refListItemDto).add(foodListItemDto);
 
-            foodListItemDto = new FoodListItemDto(foodImageBitmap, foodName.getText().toString(), category.getText().toString(), expire.getText().toString(), memo.getText().toString(), false, refListItemDto.getRefId());
-
-            RefFoodMap.getFoodListItemDtos(refListItemDto).add(foodListItemDto);
-
-            save.setVisibility(View.GONE);
-            finish();
+                save.setVisibility(View.GONE);
+                finish();
+            } else Toast.makeText(this, "유통기한을 다시 입력하세요",Toast.LENGTH_SHORT).show();
         });
+
+        expire.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (expire.isFocusable() && !s.toString().isEmpty()) {
+                    int textlength = 0;
+                    try {
+                            textlength = expire.getText().toString().length();
+                        } catch (NumberFormatException e) {
+                            e.printStackTrace();
+                            return;
+                        }
+
+                        String currentText = expire.getText().toString();
+
+                        if (textlength == 4 && before != 1) {
+                            currentText += "/";
+                            expire.setText(currentText);
+                            expire.setSelection(currentText.length());
+                        } else if (textlength == 7 && before != 1) {
+                            currentText += "/";
+                            expire.setText(currentText);
+                            expire.setSelection(currentText.length());
+                        } else if (textlength == 5 && !currentText.contains("/")) {
+                            currentText = currentText.substring(0, 4) + "." + currentText.substring(4);
+                            expire.setText(currentText);
+                            expire.setSelection(currentText.length());
+                        } else if (textlength == 8 && !currentText.substring(7, 8).equals("/")) {
+                            currentText = currentText.substring(0, 7) + "." + currentText.substring(7);
+                            expire.setText(currentText);
+                            expire.setSelection(currentText.length());
+                    }
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+            });
 
 /*
         barcodeTest.setOnClickListener(v->{

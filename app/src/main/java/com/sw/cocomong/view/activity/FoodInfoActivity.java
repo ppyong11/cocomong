@@ -3,12 +3,15 @@ package com.sw.cocomong.view.activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,6 +20,8 @@ import com.sw.cocomong.R;
 import com.sw.cocomong.dto.FoodListItemDto;
 import com.sw.cocomong.dto.RefFoodMap;
 import com.sw.cocomong.dto.RefListItemDto;
+
+import java.util.regex.Pattern;
 
 // foodList를 통해서 들어와서 수정
 public class FoodInfoActivity extends AppCompatActivity {
@@ -29,6 +34,8 @@ public class FoodInfoActivity extends AppCompatActivity {
     ImageView foodImage;
     Bitmap foodImageBitmap;
     int foodPosition, refPosition;
+    String dateRegex = "^(?:(?:19|20)\\d{2})/(0[1-9]|1[0-2])/(0[1-9]|1\\d|2[0-8]|29(?!/02)|30(?!/02|/04|/06|/09|/11)|31(?=/0[13578]|/1[02]))$|^(?:(?:19|20)(?:[02468][048]|[13579][26]))/02/29$";
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -94,23 +101,69 @@ public class FoodInfoActivity extends AppCompatActivity {
         });
 
         save.setOnClickListener(v -> {
+            String expireCheck=expire.getText().toString();
+            boolean isMatch = Pattern.matches(dateRegex,expireCheck);
+            if(isMatch) {
+                foodName.setEnabled(false);
+                category.setEnabled(false);
+                btnCategory.setEnabled(false);
+                expire.setEnabled(false);
+                memo.setEnabled(false);
 
-            // 변경불가
-            foodName.setEnabled(false);
-            btnCategory.setEnabled(false);
-            expire.setEnabled(false);
-            memo.setEnabled(false);
+                foodListItemDto = new FoodListItemDto(foodImageBitmap, foodName.getText().toString(), category.getText().toString(), expire.getText().toString(), memo.getText().toString(), false, refListItemDto.getRefId());
 
-            // foodListItems에 데이터 추가
-            foodListItemDto = new FoodListItemDto(foodImageBitmap, foodName.getText().toString(), category.getText().toString(), expire.getText().toString(), memo.getText().toString(), false, refListItemDto.getRefId());
-            RefFoodMap.getFoodListItemDtos(refListItemDto).set(foodPosition, foodListItemDto);
+                RefFoodMap.getFoodListItemDtos(refListItemDto).set(foodPosition,foodListItemDto);
 
-            // 저장 버튼 사라지기
-            save.setVisibility(View.GONE);
-            edit.setVisibility(View.VISIBLE);
-            delete.setVisibility(View.VISIBLE);
+                // 저장 버튼 사라지기
+                save.setVisibility(View.GONE);
+                edit.setVisibility(View.VISIBLE);
+                delete.setVisibility(View.VISIBLE);
+                finish();
+            } else Toast.makeText(this, "유통기한을 다시 입력하세요",Toast.LENGTH_SHORT).show();
+        });
+        expire.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-            finish();
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (expire.isFocusable() && !s.toString().isEmpty()) {
+                    int textlength = 0;
+                    try {
+                        textlength = expire.getText().toString().length();
+                    } catch (NumberFormatException e) {
+                        e.printStackTrace();
+                        return;
+                    }
+
+                    String currentText = expire.getText().toString();
+
+                    if (textlength == 4 && before != 1) {
+                        currentText += "/";
+                        expire.setText(currentText);
+                        expire.setSelection(currentText.length());
+                    } else if (textlength == 7 && before != 1) {
+                        currentText += "/";
+                        expire.setText(currentText);
+                        expire.setSelection(currentText.length());
+                    } else if (textlength == 5 && !currentText.contains("/")) {
+                        currentText = currentText.substring(0, 4) + "." + currentText.substring(4);
+                        expire.setText(currentText);
+                        expire.setSelection(currentText.length());
+                    } else if (textlength == 8 && !currentText.substring(7, 8).equals("/")) {
+                        currentText = currentText.substring(0, 7) + "." + currentText.substring(7);
+                        expire.setText(currentText);
+                        expire.setSelection(currentText.length());
+                    }
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
         });
 
         delete.setOnClickListener(v -> {

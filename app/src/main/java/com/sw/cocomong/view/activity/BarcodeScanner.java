@@ -37,6 +37,7 @@ import com.sw.cocomong.task.BarcodeTask;
 
 import java.util.Date;
 import java.util.concurrent.ExecutionException;
+import java.util.regex.Pattern;
 
 // 바코드를 통해서 음식을 추가함.
 public class BarcodeScanner extends AppCompatActivity {
@@ -50,8 +51,7 @@ public class BarcodeScanner extends AppCompatActivity {
     RefListItemDto refListItemDto;
     Bitmap foodImageBitmap=null;
     int foodPosition, refPosition;
-    String dateRegex = "^(?:(?:19|20)\\d{2})/(?:(?:0[1-9]|1[0-2]))/(?:(?:0[1-9]|1\\d|2[0-8])|(?:29|30)(?!/02)|31(?=/0[13578]|1[02])|(?:29(?=/02(?:(?:19|20)(?:[02468][048]|[13579][26])))))$\n";
-
+    String dateRegex = "^(?:(?:19|20)\\d{2})/(0[1-9]|1[0-2])/(0[1-9]|1\\d|2[0-8]|29(?!/02)|30(?!/02|/04|/06|/09|/11)|31(?=/0[13578]|/1[02]))$|^(?:(?:19|20)(?:[02468][048]|[13579][26]))/02/29$";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -101,18 +101,21 @@ public class BarcodeScanner extends AppCompatActivity {
         });
 
         save.setOnClickListener(v -> {
+            String expireCheck=expire.getText().toString();
+            boolean isMatch = Pattern.matches(dateRegex,expireCheck);
+            if(isMatch) {
+                foodName.setEnabled(false);
+                category.setEnabled(false);
+                btnCategory.setEnabled(false);
+                expire.setEnabled(false);
+                memo.setEnabled(false);
 
-            foodName.setEnabled(false);
-            category.setEnabled(false);
-            btnCategory.setEnabled(false);
-            expire.setEnabled(false);
-            memo.setEnabled(false);
+                foodListItemDto = new FoodListItemDto(foodImageBitmap, foodName.getText().toString(), category.getText().toString(), expire.getText().toString(), memo.getText().toString(), false, refListItemDto.getRefId());
+                RefFoodMap.getFoodListItemDtos(refListItemDto).add(foodListItemDto);
 
-            foodListItemDto = new FoodListItemDto(foodImageBitmap, foodName.getText().toString(), category.getText().toString(), expire.getText().toString(), memo.getText().toString(), false, refListItemDto.getRefId());
-            RefFoodMap.getFoodListItemDtos(refListItemDto).add(foodListItemDto);
-
-            save.setVisibility(View.GONE);
-            finish();
+                save.setVisibility(View.GONE);
+                finish();
+            } else Toast.makeText(this, "유통기한을 다시 입력하세요",Toast.LENGTH_SHORT).show();
         });
 
 
