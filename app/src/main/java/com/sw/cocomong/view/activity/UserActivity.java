@@ -18,6 +18,8 @@ import com.sw.cocomong.dto.RefListItemDto;
 import com.sw.cocomong.view.adapter.FoodAdapter;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class UserActivity extends AppCompatActivity {
@@ -121,9 +123,12 @@ public class UserActivity extends AppCompatActivity {
             getMenuInflater().inflate(R.menu.sort_menu, sortMenu.getMenu());
             sortMenu.setOnMenuItemClickListener(p->{
                 if(p.getItemId()==R.id.sort_name){
-                    Toast.makeText(this, "이름순 정렬", Toast.LENGTH_SHORT).show();
+                    Collections.sort(foodListItemDtos, Comparator.comparing(FoodListItemDto::getFoodname));
+                    list.setAdapter(foodAdapter);
                 } else if (p.getItemId()==R.id.sort_expire) {
                     Toast.makeText(this, "유통기한 정렬", Toast.LENGTH_SHORT).show();
+                    Collections.sort(foodListItemDtos, Comparator.comparing(FoodListItemDto::getExpire));
+                    list.setAdapter(foodAdapter);
                 }
                 return false;
             });
