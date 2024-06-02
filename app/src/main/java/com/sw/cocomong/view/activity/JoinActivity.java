@@ -37,6 +37,7 @@ public class JoinActivity extends AppCompatActivity {
 
         login.setVisibility(View.GONE);
         findPw.setVisibility(View.GONE);
+        title.setText("회원가입");
 
         join.setOnClickListener(v-> {
 

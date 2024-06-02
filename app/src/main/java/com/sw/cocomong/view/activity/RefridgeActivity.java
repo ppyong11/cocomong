@@ -3,6 +3,7 @@ package com.sw.cocomong.view.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -20,7 +21,7 @@ import java.util.List;
 public class RefridgeActivity extends AppCompatActivity {
 
     ListView list;
-    Button refAdd;
+    ImageButton refAdd;
 
     RefAdapter refAdapter;
     List<RefListItemDto> refListItemDtos=RefFoodMap.getRefListItemDtos();

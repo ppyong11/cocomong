@@ -22,30 +22,57 @@
             android:background="#dac9ff"
             android:orientation="vertical">
 
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal">
 
+                <ImageButton
+                    android:id="@+id/btn_refplus"
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent"
+                    android:layout_margin="5dp"
+                    android:backgroundTint="#00000000"
+                    android:padding="0dp"
+                    android:src="@android:drawable/ic_input_add"
+                    android:textColor="@color/white"
+                    android:scaleType="centerCrop"
+
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintHorizontal_bias="1"
+                    app:layout_constraintLeft_toRightOf="@+id/tv_reftitle"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:tint="#FFFFFF" />
                 <TextView
                     android:id="@+id/tv_reftitle"
-                    android:layout_width="310dp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:text="텐서쿡드"
                     android:textAlignment="center"
                     android:textColor="#000000"
                     android:textSize="35dp" />
 
-                <Button
-                    android:id="@+id/btn_refplus"
-                    android:layout_width="60dp"
+                <ImageButton
+                    android:id="@+id/btn_profile"
+                    android:layout_width="50dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:backgroundTint="#ffffff"
-                    android:text="+"
-                    android:textColor="#000000" />
-            </LinearLayout>
+                    android:layout_margin="5dp"
+                    android:backgroundTint="#00000000"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/profile"
+
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintHorizontal_bias="0"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@+id/tv_reftitle"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:tint="#FFFFFF" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>
 
         <LinearLayout
