@@ -2,6 +2,8 @@ package com.sw.cocomong.view.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
@@ -43,7 +45,23 @@ public class RefridgeActivity extends AppCompatActivity {
             Intent intent = new Intent(RefridgeActivity.this, UserActivity.class);
             intent.putExtra("refPosition", position);
             startActivity(intent);
+
         });
+        list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view,
+                                           int position, long id) {
+                Intent intent = new Intent(RefridgeActivity.this, RefDeleteActivity.class);
+                intent.putExtra("refPosition", position);
+                startActivity(intent);
+                refAdapter.notifyDataSetChanged();
+
+                // 이벤트 처리 종료 , 여기만 리스너 적용시키고 싶으면 true , 아니면 false
+                return true;
+            }
+        });
+
+
 
         refAdd.setOnClickListener(v -> {
             Intent intent = new Intent(RefridgeActivity.this, RefAddActivity.class);
