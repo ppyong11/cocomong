@@ -20,7 +20,7 @@ import java.util.concurrent.ExecutionException;
 public class LoginActivity extends AppCompatActivity {
     Button login, join, findPw;
     EditText name, pw, pwCheck;
-
+    String username;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -39,13 +39,15 @@ public class LoginActivity extends AppCompatActivity {
 
         login.setOnClickListener(v -> {
             try {
-
+                username=name.getText().toString();
                 LoginTask loginTask = new LoginTask(name.getText().toString(), pw.getText().toString());
                 String result = loginTask.execute(name.getText().toString(), pw.getText().toString()).get();
                 // Log.w("받은값 (Login): ", result);
 
                 if (loginTask.getResponseCode() == 200) {
+
                     Intent intent = new Intent(LoginActivity.this, RefridgeActivity.class);
+                    intent.putExtra("username",username);
                     startActivity(intent);
                     finish();
                 } else Toast.makeText(this, "다시 입력하세요.", Toast.LENGTH_SHORT).show();

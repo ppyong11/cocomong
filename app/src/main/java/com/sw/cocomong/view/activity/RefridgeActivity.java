@@ -14,8 +14,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.sw.cocomong.R;
 import com.sw.cocomong.dto.RefFoodMap;
+import com.sw.cocomong.task.reftask.RefListGetTask;
 import com.sw.cocomong.view.adapter.RefAdapter;
 import com.sw.cocomong.dto.RefListItemDto;
+
+import org.json.JSONException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,17 +26,27 @@ import java.util.List;
 public class RefridgeActivity extends AppCompatActivity {
 
     ListView list;
-    ImageButton refAdd;
+    ImageButton refAdd, setting;
 
     RefAdapter refAdapter;
     List<RefListItemDto> refListItemDtos=RefFoodMap.getRefListItemDtos();
+    String username;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.refridge_list);
+        Intent nameIntent=getIntent();
+        Bundle nameExtras=nameIntent.getExtras();
+        username=nameExtras.getString("username");
+        try {
+            RefListGetTask refListGetTask = new RefListGetTask(username);
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
 
         list = findViewById(R.id.list_ref);
         refAdd = findViewById(R.id.btn_refplus);
+        setting=findViewById(R.id.btn_setting);
 
 
         refAdapter = new RefAdapter(RefridgeActivity.this, refListItemDtos );
@@ -44,6 +57,7 @@ public class RefridgeActivity extends AppCompatActivity {
 
             Intent intent = new Intent(RefridgeActivity.this, UserActivity.class);
             intent.putExtra("refPosition", position);
+            intent.putExtra("username",username);
             startActivity(intent);
 
         });
@@ -61,10 +75,13 @@ public class RefridgeActivity extends AppCompatActivity {
             }
         });
 
-
-
         refAdd.setOnClickListener(v -> {
             Intent intent = new Intent(RefridgeActivity.this, RefAddActivity.class);
+            startActivity(intent);
+        });
+
+        setting.setOnClickListener(v->{
+            Intent intent=new Intent(RefridgeActivity.this, SettingActivity.class);
             startActivity(intent);
         });
     }

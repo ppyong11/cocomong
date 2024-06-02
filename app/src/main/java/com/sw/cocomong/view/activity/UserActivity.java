@@ -15,7 +15,10 @@ import com.sw.cocomong.R;
 import com.sw.cocomong.dto.FoodListItemDto;
 import com.sw.cocomong.dto.RefFoodMap;
 import com.sw.cocomong.dto.RefListItemDto;
+import com.sw.cocomong.task.foodtask.FoodListGetTask;
 import com.sw.cocomong.view.adapter.FoodAdapter;
+
+import org.json.JSONException;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -33,6 +36,7 @@ public class UserActivity extends AppCompatActivity {
     public List<FoodListItemDto> foodListItemDtos,favoriteList, categoryList;
     boolean isFavorite=false;
     boolean isCategory=false;
+    String username;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,10 +44,18 @@ public class UserActivity extends AppCompatActivity {
 
         Intent intent=getIntent();
         Bundle extras=intent.getExtras();
-        refPosition=extras.getInt("refPosition");
-        refListItemDto= RefFoodMap.getRefListItemDtos().get(refPosition);
-        foodListItemDtos= RefFoodMap.getRefFoodMap().get(refListItemDto);
-        favoriteList = RefFoodMap.getRefFavMap().get(refListItemDto);
+        refPosition=extras.getInt("refPosition");  // 냉장고 위치 받아옴
+        username=extras.getString("username");  // username 받아옴
+        try {
+            FoodListGetTask listGetTask = new FoodListGetTask(username, refPosition);  // foodlist 받아옴
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        //refListItemDto= RefFoodMap.getRefListItemDtos().get(refPosition);
+       // foodListItemDtos= RefFoodMap.getRefFoodMap().get(refListItemDto);
+        //favoriteList = RefFoodMap.getRefFavMap().get(refListItemDto);
 
         refName=findViewById(R.id.ref_name);
         refName.setText(refListItemDto.getName());

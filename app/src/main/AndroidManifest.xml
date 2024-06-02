@@ -41,6 +41,7 @@
         <activity android:name=".view.activity.JoinActivity"/>
         <activity android:name=".view.activity.CategorySelectActivity" android:theme="@style/Theme.AppCompat.Dialog"/>
         <activity android:name=".view.activity.RefDeleteActivity" android:theme="@style/Theme.AppCompat.Dialog"/>
+        <activity android:name=".view.activity.SettingActivity" android:theme="@style/Theme.AppCompat.Dialog"/>
 
         <activity android:name=".view.activity.FoodAddSelectActivity" android:theme="@style/Theme.AppCompat.Dialog"/>
         <activity
