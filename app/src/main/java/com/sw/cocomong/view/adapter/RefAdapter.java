@@ -10,20 +10,23 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.sw.cocomong.Object.RefObj;
 import com.sw.cocomong.R;
 import com.sw.cocomong.dto.RefListItemDto;
 
 import java.util.List;
 
-public class RefAdapter extends ArrayAdapter<RefListItemDto> {
+public class RefAdapter extends ArrayAdapter<RefObj> {
     private final Activity context;
-    private List<RefListItemDto> refListItemDtos;
-    RefListItemDto refListItemDto;
+    //private List<RefListItemDto> refListItemDtos;
+    //RefListItemDto refListItemDto;
+    RefObj refObj;
+    List<RefObj> refList;
 
-    public RefAdapter(Activity context, List<RefListItemDto> refListItemDtos){
-        super(context, R.layout.ref_item, refListItemDtos);
+    public RefAdapter(Activity context, List<RefObj> refList){
+        super(context, R.layout.ref_item, refList);
         this.context=context;
-        this.refListItemDtos = refListItemDtos;
+        this.refList = refList;
     }
 
     @NonNull
@@ -35,9 +38,9 @@ public class RefAdapter extends ArrayAdapter<RefListItemDto> {
 
         TextView tvRefName= (TextView) rowView.findViewById(R.id.tv_refname);
 
-        refListItemDto = refListItemDtos.get(position);
+        refObj = refList.get(position);
 
-        tvRefName.setText(refListItemDto.getName());
+        tvRefName.setText(refObj.getRefname());
 
         return rowView;
     }

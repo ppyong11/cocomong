@@ -4,6 +4,8 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.sw.cocomong.Object.FoodResObj;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -20,17 +22,17 @@ import okhttp3.Response;
 
 public class FoodAddTask {
     static String url = "http://58.224.91.191:8080/foods/post";
-    public FoodAddTask(String username, String foodname, String expiredate, String category, String memo, String favorite, int refnum) throws JSONException {
+    public FoodAddTask(FoodResObj foodResObj) throws JSONException {
 
         //Request에 사용할 JSON 작성
         JSONObject data = new JSONObject();
-        data.put("username", username);
-        data.put("foodname", foodname);
-        data.put("expiredate", expiredate);
-        data.put("category", category);
-        data.put("memo", memo);
-        data.put("favorite", favorite);
-        data.put("refnum", refnum);
+        data.put("username", foodResObj.getUsername());
+        data.put("foodname", foodResObj.getFoodname());
+        data.put("expiredate", foodResObj.getExpiredate());
+        data.put("category", foodResObj.getCategory());
+        data.put("memo", foodResObj.getMemo());
+        data.put("favorite", foodResObj.getFavorite());
+        data.put("refname", foodResObj.getRefname());
         RequestBody requestBody = RequestBody.create(MediaType.get("application/json; charset=utf-8"), data.toString());
 
         //request 작성

@@ -11,15 +11,17 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.sw.cocomong.Object.FoodObj;
+import com.sw.cocomong.Object.FoodResObj;
 import com.sw.cocomong.R;
-import com.sw.cocomong.dto.FoodListItemDto;
-import com.sw.cocomong.dto.RefFoodMap;
 import com.sw.cocomong.dto.RefListItemDto;
+import com.sw.cocomong.task.foodtask.FoodEditTask;
 import com.sw.cocomong.task.foodtask.FoodListGetTask;
 import com.sw.cocomong.view.adapter.FoodAdapter;
 
 import org.json.JSONException;
 
+import java.sql.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -28,15 +30,20 @@ import java.util.List;
 public class UserActivity extends AppCompatActivity {
 
     ListView list;
-    TextView refName;
+    TextView refName_tv;
     Button refridge, foodAdd, favorite, recipe, sort, category;
-    FoodAdapter foodAdapter, favAdapter, categoryAdapter;
-    RefListItemDto refListItemDto;
-    int foodPosition, refPosition;
-    public List<FoodListItemDto> foodListItemDtos,favoriteList, categoryList;
+    FoodAdapter foodAdapter, categoryAdapter,favAdapter;
+    //RefListItemDto refListItemDto;
+    //int foodPosition, refPosition;
+    //public List<FoodListItemDto> foodListItemDtos,favoriteList, categoryList;
+    // List<FoodObj> foodList=new ArrayList<>();
+    List<FoodResObj> foodResObjs = new ArrayList<>();
+    List<FoodResObj> favoriteList=new ArrayList<>();
+    List<FoodResObj> categoryList;
+
     boolean isFavorite=false;
     boolean isCategory=false;
-    String username;
+    String username,refname,refnum;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,21 +51,21 @@ public class UserActivity extends AppCompatActivity {
 
         Intent intent=getIntent();
         Bundle extras=intent.getExtras();
-        refPosition=extras.getInt("refPosition");  // 냉장고 위치 받아옴
+        refname=extras.getString("refname");  // 냉장고 위치 받아옴
         username=extras.getString("username");  // username 받아옴
+        refnum=extras.getString("refnum");
         try {
-            FoodListGetTask listGetTask = new FoodListGetTask(username, refPosition);  // foodlist 받아옴
-
+            FoodListGetTask listGetTask = new FoodListGetTask(username, refname);  // foodlist 받아옴
+            foodResObjs=listGetTask.getList();
+            foodResObjs.forEach(foodResObj -> {
+                if(foodResObj.getFavorite().equals("true")) favoriteList.add(foodResObj);
+            });
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        //refListItemDto= RefFoodMap.getRefListItemDtos().get(refPosition);
-       // foodListItemDtos= RefFoodMap.getRefFoodMap().get(refListItemDto);
-        //favoriteList = RefFoodMap.getRefFavMap().get(refListItemDto);
-
-        refName=findViewById(R.id.ref_name);
-        refName.setText(refListItemDto.getName());
+        refName_tv=findViewById(R.id.ref_name);
+        refName_tv.setText(refname);
 
         list = findViewById(R.id.list_food);
         foodAdd = findViewById(R.id.btn_foodAdd);
@@ -68,22 +75,30 @@ public class UserActivity extends AppCompatActivity {
         sort=findViewById(R.id.btn_sort);
         category=findViewById(R.id.btn_list_category);
 
-        foodAdapter = new FoodAdapter(UserActivity.this, foodListItemDtos, refListItemDto);
-        favAdapter = new FoodAdapter(UserActivity.this, favoriteList,refListItemDto);
+        //foodAdapter = new FoodAdapter(UserActivity.this, foodListItemDtos, refListItemDto);
+        foodAdapter = new FoodAdapter(UserActivity.this, foodResObjs);
+        favAdapter = new FoodAdapter(UserActivity.this, favoriteList);
         list.setAdapter(foodAdapter);
 
         list.setOnItemClickListener((parent, view, position, id) -> {
-            foodPosition=position;
+            String foodname = foodResObjs.get(position).getFoodname();
+            String foodid = foodResObjs.get(position).getFoodid();
+
             Intent foodIntent = new Intent(UserActivity.this, FoodInfoActivity.class);
-            foodIntent.putExtra("foodPosition",foodPosition);
-            foodIntent.putExtra("refPosition",refPosition);
+            foodIntent.putExtra("username",username);
+            foodIntent.putExtra("foodname", foodname);
+            foodIntent.putExtra("refname",refname);
+            foodIntent.putExtra("foodid",foodid);
+            foodIntent.putExtra("refnum",refnum);
             startActivity(foodIntent);
         });
 
         foodAdd.setOnClickListener(v -> {
             list.setAdapter(foodAdapter);
             Intent foodAddIntent = new Intent(UserActivity.this, FoodAddSelectActivity.class);
-            foodAddIntent.putExtra("refPosition", refPosition);
+            foodAddIntent.putExtra("username",username);
+            foodAddIntent.putExtra("refname",refname);
+            foodAddIntent.putExtra("refnum",refnum);
             startActivity(foodAddIntent);
         });
 
@@ -127,6 +142,7 @@ public class UserActivity extends AppCompatActivity {
 
         refridge.setOnClickListener(v->{
             Intent refIntent = new Intent(UserActivity.this, RefridgeActivity.class);
+            refIntent.putExtra("username",username);
             startActivity(refIntent);
         });
 
@@ -135,11 +151,11 @@ public class UserActivity extends AppCompatActivity {
             getMenuInflater().inflate(R.menu.sort_menu, sortMenu.getMenu());
             sortMenu.setOnMenuItemClickListener(p->{
                 if(p.getItemId()==R.id.sort_name){
-                    Collections.sort(foodListItemDtos, Comparator.comparing(FoodListItemDto::getFoodname));
+                    Collections.sort(foodResObjs, Comparator.comparing(FoodResObj::getFoodname));
                     list.setAdapter(foodAdapter);
                 } else if (p.getItemId()==R.id.sort_expire) {
                     Toast.makeText(this, "유통기한 정렬", Toast.LENGTH_SHORT).show();
-                    Collections.sort(foodListItemDtos, Comparator.comparing(FoodListItemDto::getExpire));
+                    Collections.sort(foodResObjs, Comparator.comparing(FoodResObj::getExpiredate));
                     list.setAdapter(foodAdapter);
                 }
                 return false;
@@ -161,11 +177,11 @@ public class UserActivity extends AppCompatActivity {
             if(data!=null){
                 String selectedCategory = data.getStringExtra("category");
                 categoryList=new ArrayList<>();
-                for(FoodListItemDto foodListItemDto : foodListItemDtos){
-                    if(foodListItemDto.getCategory().equals(selectedCategory)) categoryList.add(foodListItemDto);
+                for(FoodResObj foodResObj : foodResObjs){
+                    if(foodResObj.getCategory().equals(selectedCategory)) categoryList.add(foodResObj);
                 }
                 isCategory=true;
-                categoryAdapter = new FoodAdapter(UserActivity.this, categoryList, refListItemDto);
+                categoryAdapter = new FoodAdapter(UserActivity.this, categoryList);
                 list.setAdapter(categoryAdapter);
                 category.setText(selectedCategory);
                 category.setBackgroundColor(getResources().getColor(R.color.purple_200));

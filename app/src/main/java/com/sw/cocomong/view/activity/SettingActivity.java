@@ -9,13 +9,18 @@ import androidx.annotation.Nullable;
 
 import com.sw.cocomong.R;
 import com.sw.cocomong.dto.RefFoodMap;
+import com.sw.cocomong.task.reftask.RefAllDeleteTask;
 
 public class SettingActivity extends Activity {
     Button theme, refClear, logout, withdraw;
+    String username;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.setting_popup);
+        Intent nameIntent=getIntent();
+        Bundle nameExtras=nameIntent.getExtras();
+        username=nameExtras.getString("username");
 
         logout=findViewById(R.id.btn_logout);
         refClear=findViewById(R.id.btn_refclear);
@@ -28,7 +33,8 @@ public class SettingActivity extends Activity {
         });
 
         refClear.setOnClickListener(v->{
-            RefFoodMap.getRefFoodMap().clear();
+            RefAllDeleteTask refAllDeleteTask =new RefAllDeleteTask();
+            //RefFoodMap.getRefFoodMap().clear();
             // 등등등
         });
 

@@ -1,8 +1,5 @@
 package com.sw.cocomong.view.activity;
 
-import static com.sw.cocomong.task.TensorTask.STRINGS_CLASSES;
-
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -15,37 +12,38 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.sw.cocomong.Object.FoodResObj;
+import com.sw.cocomong.Object.RefObj;
 import com.sw.cocomong.R;
-import com.sw.cocomong.dto.BarcodeResDto;
-import com.sw.cocomong.dto.FoodListItemDto;
 import com.sw.cocomong.dto.RefFoodMap;
-import com.sw.cocomong.dto.RefListItemDto;
-import com.sw.cocomong.task.BarcodeTask;
 import com.sw.cocomong.task.TensorTask;
-import com.sw.cocomong.view.activity.CameraCapture;
+import com.sw.cocomong.task.foodtask.FoodAddTask;
 
-import java.util.ArrayList;
+import org.json.JSONException;
+
 import java.util.regex.Pattern;
 
 // 사진으로 받아오는 액티비티
 public class FoodAddActivity extends AppCompatActivity {
 
     ImageView foodimage;
-    TextView title, category, barcode, barcodeTest;
+    TextView title_tv, category_tv, barcode_tv, barcodeTest_tv;
     ImageButton back, edit;
     Button save, delete, btnCategory;
-    EditText foodName, expire, memo;
-    FoodListItemDto foodListItemDto;
-    RefListItemDto refListItemDto;
+    EditText foodName_et, expire_et, memo_et;
+    //FoodListItemDto foodListItemDto;
+    //RefListItemDto refListItemDto;
+    FoodResObj foodResObj;
+    RefObj refObj;
     Bitmap foodImageBitmap;
-    int foodPosition, refPosition;
+    //int foodPosition, refPosition;
+    String foodname, refname,refnum,username;
     Uri imageUri;
     static  final String[] CATEGORY= {"과일", "축산물", "해산물", "채소"};
     String dateRegex = "^(?:(?:19|20)\\d{2})/(0[1-9]|1[0-2])/(0[1-9]|1\\d|2[0-8]|29(?!/02)|30(?!/02|/04|/06|/09|/11)|31(?=/0[13578]|/1[02]))$|^(?:(?:19|20)(?:[02468][048]|[13579][26]))/02/29$";
@@ -58,21 +56,23 @@ public class FoodAddActivity extends AppCompatActivity {
 
         Intent intent=getIntent();
         Bundle extras=intent.getExtras();
-        refPosition=extras.getInt("refPosition");
-        refListItemDto= RefFoodMap.getRefListItemDtos().get(refPosition);
+        refname=extras.getString("refname");
+        foodname=extras.getString("foodname");
+        refnum=extras.getString("refnum");
+        username=extras.getString("username");
 
-        title = findViewById(R.id.tv_infoTitle);
+        title_tv = findViewById(R.id.tv_infoTitle);
         back = findViewById(R.id.btn_back);
         edit = findViewById(R.id.btn_edit);
         save = findViewById(R.id.btn_save);
         delete = findViewById(R.id.btn_delete);
-        foodName = findViewById(R.id.et_infoFoodName);
+        foodName_et = findViewById(R.id.et_infoFoodName);
         btnCategory = findViewById(R.id.btn_infoCategory);
-        category = findViewById(R.id.tv_category);
-        expire = findViewById(R.id.et_infoExpire);
-        memo = findViewById(R.id.et_memo);
-        barcodeTest=findViewById(R.id.btn_barcode);
-        barcode=findViewById(R.id.tv_barcodeNum);
+        category_tv = findViewById(R.id.tv_category);
+        expire_et = findViewById(R.id.et_infoExpire);
+        memo_et = findViewById(R.id.et_memo);
+        barcodeTest_tv =findViewById(R.id.btn_barcode);
+        barcode_tv =findViewById(R.id.tv_barcodeNum);
 
         foodimage = findViewById(R.id.food_image);
 
@@ -80,10 +80,10 @@ public class FoodAddActivity extends AppCompatActivity {
         delete.setVisibility(View.GONE);
         edit.setVisibility(View.GONE);
 
-        foodName.setEnabled(true);
+        foodName_et.setEnabled(true);
         btnCategory.setEnabled(true);
-        expire.setEnabled(true);
-        memo.setEnabled(true);
+        expire_et.setEnabled(true);
+        memo_et.setEnabled(true);
 
 //        foodImageBitmap=CameraCapture.moveCameraBitmap();
 //        foodimage.setImageBitmap(foodImageBitmap);
@@ -100,24 +100,34 @@ public class FoodAddActivity extends AppCompatActivity {
         });
 
         save.setOnClickListener(v -> {
-            String expireCheck=expire.getText().toString();
+            String expireCheck= expire_et.getText().toString();
             boolean isMatch = Pattern.matches(dateRegex,expireCheck);
             if(isMatch) {
-                foodName.setEnabled(false);
-                category.setEnabled(false);
+                foodName_et.setEnabled(false);
+                category_tv.setEnabled(false);
                 btnCategory.setEnabled(false);
-                expire.setEnabled(false);
-                memo.setEnabled(false);
+                expire_et.setEnabled(false);
+                memo_et.setEnabled(false);
 
-                foodListItemDto = new FoodListItemDto(foodImageBitmap, foodName.getText().toString(), category.getText().toString(), expire.getText().toString(), memo.getText().toString(), false, refListItemDto.getRefId());
-                RefFoodMap.getFoodListItemDtos(refListItemDto).add(foodListItemDto);
+                String foodname= foodName_et.getText().toString();
+                String expiredate= expire_et.getText().toString();
+                String category=category_tv.getText().toString();
+                String memo=memo_et.getText().toString();
+                //foodListItemDto = new FoodListItemDto(foodImageBitmap, foodName.getText().toString(), category.getText().toString(), expire.getText().toString(), memo.getText().toString(), false, refListItemDto.getRefId());
+                foodResObj = new FoodResObj(foodname,username,expiredate,category,memo,"false",refname);
+
+                try {
+                    FoodAddTask foodAddTask = new FoodAddTask(foodResObj);
+                } catch (JSONException e) {
+                    throw new RuntimeException(e);
+                }
 
                 save.setVisibility(View.GONE);
                 finish();
             } else Toast.makeText(this, "유통기한을 다시 입력하세요",Toast.LENGTH_SHORT).show();
         });
 
-        expire.addTextChangedListener(new TextWatcher() {
+        expire_et.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -125,33 +135,33 @@ public class FoodAddActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (expire.isFocusable() && !s.toString().isEmpty()) {
+                if (expire_et.isFocusable() && !s.toString().isEmpty()) {
                     int textlength = 0;
                     try {
-                            textlength = expire.getText().toString().length();
+                            textlength = expire_et.getText().toString().length();
                         } catch (NumberFormatException e) {
                             e.printStackTrace();
                             return;
                         }
 
-                        String currentText = expire.getText().toString();
+                        String currentText = expire_et.getText().toString();
 
                         if (textlength == 4 && before != 1) {
                             currentText += "/";
-                            expire.setText(currentText);
-                            expire.setSelection(currentText.length());
+                            expire_et.setText(currentText);
+                            expire_et.setSelection(currentText.length());
                         } else if (textlength == 7 && before != 1) {
                             currentText += "/";
-                            expire.setText(currentText);
-                            expire.setSelection(currentText.length());
+                            expire_et.setText(currentText);
+                            expire_et.setSelection(currentText.length());
                         } else if (textlength == 5 && !currentText.contains("/")) {
                             currentText = currentText.substring(0, 4) + "." + currentText.substring(4);
-                            expire.setText(currentText);
-                            expire.setSelection(currentText.length());
+                            expire_et.setText(currentText);
+                            expire_et.setSelection(currentText.length());
                         } else if (textlength == 8 && !currentText.substring(7, 8).equals("/")) {
                             currentText = currentText.substring(0, 7) + "." + currentText.substring(7);
-                            expire.setText(currentText);
-                            expire.setSelection(currentText.length());
+                            expire_et.setText(currentText);
+                            expire_et.setSelection(currentText.length());
                     }
                 }
             }
@@ -206,8 +216,8 @@ public class FoodAddActivity extends AppCompatActivity {
         if (requestCode==1212&&resultCode==RESULT_OK){
             if(data!=null){
                 String selectedCategory = data.getStringExtra("category");
-                category.findViewById(R.id.tv_category);
-                category.setText(selectedCategory);
+                category_tv.findViewById(R.id.tv_category);
+                category_tv.setText(selectedCategory);
             }
         }
     }
@@ -228,7 +238,7 @@ public class FoodAddActivity extends AppCompatActivity {
             TensorTask tensorTask = new TensorTask(this);
             int classificationResult = tensorTask.classifyUri(imageUri);
             // 반환된 분류결과로 카테고리 설정
-            category.setText(CATEGORY[classificationResult]);
+            category_tv.setText(CATEGORY[classificationResult]);
         }
     }
 
@@ -240,7 +250,7 @@ public class FoodAddActivity extends AppCompatActivity {
             TensorTask tensorTask = new TensorTask(this);
             int classificationResult= tensorTask.classifyBitmap(bitmap);
             // 반환된 분류결과로 카테고리 설정
-            category.setText(CATEGORY[classificationResult]);
+            category_tv.setText(CATEGORY[classificationResult]);
         }
     }
 }

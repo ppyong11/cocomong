@@ -12,6 +12,7 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.sw.cocomong.Object.RefObj;
 import com.sw.cocomong.R;
 import com.sw.cocomong.dto.RefFoodMap;
 import com.sw.cocomong.task.reftask.RefListGetTask;
@@ -29,7 +30,7 @@ public class RefridgeActivity extends AppCompatActivity {
     ImageButton refAdd, setting;
 
     RefAdapter refAdapter;
-    List<RefListItemDto> refListItemDtos=RefFoodMap.getRefListItemDtos();
+    List<RefObj> refList;
     String username;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -40,6 +41,7 @@ public class RefridgeActivity extends AppCompatActivity {
         username=nameExtras.getString("username");
         try {
             RefListGetTask refListGetTask = new RefListGetTask(username);
+            refList=refListGetTask.getList();
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
@@ -49,14 +51,13 @@ public class RefridgeActivity extends AppCompatActivity {
         setting=findViewById(R.id.btn_setting);
 
 
-        refAdapter = new RefAdapter(RefridgeActivity.this, refListItemDtos );
+        refAdapter = new RefAdapter(RefridgeActivity.this, refList );
         list.setAdapter(refAdapter);
 
         list.setOnItemClickListener((parent, view, position, id) -> {
-            Toast.makeText(RefridgeActivity.this, refListItemDtos.get(position).getName(),Toast.LENGTH_SHORT).show();
-
             Intent intent = new Intent(RefridgeActivity.this, UserActivity.class);
-            intent.putExtra("refPosition", position);
+            intent.putExtra("refname", refList.get(position).getRefname());
+            intent.putExtra("refnum",refList.get(position).getRefnum());
             intent.putExtra("username",username);
             startActivity(intent);
 
@@ -66,7 +67,9 @@ public class RefridgeActivity extends AppCompatActivity {
             public boolean onItemLongClick(AdapterView<?> parent, View view,
                                            int position, long id) {
                 Intent intent = new Intent(RefridgeActivity.this, RefDeleteActivity.class);
-                intent.putExtra("refPosition", position);
+                intent.putExtra("refname", refList.get(position).getRefname());
+                intent.putExtra("refnum",refList.get(position).getRefnum());
+                intent.putExtra("username",username);
                 startActivity(intent);
                 refAdapter.notifyDataSetChanged();
 
@@ -77,11 +80,12 @@ public class RefridgeActivity extends AppCompatActivity {
 
         refAdd.setOnClickListener(v -> {
             Intent intent = new Intent(RefridgeActivity.this, RefAddActivity.class);
-            startActivity(intent);
+            intent.putExtra("username",username);
         });
 
         setting.setOnClickListener(v->{
-            Intent intent=new Intent(RefridgeActivity.this, SettingActivity.class);
+            Intent intent = new Intent(RefridgeActivity.this, SettingActivity.class);
+            intent.putExtra("username",username);
             startActivity(intent);
         });
     }

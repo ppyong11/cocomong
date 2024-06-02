@@ -10,25 +10,35 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
+import com.sw.cocomong.Object.FoodObj;
+import com.sw.cocomong.Object.FoodResObj;
 import com.sw.cocomong.R;
 import com.sw.cocomong.dto.FoodListItemDto;
 import com.sw.cocomong.dto.RefFoodMap;
 import com.sw.cocomong.dto.RefListItemDto;
+import com.sw.cocomong.task.foodtask.FoodEditTask;
 
+import org.checkerframework.checker.units.qual.A;
+import org.json.JSONException;
+
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
-public class FoodAdapter extends ArrayAdapter<FoodListItemDto>{
+public class FoodAdapter extends ArrayAdapter<FoodResObj>{
     private final Activity context;
-    private List<FoodListItemDto> foodListItemDtos;
-    private FoodListItemDto foodListItemDto;
-    private RefListItemDto refListItemDto;
+   // private List<FoodListItemDto> foodListItemDtos;
+   // private FoodListItemDto foodListItemDto;
+    //private RefListItemDto refListItemDto;
+
+    private List<FoodResObj> foodResObjs;
+    private FoodResObj foodResObj;
 
 
-    public FoodAdapter(Activity context, List<FoodListItemDto> foodListItemDtos, RefListItemDto refListItemDto) {
-        super(context, R.layout.food_item, foodListItemDtos);
+    public FoodAdapter(Activity context, List<FoodResObj> foodResObjs) {
+        super(context, R.layout.food_item, foodResObjs);
         this.context=context;
-        this.foodListItemDtos = foodListItemDtos;
-        this.refListItemDto=refListItemDto;
+        this.foodResObjs = foodResObjs;
     }
 
     public static AdapterView<?> createFromResource(Context applicationContext, int position) {
@@ -47,34 +57,35 @@ public class FoodAdapter extends ArrayAdapter<FoodListItemDto>{
         CheckBox cbFavorite = (CheckBox) rowView.findViewById(R.id.cb_favorite);
 
 
-        foodListItemDto = foodListItemDtos.get(position);
+        foodResObj = foodResObjs.get(position);
 
-        tvFoodName.setText(foodListItemDto.getFoodname());
-        tvCategory.setText(foodListItemDto.getCategory());
-        tvExpire.setText(foodListItemDto.getExpire());
-        cbFavorite.setChecked(foodListItemDto.isFavorite());
+        tvFoodName.setText(foodResObj.getFoodname());
+        tvCategory.setText(foodResObj.getCategory());
+        tvExpire.setText(foodResObj.getExpiredate());
+        cbFavorite.setChecked(Boolean.parseBoolean(foodResObj.getFavorite()));
 
         cbFavorite.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            setFavoriteItems(position,isChecked);
+            try {
+                setFavoriteItems(position,isChecked);
+            } catch (JSONException e) {
+                throw new RuntimeException(e);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         });
 
         return rowView;
     }
-    public void setFavoriteItems(int position, boolean isFavorite){
+    public void setFavoriteItems(int position, boolean isFavorite) throws JSONException, IOException {
+        FoodResObj favObj= foodResObjs.get(position);
         if(isFavorite){
-            foodListItemDtos.get(position).setFavorite(true);
+            favObj.setFavorite("true");
 
-            RefFoodMap.getFavoriteItems(refListItemDto).add(foodListItemDtos.get(position));
-
+            FoodEditTask foodEditTask = new FoodEditTask(favObj);
         }else {
-            foodListItemDtos.get(position).setFavorite(false);
-            RefFoodMap.getFavoriteItems(refListItemDto).remove(foodListItemDtos.get(position));
-
-            //System.out.println("Favorite: "+MainFoodListActivity.favoriteItems);
-            //System.out.println("Food: "+MainFoodListActivity.foodListItems);
-            //System.out.println("Adapter: "+ foodListItems);
+            favObj.setFavorite("false");
+            FoodEditTask foodEditTask = new FoodEditTask(favObj);
         }
-
        notifyDataSetChanged();
     }
 }

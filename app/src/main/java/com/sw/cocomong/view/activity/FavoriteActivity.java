@@ -1,3 +1,4 @@
+/*
 package com.sw.cocomong.view.activity;
 
 import android.content.Intent;
@@ -36,8 +37,10 @@ public class FavoriteActivity extends AppCompatActivity {
         favoriteList = RefFoodMap.getRefFavMap().get(refListItemDto);
 
         list=findViewById(R.id.list_food);
-        foodAdapter = new FoodAdapter(FavoriteActivity.this, favoriteList,refListItemDto);
+        //foodAdapter = new FoodAdapter(FavoriteActivity.this, favoriteList,refListItemDto);
+        foodAdapter = new FoodAdapter(FavoriteActivity.this, favoriteList);
         list.setAdapter(foodAdapter);
 
     }
 }
+*/

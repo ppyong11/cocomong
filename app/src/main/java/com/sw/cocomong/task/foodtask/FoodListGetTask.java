@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sw.cocomong.Object.FoodObj;
+import com.sw.cocomong.Object.FoodResObj;
 
 import org.checkerframework.checker.units.qual.A;
 import org.json.JSONArray;
@@ -31,13 +32,14 @@ import okhttp3.ResponseBody;
 public class FoodListGetTask {
     //static String url = "http://58.224.91.191:8080/foods/list/asc";
     static String url = "localhost:8080/join";
-    ArrayList<FoodObj> foodList = new ArrayList<>();
-    public FoodListGetTask(String username, int refnum) throws JSONException, IOException {
+    //ArrayList<FoodObj> foodList = new ArrayList<>();
+    ArrayList<FoodResObj> foodResObjs = new ArrayList<>();
+    public FoodListGetTask(String username, String refname) throws JSONException, IOException {
 
         //Request에 사용할 JSON 작성
         JSONObject data = new JSONObject();
         data.put("username", username);
-        data.put("refnum", refnum);
+        data.put("refname", refname);
         RequestBody requestBody = RequestBody.create(MediaType.get("application/json; charset=utf-8"), data.toString());
 
         //request 작성
@@ -60,15 +62,16 @@ public class FoodListGetTask {
                     Log.i("tag", "응답성공");
                     final String responseData = response.body().string();
                     ObjectMapper objectMapper = new ObjectMapper();
-                    FoodObj[] foodArray = objectMapper.readValue(responseData, FoodObj[].class);
-                    foodList.addAll(Arrays.asList(foodArray));
+                    FoodResObj[] foodArray = objectMapper.readValue(responseData, FoodResObj[].class);
+                    foodResObjs.addAll(Arrays.asList(foodArray));
 
                     Log.i("tag", responseData);
                 }
             }
         });
     }
-    public ArrayList<FoodObj> getList(){
-        return foodList;
+    public ArrayList<FoodResObj> getList(){
+
+        return foodResObjs;
     }
 }

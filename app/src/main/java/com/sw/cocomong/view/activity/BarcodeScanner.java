@@ -5,8 +5,6 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,42 +13,34 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
-import com.journeyapps.barcodescanner.BarcodeResult;
-import com.journeyapps.barcodescanner.CaptureManager;
-import com.journeyapps.barcodescanner.DecoratedBarcodeView;
-import com.journeyapps.barcodescanner.ScanContract;
-import com.journeyapps.barcodescanner.ScanOptions;
+import com.sw.cocomong.Object.FoodResObj;
 import com.sw.cocomong.R;
 import com.sw.cocomong.dto.BarcodeResDto;
-import com.sw.cocomong.dto.FoodListItemDto;
-import com.sw.cocomong.dto.RefFoodMap;
-import com.sw.cocomong.dto.RefListItemDto;
 import com.sw.cocomong.task.BarcodeTask;
+import com.sw.cocomong.task.foodtask.FoodAddTask;
 
-import java.util.Date;
-import java.util.concurrent.ExecutionException;
+import org.json.JSONException;
+
 import java.util.regex.Pattern;
 
 // 바코드를 통해서 음식을 추가함.
 public class BarcodeScanner extends AppCompatActivity {
 
     ImageView foodimage;
-    TextView title, category, barcodeTest,barcode;
+    TextView title_tv, category_tv, barcodeTest_tv, barcode_tv;
     ImageButton back, edit;
     Button save, delete, btnCategory;
-    EditText foodName, expire, memo;
-    FoodListItemDto foodListItemDto;
-    RefListItemDto refListItemDto;
+    EditText foodName_et, expire_et, memo_et;
+    //FoodListItemDto foodListItemDto;
+    //RefListItemDto refListItemDto;
+    FoodResObj foodResObj;
     Bitmap foodImageBitmap=null;
-    int foodPosition, refPosition;
+    String refnum, refname, username;
     String dateRegex = "^(?:(?:19|20)\\d{2})/(0[1-9]|1[0-2])/(0[1-9]|1\\d|2[0-8]|29(?!/02)|30(?!/02|/04|/06|/09|/11)|31(?=/0[13578]|/1[02]))$|^(?:(?:19|20)(?:[02468][048]|[13579][26]))/02/29$";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,22 +50,23 @@ public class BarcodeScanner extends AppCompatActivity {
 
         Intent intent=getIntent();
         Bundle extras=intent.getExtras();
-        refPosition=extras.getInt("refPosition");
-        refListItemDto= RefFoodMap.getRefListItemDtos().get(refPosition);
+        refname=extras.getString("refname");
+        username = extras.getString("username");
+        refnum=extras.getString("refnum");
 
-        title = findViewById(R.id.tv_infoTitle);
+        title_tv = findViewById(R.id.tv_infoTitle);
         back = findViewById(R.id.btn_back);
         edit = findViewById(R.id.btn_edit);
         save = findViewById(R.id.btn_save);
         delete = findViewById(R.id.btn_delete);
-        foodName = findViewById(R.id.et_infoFoodName);
+        foodName_et = findViewById(R.id.et_infoFoodName);
         btnCategory = findViewById(R.id.btn_infoCategory);
-        category = findViewById(R.id.tv_category);
-        expire = findViewById(R.id.et_infoExpire);
-        memo = findViewById(R.id.et_memo);
+        category_tv = findViewById(R.id.tv_category);
+        expire_et = findViewById(R.id.et_infoExpire);
+        memo_et = findViewById(R.id.et_memo);
 
-        barcodeTest=findViewById(R.id.btn_barcode);
-        barcode=findViewById(R.id.tv_barcodeNum);
+        barcodeTest_tv =findViewById(R.id.btn_barcode);
+        barcode_tv =findViewById(R.id.tv_barcodeNum);
 
         foodimage = findViewById(R.id.food_image);
 
@@ -84,10 +75,10 @@ public class BarcodeScanner extends AppCompatActivity {
         delete.setVisibility(View.GONE);
         edit.setVisibility(View.GONE);
 
-        foodName.setEnabled(true);
+        foodName_et.setEnabled(true);
         btnCategory.setEnabled(true);
-        expire.setEnabled(true);
-        memo.setEnabled(true);
+        expire_et.setEnabled(true);
+        memo_et.setEnabled(true);
 
 
         btnCategory.setOnClickListener(v->{
@@ -101,17 +92,27 @@ public class BarcodeScanner extends AppCompatActivity {
         });
 
         save.setOnClickListener(v -> {
-            String expireCheck=expire.getText().toString();
+            String expireCheck= expire_et.getText().toString();
             boolean isMatch = Pattern.matches(dateRegex,expireCheck);
             if(isMatch) {
-                foodName.setEnabled(false);
-                category.setEnabled(false);
+                foodName_et.setEnabled(false);
+                category_tv.setEnabled(false);
                 btnCategory.setEnabled(false);
-                expire.setEnabled(false);
-                memo.setEnabled(false);
+                expire_et.setEnabled(false);
+                memo_et.setEnabled(false);
 
-                foodListItemDto = new FoodListItemDto(foodImageBitmap, foodName.getText().toString(), category.getText().toString(), expire.getText().toString(), memo.getText().toString(), false, refListItemDto.getRefId());
-                RefFoodMap.getFoodListItemDtos(refListItemDto).add(foodListItemDto);
+                String foodname= foodName_et.getText().toString();
+                String expiredate= expire_et.getText().toString();
+                String category=category_tv.getText().toString();
+                String memo=memo_et.getText().toString();
+                //foodListItemDto = new FoodListItemDto(foodImageBitmap, foodName.getText().toString(), category.getText().toString(), expire.getText().toString(), memo.getText().toString(), false, refListItemDto.getRefId());
+                foodResObj = new FoodResObj(foodname,username,expiredate,category,memo,"false",refname);
+
+                try {
+                    FoodAddTask foodAddTask = new FoodAddTask(foodResObj);
+                } catch (JSONException e) {
+                    throw new RuntimeException(e);
+                }
 
                 save.setVisibility(View.GONE);
                 finish();
@@ -119,7 +120,7 @@ public class BarcodeScanner extends AppCompatActivity {
         });
 
 
-        expire.addTextChangedListener(new TextWatcher(){
+        expire_et.addTextChangedListener(new TextWatcher(){
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -127,33 +128,33 @@ public class BarcodeScanner extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (expire.isFocusable() && !s.toString().isEmpty()) {
+                if (expire_et.isFocusable() && !s.toString().isEmpty()) {
                     int textlength = 0;
                     try {
-                        textlength = expire.getText().toString().length();
+                        textlength = expire_et.getText().toString().length();
                     } catch (NumberFormatException e) {
                         e.printStackTrace();
                         return;
                     }
 
-                    String currentText = expire.getText().toString();
+                    String currentText = expire_et.getText().toString();
 
                     if (textlength == 4 && before != 1) {
                         currentText += "/";
-                        expire.setText(currentText);
-                        expire.setSelection(currentText.length());
+                        expire_et.setText(currentText);
+                        expire_et.setSelection(currentText.length());
                     } else if (textlength == 7 && before != 1) {
                         currentText += "/";
-                        expire.setText(currentText);
-                        expire.setSelection(currentText.length());
+                        expire_et.setText(currentText);
+                        expire_et.setSelection(currentText.length());
                     } else if (textlength == 5 && !currentText.contains("/")) {
                         currentText = currentText.substring(0, 4) + "." + currentText.substring(4);
-                        expire.setText(currentText);
-                        expire.setSelection(currentText.length());
+                        expire_et.setText(currentText);
+                        expire_et.setSelection(currentText.length());
                     } else if (textlength == 8 && !currentText.substring(7, 8).equals("/")) {
                         currentText = currentText.substring(0, 7) + "." + currentText.substring(7);
-                        expire.setText(currentText);
-                        expire.setSelection(currentText.length());
+                        expire_et.setText(currentText);
+                        expire_et.setSelection(currentText.length());
                     }
                 }
             }
@@ -179,8 +180,8 @@ public class BarcodeScanner extends AppCompatActivity {
         if (requestCode==1212&&resultCode==RESULT_OK){
             if(intent!=null){
                 String selectedCategory = intent.getStringExtra("category");
-                category.findViewById(R.id.tv_category);
-                category.setText(selectedCategory);
+                category_tv.findViewById(R.id.tv_category);
+                category_tv.setText(selectedCategory);
             }
         }else{
             IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
@@ -191,10 +192,10 @@ public class BarcodeScanner extends AppCompatActivity {
                     try {
                         BarcodeResDto taskResult = barcodeTask.execute(text).get();
 
-                        barcode.setText(text);
-                        foodName.setText(taskResult.getProductName());
-                        category.setText(barcodeCategory(taskResult.getCategory()));
-                        memo.setText(taskResult.getDayCount());
+                        barcode_tv.setText(text);
+                        foodName_et.setText(taskResult.getProductName());
+                        category_tv.setText(barcodeCategory(taskResult.getCategory()));
+                        memo_et.setText(taskResult.getDayCount());
 
                         if (barcodeTask.getResponseCode() == 200| taskResult==null) {
                             Toast.makeText(this, "성공", Toast.LENGTH_SHORT).show();
@@ -205,15 +206,15 @@ public class BarcodeScanner extends AppCompatActivity {
                     }
                     // TODO: 2024-05-20 수정하기
                 }else{
-                    String text = barcode.getText().toString();
+                    String text = barcode_tv.getText().toString();
                     BarcodeTask barcodeTask = new BarcodeTask(text);
                     try {
                         BarcodeResDto taskResult = barcodeTask.execute(text).get();
 
-                        barcode.setText(text);
-                        foodName.setText(taskResult.getProductName());
-                        category.setText(taskResult.getCategory());
-                        memo.setText(taskResult.getDayCount());
+                        barcode_tv.setText(text);
+                        foodName_et.setText(taskResult.getProductName());
+                        category_tv.setText(taskResult.getCategory());
+                        memo_et.setText(taskResult.getDayCount());
 
                         if (barcodeTask.getResponseCode() == 200| taskResult==null) {
                             Toast.makeText(this, "성공", Toast.LENGTH_SHORT).show();

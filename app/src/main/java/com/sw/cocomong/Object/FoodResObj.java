@@ -1,6 +1,6 @@
 package com.sw.cocomong.Object;
 
-public class FoodObj {
+public class FoodResObj {
     private String username;
     private String refname;
     private String foodname;
@@ -8,8 +8,10 @@ public class FoodObj {
     private String category;
     private String memo;
     private String favorite;
+    private String foodid;
 
-    public FoodObj(String username, String refname,String foodname, String expiredate, String category, String memo, String favorite){
+    public FoodResObj(String foodid, String foodname, String username,String expiredate, String category, String memo, String favorite, String refname){
+        this.foodid = foodid;
         this.username=username;
         this.refname=refname;
         this.foodname=foodname;
@@ -17,6 +19,23 @@ public class FoodObj {
         this.category=category;
         this.memo=memo;
         this.favorite=favorite;
+    }
+    public FoodResObj(String foodname, String username,String expiredate, String category, String memo, String favorite, String refname){
+        this.username=username;
+        this.refname=refname;
+        this.foodname=foodname;
+        this.expiredate=expiredate;
+        this.category=category;
+        this.memo=memo;
+        this.favorite=favorite;
+    }
+
+    public String getFoodid() {
+        return foodid;
+    }
+
+    public void setFoodid(String foodid) {
+        this.foodid = foodid;
     }
 
     public String getUsername() {

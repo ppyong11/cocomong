@@ -42,7 +42,7 @@ public class FoodAddSelectActivity extends AppCompatActivity {
     private String TAG = FoodAddSelectActivity.class.getSimpleName();
     private Context context = FoodAddSelectActivity.this;
     final int PERMISSION_REQUEST_CODE = 1;
-    int refPosition;
+    String refname,username,refnum;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -52,7 +52,9 @@ public class FoodAddSelectActivity extends AppCompatActivity {
 
         Intent intent=getIntent();
         Bundle extras=intent.getExtras();
-        refPosition=extras.getInt("refPosition");
+        refname=extras.getString("refname");
+        username = extras.getString("username");
+        refnum=extras.getString("refnum");
 
         photo=findViewById(R.id.btn_photo);
         barcode=findViewById(R.id.btn_barcode);
@@ -67,13 +69,18 @@ public class FoodAddSelectActivity extends AppCompatActivity {
                     //갤러리 이동
                     Intent galleryIntent = new Intent(Intent.ACTION_PICK);
                     galleryIntent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
+                    galleryIntent.putExtra("refname",refname);
+                    galleryIntent.putExtra("username",username);
+                    galleryIntent.putExtra("refnum",refnum);
                     activityResultLauncher.launch(galleryIntent);
                     finish();
 
                 } else if (p.getItemId()==R.id.select_camera) {
                     Toast.makeText(this, "카메라 찍기 선택", Toast.LENGTH_SHORT).show();
                     Intent cameraIntent = new Intent(FoodAddSelectActivity.this, CameraCapture.class);
-                    cameraIntent.putExtra("refPosition",refPosition);
+                    cameraIntent.putExtra("refname",refname);
+                    cameraIntent.putExtra("username",username);
+                    cameraIntent.putExtra("refnum",refnum);
                     cameraIntent.putExtra("method","camera");
                     startActivity(cameraIntent);
                     finish();
@@ -90,7 +97,9 @@ public class FoodAddSelectActivity extends AppCompatActivity {
 //            integrator.setCaptureActivity(BarcodeScanner.class);
 //            integrator.initiateScan();
             Intent barcodeIntent = new Intent(FoodAddSelectActivity.this, BarcodeScanner.class);
-            barcodeIntent.putExtra("refPosition",refPosition);
+            barcodeIntent.putExtra("refname",refname);
+            barcodeIntent.putExtra("username",username);
+            barcodeIntent.putExtra("refnum",refnum);
             startActivity(barcodeIntent);
             finish();
         });
@@ -115,6 +124,9 @@ public class FoodAddSelectActivity extends AppCompatActivity {
                                 Log.d("uri", uriString);
                                 Intent foodAddIntent = new Intent(FoodAddSelectActivity.this, FoodAddActivity.class);
                                 foodAddIntent.putExtra("method", "gallery");
+                                foodAddIntent.putExtra("refname",refname);
+                                foodAddIntent.putExtra("username",username);
+                                foodAddIntent.putExtra("refnum",refnum);
                                 startActivity(foodAddIntent);
                             }
                         }

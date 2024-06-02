@@ -16,11 +16,18 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.sw.cocomong.Object.FoodObj;
+import com.sw.cocomong.Object.FoodResObj;
 import com.sw.cocomong.R;
 import com.sw.cocomong.dto.FoodListItemDto;
 import com.sw.cocomong.dto.RefFoodMap;
-import com.sw.cocomong.dto.RefListItemDto;
+import com.sw.cocomong.task.foodtask.FoodDeleteTask;
+import com.sw.cocomong.task.foodtask.FoodDetailTask;
+import com.sw.cocomong.task.foodtask.FoodEditTask;
 
+import org.json.JSONException;
+
+import java.io.IOException;
 import java.util.regex.Pattern;
 
 // foodList를 통해서 들어와서 수정
@@ -28,15 +35,17 @@ public class FoodInfoActivity extends AppCompatActivity {
     TextView title, category;
     ImageButton back, edit;
     Button save, delete, btnCategory;
-    EditText foodName, expire, memo;
-    FoodListItemDto foodListItemDto;
-    RefListItemDto refListItemDto;
+    EditText foodName_et, expire, memo;
+    //FoodListItemDto foodListItemDto;
+   // RefListItemDto refListItemDto;
     ImageView foodImage;
     Bitmap foodImageBitmap;
-    int foodPosition, refPosition;
+    //int foodPosition, refPosition;
     String dateRegex = "^(?:(?:19|20)\\d{2})/(0[1-9]|1[0-2])/(0[1-9]|1\\d|2[0-8]|29(?!/02)|30(?!/02|/04|/06|/09|/11)|31(?=/0[13578]|/1[02]))$|^(?:(?:19|20)(?:[02468][048]|[13579][26]))/02/29$";
-
-
+    String username, foodname, refname;
+    //FoodObj foodObj;
+    FoodResObj foodResObj;
+    int foodid;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,19 +53,26 @@ public class FoodInfoActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
-        foodPosition = extras.getInt("foodPosition");
-        refPosition = extras.getInt("refPostition");
-        refListItemDto=RefFoodMap.getRefListItemDtos().get(refPosition);
-
-        foodListItemDto = RefFoodMap.getFoodListItemDtos(refListItemDto).get(foodPosition);
-
+        username = extras.getString("username");
+        refname = extras.getString("refname");
+        foodname = extras.getString("foodname");
+        foodid = extras.getInt("foodid");
+        //refListItemDto=RefFoodMap.getRefListItemDtos().get(refPosition);
+        try {
+            FoodDetailTask foodDetailTask = new FoodDetailTask(foodid);
+            foodResObj=foodDetailTask.getFoodResObj();
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         foodImage = findViewById(R.id.food_image);
         title = findViewById(R.id.tv_infoTitle);
         back = findViewById(R.id.btn_back);
         edit = findViewById(R.id.btn_edit);
         save = findViewById(R.id.btn_save);
         delete = findViewById(R.id.btn_delete);
-        foodName = findViewById(R.id.et_infoFoodName);
+        foodName_et = findViewById(R.id.et_infoFoodName);
         btnCategory = findViewById(R.id.btn_infoCategory);
         category = findViewById(R.id.tv_category);
         expire = findViewById(R.id.et_infoExpire);
@@ -66,18 +82,18 @@ public class FoodInfoActivity extends AppCompatActivity {
         delete.setVisibility(View.VISIBLE);
         edit.setVisibility(View.VISIBLE);
 
-        foodName.setEnabled(false);
+        foodName_et.setEnabled(false);
         btnCategory.setEnabled(false);
         expire.setEnabled(false);
         memo.setEnabled(false);
 
-        foodImageBitmap = foodListItemDto.getFoodImage();
+        // foodImageBitmap = foodObj.getFoodImage();
         foodImage.setImageBitmap(foodImageBitmap);
-        title.setText(foodListItemDto.getFoodname());
-        foodName.setText(foodListItemDto.getFoodname());
-        category.setText(foodListItemDto.getCategory());
-        expire.setText(foodListItemDto.getExpire());
-        memo.setText(foodListItemDto.getMemo());
+        title.setText(foodResObj.getFoodname());
+        foodName_et.setText(foodResObj.getFoodname());
+        category.setText(foodResObj.getCategory());
+        expire.setText(foodResObj.getExpiredate());
+        memo.setText(foodResObj.getMemo());
 
         back.setOnClickListener(v -> {
             finish();
@@ -88,7 +104,7 @@ public class FoodInfoActivity extends AppCompatActivity {
             delete.setVisibility(View.GONE);
             edit.setVisibility(View.GONE);
 
-            foodName.setEnabled(true);
+            foodName_et.setEnabled(true);
             btnCategory.setEnabled(true);
             expire.setEnabled(true);
             memo.setEnabled(true);
@@ -104,16 +120,26 @@ public class FoodInfoActivity extends AppCompatActivity {
             String expireCheck=expire.getText().toString();
             boolean isMatch = Pattern.matches(dateRegex,expireCheck);
             if(isMatch) {
-                foodName.setEnabled(false);
+                foodName_et.setEnabled(false);
                 category.setEnabled(false);
                 btnCategory.setEnabled(false);
                 expire.setEnabled(false);
                 memo.setEnabled(false);
 
-                foodListItemDto = new FoodListItemDto(foodImageBitmap, foodName.getText().toString(), category.getText().toString(), expire.getText().toString(), memo.getText().toString(), false, refListItemDto.getRefId());
+                //foodListItemDto = new FoodListItemDto(foodImageBitmap, foodName_et.getText().toString(), category.getText().toString(), expire.getText().toString(), memo.getText().toString(), false, refListItemDto.getRefId());
+                //RefFoodMap.getFoodListItemDtos(refListItemDto).set(foodPosition,foodListItemDto);
+                foodResObj.setFoodname(foodName_et.getText().toString());
+                foodResObj.setCategory(category.getText().toString());
+                foodResObj.setExpiredate(expire.getText().toString());
+                foodResObj.setMemo(memo.getText().toString());
 
-                RefFoodMap.getFoodListItemDtos(refListItemDto).set(foodPosition,foodListItemDto);
-
+                try {
+                    FoodEditTask foodEditTask = new FoodEditTask(foodResObj);
+                } catch (JSONException e) {
+                    throw new RuntimeException(e);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
                 // 저장 버튼 사라지기
                 save.setVisibility(View.GONE);
                 edit.setVisibility(View.VISIBLE);
@@ -168,8 +194,14 @@ public class FoodInfoActivity extends AppCompatActivity {
 
         delete.setOnClickListener(v -> {
             // 데이터 삭제
-            RefFoodMap.getFoodListItemDtos(refListItemDto).remove(foodPosition);
-
+            //RefFoodMap.getFoodListItemDtos(refListItemDto).remove(foodPosition);
+            try {
+                FoodDeleteTask foodDeleteTask = new FoodDeleteTask(foodResObj);
+            } catch (JSONException e) {
+                throw new RuntimeException(e);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
             // 액티비티 종료
             finish();
         });
