@@ -25,8 +25,16 @@ public class JoinTask extends AsyncTask<String, Void, String> {
     protected String doInBackground(String... strings) {
         try {
             String str;
-            URL url = new URL("http://58.224.91.191:8080/join");  // 어떤 서버에 요청할지(localhost 안됨.)
-            // ex) http://123.456.789.10:8080/hello/android
+            /*
+             * 차차 주소
+             */
+            //URL url = new URL("http://58.224.91.191:8080/join");  // 어떤 서버에 요청할지(localhost 안됨.)
+
+            /*
+             * 다히 주소
+             */
+            URL url = new URL("http://121.181.25.225:8080/join");
+
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
             conn.setRequestMethod("POST");                              //데이터를 POST 방식으로 전송합니다.

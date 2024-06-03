@@ -26,8 +26,15 @@ public class LoginTask extends AsyncTask<String, Void, String> {
     protected String doInBackground(String... strings) {
         try {
             String str;
-            URL url = new URL("http://58.224.91.191:8080/login");  // login 서버
-            // ex) http://123.456.789.10:8080/hello/android
+            /*
+             * 차차주소
+             */
+            //URL url = new URL("http://58.224.91.191:8080/login");  // login 서버
+
+            /*
+             * 다히주소
+             */
+            URL url = new URL("http://121.181.25.225:8080/login");
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             this.conn=conn;
             conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");

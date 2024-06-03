@@ -51,11 +51,11 @@ public class UserActivity extends AppCompatActivity {
 
         Intent intent=getIntent();
         Bundle extras=intent.getExtras();
-        refname=extras.getString("refname");  // 냉장고 위치 받아옴
-        username=extras.getString("username");  // username 받아옴
-        refnum=extras.getString("refnum");
+        //refname=extras.getString("refname");  // 냉장고 위치 받아옴
+        // username=extras.getString("username");  // username 받아옴
+        // refnum=extras.getString("refnum");
         try {
-            FoodListGetTask listGetTask = new FoodListGetTask(username, refname);  // foodlist 받아옴
+            FoodListGetTask listGetTask = new FoodListGetTask("dahee", "냉장고1");  // foodlist 받아옴
             foodResObjs=listGetTask.getList();
             foodResObjs.forEach(foodResObj -> {
                 if(foodResObj.getFavorite().equals("true")) favoriteList.add(foodResObj);

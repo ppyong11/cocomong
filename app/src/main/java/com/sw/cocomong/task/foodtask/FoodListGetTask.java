@@ -30,8 +30,17 @@ import okhttp3.Response;
 import okhttp3.ResponseBody;
 
 public class FoodListGetTask {
-    //static String url = "http://58.224.91.191:8080/foods/list/asc";
-    static String url = "localhost:8080/join";
+    /*
+     * 차차 주소
+     */
+    // static String url = "http://58.224.91.191:8080/foods/list/asc";
+
+
+    /*
+     * 다히 주소
+     */
+    static String url = "http://121.181.25.225:8080/foods/list/asc";
+
     //ArrayList<FoodObj> foodList = new ArrayList<>();
     ArrayList<FoodResObj> foodResObjs = new ArrayList<>();
     public FoodListGetTask(String username, String refname) throws JSONException, IOException {
