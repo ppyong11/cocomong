@@ -4,24 +4,18 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.Toast;
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.sw.cocomong.Object.RefObj;
 import com.sw.cocomong.R;
-import com.sw.cocomong.dto.RefFoodMap;
 import com.sw.cocomong.task.reftask.RefListGetTask;
 import com.sw.cocomong.view.adapter.RefAdapter;
-import com.sw.cocomong.dto.RefListItemDto;
 
 import org.json.JSONException;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class RefridgeActivity extends AppCompatActivity {
@@ -32,6 +26,8 @@ public class RefridgeActivity extends AppCompatActivity {
     RefAdapter refAdapter;
     List<RefObj> refList;
     String username;
+
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

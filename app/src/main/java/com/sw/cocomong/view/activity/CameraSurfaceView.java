@@ -48,7 +48,8 @@ public class CameraSurfaceView extends SurfaceView implements SurfaceHolder.Call
 
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-        camera.startPreview();
+        camera.startPreview(); //렌즈로 부터 들어오는 영상을 뿌려줌
+        camera.setDisplayOrientation(90);//카메라 미리보기 오른쪽 으로 90 도회전
     }
 
     @Override

@@ -1,13 +1,19 @@
 package com.sw.cocomong.view.activity;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -15,6 +21,9 @@ import com.sw.cocomong.Object.FoodObj;
 import com.sw.cocomong.Object.FoodResObj;
 import com.sw.cocomong.R;
 import com.sw.cocomong.dto.RefListItemDto;
+import com.sw.cocomong.task.BackgroundService;
+import com.sw.cocomong.task.FoodSharedPreference;
+import com.sw.cocomong.task.NotificationService;
 import com.sw.cocomong.task.foodtask.FoodEditTask;
 import com.sw.cocomong.task.foodtask.FoodListGetTask;
 import com.sw.cocomong.view.adapter.FoodAdapter;
@@ -26,6 +35,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 
 public class UserActivity extends AppCompatActivity {
 
@@ -40,6 +50,7 @@ public class UserActivity extends AppCompatActivity {
     List<FoodResObj> foodResObjs = new ArrayList<>();
     List<FoodResObj> favoriteList=new ArrayList<>();
     List<FoodResObj> categoryList;
+    private static final int REQUEST_SYSTEM_ALERT_WINDOW = 123;
 
     boolean isFavorite=false;
     boolean isCategory=false;
@@ -48,6 +59,25 @@ public class UserActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.food_list);
+
+        // SharedPreferences 데이터 불러오기
+        FoodSharedPreference foodSharedPreference = new FoodSharedPreference(this);
+        Map<String, String> foodData = foodSharedPreference.getFoodData();
+
+        // 데이터가 없는 경우
+        if (foodData == null || foodData.isEmpty()) {
+            Toast.makeText(this, "저장된 식재료 데이터가 없습니다.", Toast.LENGTH_SHORT).show();
+        } else {
+            for (Map.Entry<String, String> entry : foodData.entrySet()) {
+                String foodName = entry.getKey();
+                String expireDate = entry.getValue();
+                System.out.println("Food Name: " + foodName + ", Expire Date: " + expireDate);
+            }
+        }
+
+        Intent serviceIntent = new Intent(this, BackgroundService.class);
+        startService(serviceIntent);
+        Log.d("UserActivity", "BackgroundService 시작됨");
 
         Intent intent=getIntent();
         Bundle extras=intent.getExtras();
@@ -190,4 +220,47 @@ public class UserActivity extends AppCompatActivity {
         }
     }
 
+    //백그라운드 알림 권한
+    // 시스템 오버레이 권한을 확인하고 요청합니다.
+    private void checkSystemAlertWindowPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (!Settings.canDrawOverlays(this)) {
+                requestAlertWindowPermission();
+            } else {
+                // 이미 권한이 있는 경우 알림을 표시합니다.
+                showNotification("test", "이미 권한 있음");
+            }
+        }
+    }
+
+    // 알림을 표시합니다.
+    private void showNotification(String title, String message) {
+        NotificationService.showNotification(this, title, message);
+    }
+
+    // 권한 요청 후 처리를 위한 메서드입니다.
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == REQUEST_SYSTEM_ALERT_WINDOW) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // 권한이 부여되면 알림을 표시합니다.
+                showNotification("test", "권한 부여됨");
+            }
+        }
+    }
+
+    // 시스템 오버레이 권한을 요청합니다.
+    private void requestAlertWindowPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (!Settings.canDrawOverlays(this)) {
+                Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                        Uri.parse("package:" + getPackageName()));
+                startActivityForResult(intent, REQUEST_SYSTEM_ALERT_WINDOW);
+            } else {
+                // 이미 권한이 있는 경우 알림을 표시합니다.
+                showNotification("test", "이미 권한 있음");
+            }
+        }
+    }
 }
