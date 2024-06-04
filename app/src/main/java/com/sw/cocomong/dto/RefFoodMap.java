@@ -13,6 +13,8 @@ public class RefFoodMap {
 
     private static Map<RefListItemDto, List<FoodListItemDto>> refFavMap= new HashMap<>();
 
+    private static Map<RefListItemDto, List<FoodListItemDto>> refRecipeMap= new HashMap<>();
+
     public static List<RefListItemDto> getRefListItemDtos() {
         return refListItemDtos;
     }
@@ -38,6 +40,11 @@ public class RefFoodMap {
         refFoodMap.put(refListItemDto,new ArrayList<>());
         refFavMap.put(refListItemDto, new ArrayList<>());
 
+    }
+    public static Map<RefListItemDto, List<FoodListItemDto>> getRefRecipeMap() {return refRecipeMap;}
+
+    public static List<FoodListItemDto> getRecipeItems(RefListItemDto refListItemDto){
+        return refRecipeMap.get(refListItemDto);
     }
 
     // TODO: 2024-05-21 get(refListItemDto)가 null값인 경우 로직 추가

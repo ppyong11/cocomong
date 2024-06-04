@@ -115,12 +115,12 @@
                 android:textSize="11dp" />
 
             <Button
-                android:id="@+id/btn_mypage"
+                android:id="@+id/btn_recipe"
                 android:layout_width="wrap_content"
                 android:layout_height="60dp"
                 android:layout_weight="1"
                 android:backgroundTint="#dac9ff"
-                android:text="마이페이지"
+                android:text="레시피추천"
                 android:textColor="#000000"
                 android:textSize="10dp" />
         </LinearLayout>

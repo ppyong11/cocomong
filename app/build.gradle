@@ -47,6 +47,7 @@ dependencies {
     implementation("com.squareup.okhttp3:logging-interceptor")
 
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.16.1'
+    implementation 'androidx.privacysandbox.tools:tools-core:+'
 
 
     testImplementation 'junit:junit:4.13.2'
