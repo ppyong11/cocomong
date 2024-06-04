@@ -59,4 +59,8 @@ dependencies {
     // zxing
     implementation 'com.journeyapps:zxing-android-embedded:4.3.0'
 
+    //lombok
+    compileOnly 'org.projectlombok:lombok:1.18.32'
+    annotationProcessor 'org.projectlombok:lombok:1.18.32'
+
 }

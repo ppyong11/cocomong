@@ -16,15 +16,17 @@ import com.sw.cocomong.view.adapter.RefAdapter;
 
 import org.json.JSONException;
 
+import java.sql.Array;
+import java.util.ArrayList;
 import java.util.List;
 
-public class RefridgeActivity extends AppCompatActivity {
+public class RefridgeActivity extends AppCompatActivity implements RefListGetTask.RefListGetTaskListener{
 
     ListView list;
     ImageButton refAdd, setting;
 
     RefAdapter refAdapter;
-    List<RefObj> refList;
+    List<RefObj> refObjs=new ArrayList<>();
     String username;
 
 
@@ -34,10 +36,11 @@ public class RefridgeActivity extends AppCompatActivity {
         setContentView(R.layout.refridge_list);
         Intent nameIntent=getIntent();
         Bundle nameExtras=nameIntent.getExtras();
-        username=nameExtras.getString("username");
+       // username=nameExtras.getString("username");
+        username="dahee";
         try {
-            RefListGetTask refListGetTask = new RefListGetTask(username);
-            refList=refListGetTask.getList();
+            new RefListGetTask(username, this);
+            //refList=refListGetTask.getList();
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
@@ -47,13 +50,13 @@ public class RefridgeActivity extends AppCompatActivity {
         setting=findViewById(R.id.btn_setting);
 
 
-        refAdapter = new RefAdapter(RefridgeActivity.this, refList );
+        refAdapter = new RefAdapter(RefridgeActivity.this, refObjs );
         list.setAdapter(refAdapter);
 
         list.setOnItemClickListener((parent, view, position, id) -> {
             Intent intent = new Intent(RefridgeActivity.this, UserActivity.class);
-            intent.putExtra("refname", refList.get(position).getRefname());
-            intent.putExtra("refnum",refList.get(position).getRefnum());
+            intent.putExtra("refname", refObjs.get(position).getRefName());
+            //intent.putExtra("refnum",refObjs.get(position).getRefnum());
             intent.putExtra("username",username);
             startActivity(intent);
 
@@ -63,8 +66,8 @@ public class RefridgeActivity extends AppCompatActivity {
             public boolean onItemLongClick(AdapterView<?> parent, View view,
                                            int position, long id) {
                 Intent intent = new Intent(RefridgeActivity.this, RefDeleteActivity.class);
-                intent.putExtra("refname", refList.get(position).getRefname());
-                intent.putExtra("refnum",refList.get(position).getRefnum());
+                intent.putExtra("refname", refObjs.get(position).getRefName());
+                //intent.putExtra("refnum",refObjs.get(position).getRefnum());
                 intent.putExtra("username",username);
                 startActivity(intent);
                 refAdapter.notifyDataSetChanged();
@@ -77,6 +80,7 @@ public class RefridgeActivity extends AppCompatActivity {
         refAdd.setOnClickListener(v -> {
             Intent intent = new Intent(RefridgeActivity.this, RefAddActivity.class);
             intent.putExtra("username",username);
+            startActivity(intent);
         });
 
         setting.setOnClickListener(v->{
@@ -91,4 +95,15 @@ public class RefridgeActivity extends AppCompatActivity {
         super.onResume();
         refAdapter.notifyDataSetChanged();
     }
+
+    @Override
+    public void onRefListReceived(List<RefObj> refObjs) {
+        this.refObjs.clear();
+        this.refObjs.addAll(refObjs);
+        updateRefUI();
+    }
+    private void updateRefUI() {
+        refAdapter.notifyDataSetChanged();
+    }
+
 }

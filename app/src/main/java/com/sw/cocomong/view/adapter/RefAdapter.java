@@ -12,7 +12,6 @@ import androidx.annotation.Nullable;
 
 import com.sw.cocomong.Object.RefObj;
 import com.sw.cocomong.R;
-import com.sw.cocomong.dto.RefListItemDto;
 
 import java.util.List;
 
@@ -40,7 +39,7 @@ public class RefAdapter extends ArrayAdapter<RefObj> {
 
         refObj = refList.get(position);
 
-        tvRefName.setText(refObj.getRefname());
+        tvRefName.setText(refObj.getRefName());
 
         return rowView;
     }

@@ -37,7 +37,7 @@
         <activity android:name=".view.activity.FoodInfoActivity"/>
         <activity android:name=".view.activity.CameraCapture"/>
         <activity android:name=".view.activity.BarcodeScanner" android:theme="@style/Theme.AppCompat"/>
-        <activity android:name=".view.activity.RefridgeActivity"/>
+        <activity android:name=".view.activity.UserActivity"/>
         <activity android:name=".view.activity.RefAddActivity" android:theme="@style/Theme.AppCompat.Dialog"/>
         <activity android:name=".view.activity.LoginActivity"/>
         <activity android:name=".view.activity.JoinActivity"/>
@@ -47,7 +47,7 @@
 
         <activity android:name=".view.activity.FoodAddSelectActivity" android:theme="@style/Theme.AppCompat.Dialog"/>
         <activity
-            android:name=".view.activity.UserActivity"
+            android:name=".view.activity.RefridgeActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
