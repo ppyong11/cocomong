@@ -24,8 +24,11 @@ import com.sw.cocomong.dto.RefListItemDto;
 import com.sw.cocomong.task.BackgroundService;
 import com.sw.cocomong.task.FoodSharedPreference;
 import com.sw.cocomong.task.NotificationService;
+import com.sw.cocomong.task.foodtask.FoodDeleteTask;
+import com.sw.cocomong.task.foodtask.FoodDetailTask;
 import com.sw.cocomong.task.foodtask.FoodEditTask;
 import com.sw.cocomong.task.foodtask.FoodListGetTask;
+import com.sw.cocomong.task.reftask.RefListGetTask;
 import com.sw.cocomong.view.adapter.FoodAdapter;
 
 import org.json.JSONException;
@@ -85,7 +88,9 @@ public class UserActivity extends AppCompatActivity {
         // username=extras.getString("username");  // username 받아옴
         // refnum=extras.getString("refnum");
         try {
-            FoodListGetTask listGetTask = new FoodListGetTask("dahee", "냉장고1");  // foodlist 받아옴
+            FoodListGetTask listGetTask = new FoodListGetTask("greatcloud13", "2층냉장고");  // foodlist 받아옴
+            RefListGetTask refListGetTask = new RefListGetTask("greatcloud13");                    // 냉장고 정보 받아옴
+            FoodDetailTask foodDetailTask = new FoodDetailTask(27);                                  //음식상세정보
             foodResObjs=listGetTask.getList();
             foodResObjs.forEach(foodResObj -> {
                 if(foodResObj.getFavorite().equals("true")) favoriteList.add(foodResObj);

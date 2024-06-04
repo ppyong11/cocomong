@@ -33,13 +33,13 @@ public class FoodListGetTask {
     /*
      * 차차 주소
      */
-    // static String url = "http://58.224.91.191:8080/foods/list/asc";
+     static String url = "http://58.224.91.191:8080/foods/list/asc";
 
 
     /*
      * 다히 주소
      */
-    static String url = "http://121.181.25.225:8080/foods/list/asc";
+    //static String url = "http://121.181.25.225:8080/foods/list/asc";
 
     //ArrayList<FoodObj> foodList = new ArrayList<>();
     ArrayList<FoodResObj> foodResObjs = new ArrayList<>();
@@ -68,8 +68,8 @@ public class FoodListGetTask {
                     Log.i("tag", "응답실패");
                 }else{
                     // 응답 성공
-                    Log.i("tag", "응답성공");
                     final String responseData = response.body().string();
+                    Log.i("tag", "응답성공"+responseData);
                     ObjectMapper objectMapper = new ObjectMapper();
                     FoodResObj[] foodArray = objectMapper.readValue(responseData, FoodResObj[].class);
                     foodResObjs.addAll(Arrays.asList(foodArray));

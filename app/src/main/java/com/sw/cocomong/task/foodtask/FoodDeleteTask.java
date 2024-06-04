@@ -10,5 +10,7 @@ import java.io.IOException;
 public class FoodDeleteTask {
     public FoodDeleteTask(FoodResObj foodResObj) throws JSONException, IOException {
 
+
+
     }
 }
