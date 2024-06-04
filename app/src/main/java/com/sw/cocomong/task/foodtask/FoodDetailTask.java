@@ -21,7 +21,8 @@ public class FoodDetailTask {
     FoodResObj foodResObj;
     public FoodDetailTask(int foodid) throws JSONException, IOException {
 
-        String url = "http://58.224.91.191:8080/foods/"+foodid;
+        //String url = "http://58.224.91.191:8080/foods/"+foodid;
+        String url = "http://121.181.25.225:8080/foods/"+foodid;
 
         //request 작성
         OkHttpClient client = new OkHttpClient();

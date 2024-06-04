@@ -33,6 +33,7 @@ import com.sw.cocomong.view.adapter.FoodAdapter;
 
 import org.json.JSONException;
 
+import java.io.IOException;
 import java.sql.Array;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -40,7 +41,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
-public class UserActivity extends AppCompatActivity {
+public class UserActivity extends AppCompatActivity implements FoodListGetTask.FoodListGetTaskListener {
 
     ListView list;
     TextView refName_tv;
@@ -84,14 +85,14 @@ public class UserActivity extends AppCompatActivity {
 
         Intent intent=getIntent();
         Bundle extras=intent.getExtras();
-        //refname=extras.getString("refname");  // 냉장고 위치 받아옴
-        // username=extras.getString("username");  // username 받아옴
+        refname=extras.getString("refname");  // 냉장고 위치 받아옴
+        username=extras.getString("username");  // username 받아옴
         // refnum=extras.getString("refnum");
         try {
-            FoodListGetTask listGetTask = new FoodListGetTask("greatcloud13", "2층냉장고");  // foodlist 받아옴
-            RefListGetTask refListGetTask = new RefListGetTask("greatcloud13");                    // 냉장고 정보 받아옴
+            new FoodListGetTask(username, refname,this);  // foodlist 요청
+            //new RefListGetTask("dahee",this);                    // 냉장고 정보 받아옴
             FoodDetailTask foodDetailTask = new FoodDetailTask(27);                                  //음식상세정보
-            foodResObjs=listGetTask.getList();
+            //foodResObjs=listGetTask;
             foodResObjs.forEach(foodResObj -> {
                 if(foodResObj.getFavorite().equals("true")) favoriteList.add(foodResObj);
             });
@@ -117,7 +118,7 @@ public class UserActivity extends AppCompatActivity {
 
         list.setOnItemClickListener((parent, view, position, id) -> {
             String foodname = foodResObjs.get(position).getFoodname();
-            String foodid = foodResObjs.get(position).getFoodid();
+            String foodid = foodResObjs.get(position).getIdx();
 
             Intent foodIntent = new Intent(UserActivity.this, FoodInfoActivity.class);
             foodIntent.putExtra("username",username);
@@ -267,5 +268,21 @@ public class UserActivity extends AppCompatActivity {
                 showNotification("test", "이미 권한 있음");
             }
         }
+    }
+
+    @Override
+    public void onFoodListReceived(List<FoodResObj> foodResObjs) {
+        this.foodResObjs = foodResObjs;
+        // Update UI with the received food list
+        updateUI();
+    }
+    private void updateUI() {
+        for (FoodResObj foodResObj : foodResObjs) {
+            if (foodResObj.getFavorite().equals("true")) {
+                favoriteList.add(foodResObj);
+            }
+        }
+        foodAdapter = new FoodAdapter(this, foodResObjs);
+        list.setAdapter(foodAdapter);
     }
 }

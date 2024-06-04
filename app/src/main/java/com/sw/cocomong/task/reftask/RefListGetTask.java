@@ -1,11 +1,13 @@
 package com.sw.cocomong.task.reftask;
 
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sw.cocomong.Object.FoodObj;
 import com.sw.cocomong.Object.RefObj;
 
 import org.json.JSONException;
@@ -21,38 +23,45 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 public class RefListGetTask {
+    private static final String TAG = "RefListGetTask";
+    private List<RefObj> refList;
+    private final RefListGetTaskListener listener;
 
+    public interface RefListGetTaskListener {
+        void onRefListReceived(List<RefObj> refList);
+    }
 
-    ArrayList<RefObj> reflist=new ArrayList<>();
-    public RefListGetTask(String username) throws JSONException {
+    public RefListGetTask(String username, RefListGetTaskListener listener) throws JSONException {
+        this.listener = listener;
+        String url = "http://121.181.25.225:8080/ref/list/" + username;
 
-        String url = "http://58.224.91.191:8080/ref/list/"+username;
-
-        //request 작성
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder().url(url).get().build();
 
-        //응답 콜백
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(@NonNull Call call, @NonNull IOException e) {
                 e.printStackTrace();
             }
+
             @Override
             public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
-                if(!response.isSuccessful()){
-                    //응답 실패
-                    Log.i("tag", "응답실패");
-                }else{
-                    //응답성공
+                if (!response.isSuccessful()) {
+                    Log.i(TAG, "응답실패");
+                } else {
                     final String responseData = response.body().string();
-                    Log.i("tag", "응답성공"+responseData);
-                }
+                    Log.i(TAG, "응답성공" + responseData);
+                    try {
+                        ObjectMapper objectMapper = new ObjectMapper();
+                        refList = objectMapper.readValue(responseData, new TypeReference<List<RefObj>>() {});
+                        Log.i("tag", "refList" + refList.toString());
+
+                        // Notify listener on the main thread
+                        new Handler(Looper.getMainLooper()).post(() -> listener.onRefListReceived(refList));
+                    } catch (IOException e) {
+                        Log.e(TAG, "JSON parsing error", e);
+                    }}
             }
         });
-
-    }
-    public ArrayList<RefObj> getList(){
-        return reflist;
     }
 }

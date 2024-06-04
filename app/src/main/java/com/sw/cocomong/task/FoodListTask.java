@@ -26,7 +26,8 @@ public class FoodListTask extends AsyncTask<String, Void, String> {
     protected String doInBackground(String... strings) {
         try {
             String str;
-            URL url = new URL("http://58.224.91.191:8080/join");  // 어떤 서버에 요청할지(localhost 안됨.)
+            //URL url = new URL("http://58.224.91.191:8080/join");  // 어떤 서버에 요청할지(localhost 안됨.)
+            URL url = new URL("http://121.181.25.225:8080/join");
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             this.conn=conn;
 
