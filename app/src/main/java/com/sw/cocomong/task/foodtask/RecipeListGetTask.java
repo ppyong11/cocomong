@@ -1,10 +1,10 @@
 package com.sw.cocomong.task.foodtask;
 
+
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.sw.cocomong.Object.FoodObj;
 import com.sw.cocomong.Object.FoodResObj;
 
 import org.json.JSONException;
@@ -17,12 +17,13 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-public class FoodDetailTask {
-    FoodResObj foodResObj;
-    public FoodDetailTask(int foodid) throws JSONException, IOException {
+public class RecipeListGetTask {
 
-        //String url = "http://58.224.91.191:8080/foods/"+foodid;
-        String url = "http://58.224.91.191:8080/foods/"+foodid;
+    public RecipeListGetTask() {
+
+        Log.i("tag","실행됨");
+        String url = "http://58.224.91.191:8080/recipe/get";
+        //String url = "http://121.181.25.225:8080/recipe/get";
 
         //request 작성
         OkHttpClient client = new OkHttpClient();
@@ -37,19 +38,17 @@ public class FoodDetailTask {
 
             @Override
             public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
-                if(!response.isSuccessful()){
+                if (!response.isSuccessful()) {
                     //응답실패
-                    Log.i("tag", "응답실패");
-                }else{
+                    Log.w("tag", "응답실패");
+                } else {
                     //응답성공
                     final String responseData = response.body().string();
-                    Log.i("tag", "응답성공"+responseData);
+                    Log.w("tag", "응답성공" + responseData);
+                    System.out.println(responseData);
                 }
             }
         });
 
-    }
-    public FoodResObj getFoodResObj(){
-        return foodResObj;
     }
 }

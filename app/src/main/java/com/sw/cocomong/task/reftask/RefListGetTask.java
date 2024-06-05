@@ -33,7 +33,7 @@ public class RefListGetTask {
 
     public RefListGetTask(String username, RefListGetTaskListener listener) throws JSONException {
         this.listener = listener;
-        String url = "http://121.181.25.225:8080/ref/list/" + username;
+        String url = "http://58.224.91.191:8080/ref/list/" + username;
 
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder().url(url).get().build();
