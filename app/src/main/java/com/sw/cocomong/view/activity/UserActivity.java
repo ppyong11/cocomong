@@ -87,7 +87,7 @@ public class UserActivity extends AppCompatActivity implements FoodListGetTask.F
         Bundle extras=intent.getExtras();
         refname=extras.getString("refname");  // 냉장고 위치 받아옴
         username=extras.getString("username");  // username 받아옴
-        // refnum=extras.getString("refnum");
+        refnum=extras.getString("refnum");
         try {
             new FoodListGetTask(username, refname,this);  // foodlist 요청
             //new RefListGetTask("dahee",this);                    // 냉장고 정보 받아옴

@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.sw.cocomong.Object.RefObj;
 import com.sw.cocomong.R;
+import com.sw.cocomong.task.foodtask.RecipeListGetTask;
 import com.sw.cocomong.task.reftask.RefListGetTask;
 import com.sw.cocomong.view.adapter.RefAdapter;
 
@@ -37,7 +38,7 @@ public class RefridgeActivity extends AppCompatActivity implements RefListGetTas
         Intent nameIntent=getIntent();
         Bundle nameExtras=nameIntent.getExtras();
        // username=nameExtras.getString("username");
-        username="dahee";
+        username="greatcloud13";
         try {
             new RefListGetTask(username, this);
             //refList=refListGetTask.getList();
