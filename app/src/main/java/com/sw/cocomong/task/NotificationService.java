@@ -1,8 +1,10 @@
+
 package com.sw.cocomong.task;
 
 import static com.sw.cocomong.task.BackgroundService.NOTIFICATION_ID;
 
 import android.Manifest;
+import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -18,6 +20,8 @@ import androidx.core.app.NotificationManagerCompat;
 
 import com.sw.cocomong.R;
 import com.sw.cocomong.view.activity.UserActivity;
+
+import java.util.List;
 
 public class NotificationService {
     static String CHANNEL_NAME = "Food Expiry Notifications";
@@ -40,15 +44,37 @@ public class NotificationService {
         Log.d("NotificationService", "Foreground 채널 생성 완료");
     }
 
-    public static void showNotification(Context context, String foodName, String expireDate) {
+    public static Notification showNotification(BackgroundService backgroundService, Integer count, String userName, List<List<String>> foodInfoList) {
+        // showNotification 메서드의 매개변수에 BackgroundService 인스턴스를 추가
+        Context context= backgroundService;
+        if(context == null){
+            Log.d("ccc", "null임");
+        }else
+            Log.d("ccc", "null아님");
         Intent notificationIntent = new Intent(context, UserActivity.class);
-
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, notificationIntent, PendingIntent.FLAG_MUTABLE);
+        int notificationId = NOTIFICATION_ID + count;
+        String refName= "";
+        String state= "";
+        // 여러 음식의 정보를 문자열로 만들기
+        StringBuilder contentTextBuilder = new StringBuilder();
+        for (List<String> foodInfo : foodInfoList) {
+            state= foodInfo.get(0);
+            refName= foodInfo.get(1);
+            String foodName = foodInfo.get(2);
+            String expireDate = foodInfo.get(3);
+            Log.d("Noti", state+refName+foodName+expireDate);
+            if (state.equals("만료"))
+                contentTextBuilder.append(foodName).append("의 유통기한이 ").append(expireDate).append("로 상했어요 ㅠ.ㅠ\n");
+            else
+                contentTextBuilder.append(foodName).append("의 유통기한이 ").append(expireDate).append("까지예요!\n");
+        }
+        String contentText = contentTextBuilder.toString().trim();
 
         // 팝업 알림 스타일 생성
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
-                .setContentTitle("유통기한 알림")
-                .setContentText(foodName + "의 유통기한이 " + expireDate + "까지입니다.")
+                .setContentTitle(userName+" 님! "+ refName+"의 음식이 상해 가고 있어요!"+" \uD83D\uDE22") //이모지: \uD83D\uDE22
+                .setContentText(contentText)
                 .setSmallIcon(R.drawable.notification_icon)
                 .setPriority(NotificationCompat.PRIORITY_MAX) // 팝업 알림의 우선순위를 높임
                 .setDefaults(NotificationCompat.DEFAULT_SOUND | NotificationCompat.DEFAULT_VIBRATE)
@@ -56,14 +82,19 @@ public class NotificationService {
                 .setContentIntent(pendingIntent)
                 .setAutoCancel(true);
 
+        // 접기/펼치기 기능 추가
+        NotificationCompat.Style style = new NotificationCompat.BigTextStyle()
+                .bigText(contentText); // 긴 텍스트 설정
+        builder.setStyle(style);
+
+        Notification notification = builder.build();
+
         // 알림 표시
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
         if (ActivityCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
             Log.d("NotificationService", "권한 없음");
-            // 권한이 없는 경우 알림을 표시하지 않음
-            return;
         }
-        notificationManager.notify(NOTIFICATION_ID, builder.build());
+        notificationManager.notify(notificationId, notification);
+        return notification;
     }
-
 }

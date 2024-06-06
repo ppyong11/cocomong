@@ -1,22 +1,28 @@
 package com.sw.cocomong.view.activity;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ListView;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.sw.cocomong.Object.RefObj;
 import com.sw.cocomong.R;
+import com.sw.cocomong.task.BackgroundService;
 import com.sw.cocomong.task.reftask.RefListGetTask;
 import com.sw.cocomong.view.adapter.RefAdapter;
 
 import org.json.JSONException;
 
-import java.sql.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,11 +30,11 @@ public class RefridgeActivity extends AppCompatActivity implements RefListGetTas
 
     ListView list;
     ImageButton refAdd, setting;
-
+    private static final int REQUEST_SYSTEM_ALERT_WINDOW = 123;
     RefAdapter refAdapter;
     List<RefObj> refObjs=new ArrayList<>();
-    String username;
 
+    String username;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -36,12 +42,13 @@ public class RefridgeActivity extends AppCompatActivity implements RefListGetTas
         setContentView(R.layout.refridge_list);
         Intent nameIntent=getIntent();
         Bundle nameExtras=nameIntent.getExtras();
-       // username=nameExtras.getString("username");
-        username="dahee";
+        // username=nameExtras.getString("username");
+        username="kah";
         try {
             new RefListGetTask(username, this);
             //refList=refListGetTask.getList();
         } catch (JSONException e) {
+            Log.d("RefListGetTask", "안됨");
             throw new RuntimeException(e);
         }
 
@@ -49,8 +56,7 @@ public class RefridgeActivity extends AppCompatActivity implements RefListGetTas
         refAdd = findViewById(R.id.btn_refplus);
         setting=findViewById(R.id.btn_setting);
 
-
-        refAdapter = new RefAdapter(RefridgeActivity.this, refObjs );
+        refAdapter = new RefAdapter(RefridgeActivity.this, refObjs);
         list.setAdapter(refAdapter);
 
         list.setOnItemClickListener((parent, view, position, id) -> {
@@ -96,14 +102,66 @@ public class RefridgeActivity extends AppCompatActivity implements RefListGetTas
         refAdapter.notifyDataSetChanged();
     }
 
+    //데이터를 background로 보내기 위해 해당 함수 내에 코드 첨부
     @Override
     public void onRefListReceived(List<RefObj> refObjs) {
         this.refObjs.clear();
         this.refObjs.addAll(refObjs);
         updateRefUI();
+
+        //background 인텐트 실행 및 refObjs 데이터 보내기
+        Intent serviceIntent = new Intent(this, BackgroundService.class);
+        //RefObj 객체의 모든 refName 리스트에 추가
+        ArrayList<String> refNames = new ArrayList<>();
+        for (RefObj refObj : refObjs) {
+            refNames.add(refObj.getRefName());
+        }
+        serviceIntent.putStringArrayListExtra("refNames", refNames);
+        serviceIntent.putExtra("userName",username);
+        startService(serviceIntent);
+        Log.d("refActivity", "BackgroundService 시작됨");
     }
     private void updateRefUI() {
         refAdapter.notifyDataSetChanged();
     }
 
+    //백그라운드 알림 권한
+    //백그라운드 알림 권한
+    // 시스템 오버레이 권한을 확인하고 요청합니다.
+    private void checkSystemAlertWindowPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (!Settings.canDrawOverlays(this)) {
+                requestAlertWindowPermission();
+            } else {
+                // 이미 권한이 있는 경우 알림을 표시합니다.
+                Log.d("ref: 알림 권한","권한 O");
+            }
+        }
+    }
+
+    // 권한 요청 후 처리를 위한 메서드입니다.
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == REQUEST_SYSTEM_ALERT_WINDOW) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // 권한이 부여되면 알림을 표시합니다.
+                Log.d("ref: 알림 권한","권한 O");
+            }
+        }
+    }
+
+    // 시스템 오버레이 권한을 요청합니다.
+    private void requestAlertWindowPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (!Settings.canDrawOverlays(this)) {
+                Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                        Uri.parse("package:" + getPackageName()));
+                startActivityForResult(intent, REQUEST_SYSTEM_ALERT_WINDOW);
+            } else {
+                // 이미 권한이 있는 경우 알림을 표시합니다.
+                Log.d("ref: 알림 권한","권한 O");
+            }
+        }
+    }
 }

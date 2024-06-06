@@ -21,8 +21,9 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class FoodAddTask {
-    //static String url = "http://58.224.91.191:8080/foods/post";
-    static String url = "http://121.181.25.225:8080/foods/post";
+    //static String url = "http://58.224.91.191:8080/foods/post"; 차차
+    //static String url = "http://121.181.25.225:8080/foods/post"; 다희
+    static String url = "http://192.168.219.144:8080/foods/post"; //아현
     public FoodAddTask(FoodResObj foodResObj) throws JSONException {
 
         //Request에 사용할 JSON 작성

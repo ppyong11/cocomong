@@ -24,7 +24,7 @@ import okhttp3.Response;
 
 public class RefListGetTask {
     private static final String TAG = "RefListGetTask";
-    private List<RefObj> refList;
+    public List<RefObj> refList;
     private final RefListGetTaskListener listener;
 
     public interface RefListGetTaskListener {
@@ -33,7 +33,8 @@ public class RefListGetTask {
 
     public RefListGetTask(String username, RefListGetTaskListener listener) throws JSONException {
         this.listener = listener;
-        String url = "http://121.181.25.225:8080/ref/list/" + username;
+        //String url = "http://121.181.25.225:8080/ref/list/" + username; 다희
+        String url = "http://192.168.219.144:8080/ref/list/" + username; //아현
 
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder().url(url).get().build();
@@ -55,7 +56,6 @@ public class RefListGetTask {
                         ObjectMapper objectMapper = new ObjectMapper();
                         refList = objectMapper.readValue(responseData, new TypeReference<List<RefObj>>() {});
                         Log.i("tag", "refList" + refList.toString());
-
                         // Notify listener on the main thread
                         new Handler(Looper.getMainLooper()).post(() -> listener.onRefListReceived(refList));
                     } catch (IOException e) {

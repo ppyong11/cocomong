@@ -73,7 +73,6 @@ public class FoodAddSelectActivity extends AppCompatActivity {
                     galleryIntent.putExtra("username",username);
                     galleryIntent.putExtra("refnum",refnum);
                     activityResultLauncher.launch(galleryIntent);
-                    finish();
 
                 } else if (p.getItemId()==R.id.select_camera) {
                     Toast.makeText(this, "카메라 찍기 선택", Toast.LENGTH_SHORT).show();
