@@ -196,7 +196,7 @@ public class FoodInfoActivity extends AppCompatActivity {
             // 데이터 삭제
             //RefFoodMap.getFoodListItemDtos(refListItemDto).remove(foodPosition);
             try {
-                FoodDeleteTask foodDeleteTask = new FoodDeleteTask(foodResObj);
+                FoodDeleteTask foodDeleteTask = new FoodDeleteTask(32);
             } catch (JSONException e) {
                 throw new RuntimeException(e);
             } catch (IOException e) {

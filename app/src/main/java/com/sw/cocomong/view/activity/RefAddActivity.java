@@ -12,10 +12,12 @@ import com.sw.cocomong.Object.RefObj;
 import com.sw.cocomong.R;
 import com.sw.cocomong.dto.RefFoodMap;
 import com.sw.cocomong.dto.RefListItemDto;
+import com.sw.cocomong.task.foodtask.FoodDeleteTask;
 import com.sw.cocomong.task.reftask.RefAddTask;
 
 import org.json.JSONException;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class RefAddActivity extends Activity {
@@ -41,17 +43,20 @@ public class RefAddActivity extends Activity {
         et_refName.setEnabled(true);
 
         btn_cancel.setOnClickListener(v->{
+            try {
+                RefAddTask refAddTask = new RefAddTask("test1", "test2");
+                FoodDeleteTask foodDeleteTask = new FoodDeleteTask(31);
+            } catch (JSONException e) {
+                throw new RuntimeException(e);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
             finish();
         });
 
         btn_ok.setOnClickListener(v->{
 
-            try {
-                RefAddTask refAddTask = new RefAddTask(et_refName.getText().toString(),username);
-            } catch (JSONException e) {
-                throw new RuntimeException(e);
-            }
-            finish();
+
         });
     }
 }
