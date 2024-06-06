@@ -22,7 +22,6 @@ import com.sw.cocomong.Object.FoodResObj;
 import com.sw.cocomong.R;
 import com.sw.cocomong.dto.RefListItemDto;
 import com.sw.cocomong.task.BackgroundService;
-import com.sw.cocomong.task.FoodSharedPreference;
 import com.sw.cocomong.task.NotificationService;
 import com.sw.cocomong.task.foodtask.FoodDeleteTask;
 import com.sw.cocomong.task.foodtask.FoodDetailTask;
@@ -63,7 +62,7 @@ public class UserActivity extends AppCompatActivity implements FoodListGetTask.F
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.food_list);
-
+/*
         // SharedPreferences 데이터 불러오기
         FoodSharedPreference foodSharedPreference = new FoodSharedPreference(this);
         Map<String, String> foodData = foodSharedPreference.getFoodData();
@@ -78,7 +77,7 @@ public class UserActivity extends AppCompatActivity implements FoodListGetTask.F
                 System.out.println("Food Name: " + foodName + ", Expire Date: " + expireDate);
             }
         }
-
+*/
         Intent serviceIntent = new Intent(this, BackgroundService.class);
         startService(serviceIntent);
         Log.d("UserActivity", "BackgroundService 시작됨");
@@ -91,7 +90,7 @@ public class UserActivity extends AppCompatActivity implements FoodListGetTask.F
         try {
             new FoodListGetTask(username, refname,this);  // foodlist 요청
             //new RefListGetTask("dahee",this);                    // 냉장고 정보 받아옴
-            FoodDetailTask foodDetailTask = new FoodDetailTask(27);                                  //음식상세정보
+           // FoodDetailTask foodDetailTask = new FoodDetailTask(27);                                  //음식상세정보
             //foodResObjs=listGetTask;
             foodResObjs.forEach(foodResObj -> {
                 if(foodResObj.getFavorite().equals("true")) favoriteList.add(foodResObj);

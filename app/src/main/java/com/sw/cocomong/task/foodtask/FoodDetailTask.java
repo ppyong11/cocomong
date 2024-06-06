@@ -22,7 +22,7 @@ public class FoodDetailTask {
     public FoodDetailTask(int foodid) throws JSONException, IOException {
 
         //String url = "http://58.224.91.191:8080/foods/"+foodid;
-        String url = "http://58.224.91.191:8080/foods/"+foodid;
+        String url = "http://121.150.122.246:8080/foods/"+foodid;  // dahee laptop
 
         //request 작성
         OkHttpClient client = new OkHttpClient();

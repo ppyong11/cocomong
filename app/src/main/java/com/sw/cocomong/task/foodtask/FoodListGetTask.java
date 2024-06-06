@@ -25,16 +25,10 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class FoodListGetTask {
-    /*
-     * 차차 주소
-     */
-    static String url = "http://58.224.91.191:8080/foods/list/asc";
 
-
-    /*
-     * 다히 주소
-     */
+    //static String url = "http://58.224.91.191:8080/foods/list/asc";
     //static String url = "http://121.181.25.225:8080/foods/list/asc";
+    String url = "http://121.150.122.246:8080/foods/list/asc";  // dahee laptop
 
     private List<FoodResObj> foodResObjs;
     private final FoodListGetTaskListener listener;

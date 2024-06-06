@@ -1,4 +1,4 @@
-package com.sw.cocomong.task;
+/*package com.sw.cocomong.task;
 
 import android.os.AsyncTask;
 import android.util.Log;
@@ -26,8 +26,10 @@ public class FoodListTask extends AsyncTask<String, Void, String> {
     protected String doInBackground(String... strings) {
         try {
             String str;
-            URL url = new URL("http://58.224.91.191:8080/join");  // 어떤 서버에 요청할지(localhost 안됨.)
+            //URL url = new URL("http://58.224.91.191:8080/join");  // 어떤 서버에 요청할지(localhost 안됨.)
             //URL url = new URL("http://121.181.25.225:8080/join");
+            URL url = new URL("http://121.150.122.246:8080/join");  // dahee laptop
+
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             this.conn=conn;
 
@@ -64,3 +66,4 @@ public class FoodListTask extends AsyncTask<String, Void, String> {
         return receiveMsg;
     }
 }
+*/

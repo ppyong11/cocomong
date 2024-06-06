@@ -37,8 +37,8 @@ public class RefridgeActivity extends AppCompatActivity implements RefListGetTas
         setContentView(R.layout.refridge_list);
         Intent nameIntent=getIntent();
         Bundle nameExtras=nameIntent.getExtras();
-       // username=nameExtras.getString("username");
-        username="greatcloud13";
+        username=nameExtras.getString("username");
+        //username="greatcloud13";
         try {
             new RefListGetTask(username, this);
             //refList=refListGetTask.getList();
