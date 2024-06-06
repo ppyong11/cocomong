@@ -25,7 +25,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FoodAdapter extends ArrayAdapter<FoodResObj>{
+public class FoodAdapter extends ArrayAdapter<FoodResObj> implements FoodEditTask.FoodEditTaskListener {
     private final Activity context;
    // private List<FoodListItemDto> foodListItemDtos;
    // private FoodListItemDto foodListItemDto;
@@ -76,16 +76,21 @@ public class FoodAdapter extends ArrayAdapter<FoodResObj>{
 
         return rowView;
     }
-    public void setFavoriteItems(int position, boolean isFavorite) throws JSONException, IOException {
+    public void setFavoriteItems(int position, boolean isFavorite) throws JSONException, IOException  {
         FoodResObj favObj= foodResObjs.get(position);
         if(isFavorite){
             favObj.setFavorite("true");
 
-            FoodEditTask foodEditTask = new FoodEditTask(favObj);
+            FoodEditTask foodEditTask = new FoodEditTask(favObj,this);
         }else {
             favObj.setFavorite("false");
-            FoodEditTask foodEditTask = new FoodEditTask(favObj);
+            FoodEditTask foodEditTask = new FoodEditTask(favObj,this);
         }
        notifyDataSetChanged();
+    }
+
+    @Override
+    public void onFoodEditReceived(FoodResObj foodResObj) {
+
     }
 }

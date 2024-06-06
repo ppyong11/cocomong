@@ -11,10 +11,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.TextView;
-
-import androidx.privacysandbox.tools.core.model.Method;
-
-import com.bumptech.glide.request.Request;
 import com.sw.cocomong.Object.FoodResObj;
 import com.sw.cocomong.R;
 import com.sw.cocomong.task.foodtask.FoodEditTask;
@@ -30,7 +26,7 @@ import java.util.List;
 
 import okhttp3.Response;
 
-public class RecipeAdapter<StringRequest> extends ArrayAdapter<FoodResObj>{
+public class RecipeAdapter<StringRequest> extends ArrayAdapter<FoodResObj> implements FoodEditTask.FoodEditTaskListener {
     private final Activity context;
    // private List<FoodListItemDto> foodListItemDtos;
    // private FoodListItemDto foodListItemDto;
@@ -86,15 +82,18 @@ public class RecipeAdapter<StringRequest> extends ArrayAdapter<FoodResObj>{
         if(isRecipe){
             favObj.setFavorite("true");
 
-            FoodEditTask foodEditTask = new FoodEditTask(favObj);
+            FoodEditTask foodEditTask = new FoodEditTask(favObj,this);
         }else {
             favObj.setFavorite("false");
-            FoodEditTask foodEditTask = new FoodEditTask(favObj);
+            FoodEditTask foodEditTask = new FoodEditTask(favObj,this);
         }
        notifyDataSetChanged();
     }
 
 
+    @Override
+    public void onFoodEditReceived(FoodResObj foodResObj) {
 
+    }
 }
 

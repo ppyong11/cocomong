@@ -95,30 +95,31 @@ public class BarcodeScanner extends AppCompatActivity {
             String expireCheck= expire_et.getText().toString();
             boolean isMatch = Pattern.matches(dateRegex,expireCheck);
             if(isMatch) {
-                foodName_et.setEnabled(false);
-                category_tv.setEnabled(false);
-                btnCategory.setEnabled(false);
-                expire_et.setEnabled(false);
-                memo_et.setEnabled(false);
+                if (foodName_et.getText().length()!=0){
+                    foodName_et.setEnabled(false);
+                    category_tv.setEnabled(false);
+                    btnCategory.setEnabled(false);
+                    expire_et.setEnabled(false);
+                    memo_et.setEnabled(false);
 
-                String foodname= foodName_et.getText().toString();
-                String expiredate= expire_et.getText().toString();
-                String category=category_tv.getText().toString();
-                String memo=memo_et.getText().toString();
-                //foodListItemDto = new FoodListItemDto(foodImageBitmap, foodName.getText().toString(), category.getText().toString(), expire.getText().toString(), memo.getText().toString(), false, refListItemDto.getRefId());
-                foodResObj = new FoodResObj(null,foodname,username,expiredate,category,memo,"false",refname);
+                    String foodname= foodName_et.getText().toString();
+                    String expiredate= expire_et.getText().toString();
+                    String category=category_tv.getText().toString();
+                    String memo=memo_et.getText().toString();
+                    //foodListItemDto = new FoodListItemDto(foodImageBitmap, foodName.getText().toString(), category.getText().toString(), expire.getText().toString(), memo.getText().toString(), false, refListItemDto.getRefId());
+                    foodResObj = new FoodResObj(null,username,foodname,expiredate,category,memo,"false",refname);
+                    try {
+                        FoodAddTask foodAddTask = new FoodAddTask(foodResObj);
+                    } catch (JSONException e) {
+                        throw new RuntimeException(e);
+                    }
 
-                try {
-                    FoodAddTask foodAddTask = new FoodAddTask(foodResObj);
-                } catch (JSONException e) {
-                    throw new RuntimeException(e);
-                }
+                    save.setVisibility(View.GONE);
+                    finish();
+                } else Toast.makeText(this, "이름을 다시 입력하세요",Toast.LENGTH_SHORT).show();
 
-                save.setVisibility(View.GONE);
-                finish();
             } else Toast.makeText(this, "유통기한을 다시 입력하세요",Toast.LENGTH_SHORT).show();
         });
-
 
         expire_et.addTextChangedListener(new TextWatcher(){
             @Override
@@ -238,5 +239,11 @@ public class BarcodeScanner extends AppCompatActivity {
         else if (category.equals("가공식품")) return "가공식품";
         else if (category.equals("음료수")) return "음료수";
         else return "기타";
+    }
+
+    @Override
+    protected void onPause() {
+
+        super.onPause();
     }
 }

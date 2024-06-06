@@ -31,7 +31,7 @@ import java.io.IOException;
 import java.util.regex.Pattern;
 
 // foodList를 통해서 들어와서 수정
-public class FoodInfoActivity extends AppCompatActivity {
+public class FoodInfoActivity extends AppCompatActivity implements FoodDetailTask.FoodDetailTaskListener, FoodEditTask.FoodEditTaskListener {
     TextView title, category;
     ImageButton back, edit;
     Button save, delete, btnCategory;
@@ -42,10 +42,9 @@ public class FoodInfoActivity extends AppCompatActivity {
     Bitmap foodImageBitmap;
     //int foodPosition, refPosition;
     String dateRegex = "^(?:(?:19|20)\\d{2})/(0[1-9]|1[0-2])/(0[1-9]|1\\d|2[0-8]|29(?!/02)|30(?!/02|/04|/06|/09|/11)|31(?=/0[13578]|/1[02]))$|^(?:(?:19|20)(?:[02468][048]|[13579][26]))/02/29$";
-    String username, foodname, refname;
+    String username, foodname, refname,foodid;
     //FoodObj foodObj;
     FoodResObj foodResObj;
-    int foodid;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,11 +55,10 @@ public class FoodInfoActivity extends AppCompatActivity {
         username = extras.getString("username");
         refname = extras.getString("refname");
         foodname = extras.getString("foodname");
-        foodid = extras.getInt("foodid");
+        foodid = extras.getString("foodid");
         //refListItemDto=RefFoodMap.getRefListItemDtos().get(refPosition);
         try {
-            FoodDetailTask foodDetailTask = new FoodDetailTask(foodid);
-            foodResObj=foodDetailTask.getFoodResObj();
+            new FoodDetailTask(foodid,this);
         } catch (JSONException e) {
             throw new RuntimeException(e);
         } catch (IOException e) {
@@ -87,13 +85,6 @@ public class FoodInfoActivity extends AppCompatActivity {
         expire.setEnabled(false);
         memo.setEnabled(false);
 
-        // foodImageBitmap = foodObj.getFoodImage();
-        foodImage.setImageBitmap(foodImageBitmap);
-        title.setText(foodResObj.getFoodname());
-        foodName_et.setText(foodResObj.getFoodname());
-        category.setText(foodResObj.getCategory());
-        expire.setText(foodResObj.getExpiredate());
-        memo.setText(foodResObj.getMemo());
 
         back.setOnClickListener(v -> {
             finish();
@@ -134,7 +125,7 @@ public class FoodInfoActivity extends AppCompatActivity {
                 foodResObj.setMemo(memo.getText().toString());
 
                 try {
-                    FoodEditTask foodEditTask = new FoodEditTask(foodResObj);
+                    new FoodEditTask(foodResObj,this);
                 } catch (JSONException e) {
                     throw new RuntimeException(e);
                 } catch (IOException e) {
@@ -218,5 +209,57 @@ public class FoodInfoActivity extends AppCompatActivity {
                 category.setText(selectedCategory);
             }
         }
+    }
+
+    @Override
+    public void onFoodDetailReceived(FoodResObj foodResObj) {
+        this.foodResObj=foodResObj;
+
+        foodImage = findViewById(R.id.food_image);
+        title = findViewById(R.id.tv_infoTitle);
+        back = findViewById(R.id.btn_back);
+        edit = findViewById(R.id.btn_edit);
+        save = findViewById(R.id.btn_save);
+        delete = findViewById(R.id.btn_delete);
+        foodName_et = findViewById(R.id.et_infoFoodName);
+        btnCategory = findViewById(R.id.btn_infoCategory);
+        category = findViewById(R.id.tv_category);
+        expire = findViewById(R.id.et_infoExpire);
+        memo = findViewById(R.id.et_memo);
+
+
+        // foodImageBitmap = foodObj.getFoodImage();
+        foodImage.setImageBitmap(foodImageBitmap);
+        title.setText(foodResObj.getFoodname());
+        foodName_et.setText(foodResObj.getFoodname());
+        category.setText(foodResObj.getCategory());
+        expire.setText(foodResObj.getExpiredate());
+        memo.setText(foodResObj.getMemo());
+    }
+
+    @Override
+    public void onFoodEditReceived(FoodResObj foodResObj) {
+        this.foodResObj=foodResObj;
+
+        foodImage = findViewById(R.id.food_image);
+        title = findViewById(R.id.tv_infoTitle);
+        back = findViewById(R.id.btn_back);
+        edit = findViewById(R.id.btn_edit);
+        save = findViewById(R.id.btn_save);
+        delete = findViewById(R.id.btn_delete);
+        foodName_et = findViewById(R.id.et_infoFoodName);
+        btnCategory = findViewById(R.id.btn_infoCategory);
+        category = findViewById(R.id.tv_category);
+        expire = findViewById(R.id.et_infoExpire);
+        memo = findViewById(R.id.et_memo);
+
+
+        // foodImageBitmap = foodObj.getFoodImage();
+        foodImage.setImageBitmap(foodImageBitmap);
+        title.setText(foodResObj.getFoodname());
+        foodName_et.setText(foodResObj.getFoodname());
+        category.setText(foodResObj.getCategory());
+        expire.setText(foodResObj.getExpiredate());
+        memo.setText(foodResObj.getMemo());
     }
 }

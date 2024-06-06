@@ -1,6 +1,7 @@
 package com.sw.cocomong.view.activity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -37,8 +38,9 @@ public class RefridgeActivity extends AppCompatActivity implements RefListGetTas
         setContentView(R.layout.refridge_list);
         Intent nameIntent=getIntent();
         Bundle nameExtras=nameIntent.getExtras();
-        username=nameExtras.getString("username");
-        //username="greatcloud13";
+        SharedPreferences sh = getSharedPreferences("UserSharedPref", MODE_PRIVATE);
+        username=sh.getString("username", "");  // login name
+
         try {
             new RefListGetTask(username, this);
             //refList=refListGetTask.getList();
@@ -68,7 +70,7 @@ public class RefridgeActivity extends AppCompatActivity implements RefListGetTas
                                            int position, long id) {
                 Intent intent = new Intent(RefridgeActivity.this, RefDeleteActivity.class);
                 intent.putExtra("refname", refObjs.get(position).getRefName());
-                //intent.putExtra("refnum",refObjs.get(position).getRefnum());
+                intent.putExtra("refnum",refObjs.get(position).getRefid());
                 intent.putExtra("username",username);
                 startActivity(intent);
                 refAdapter.notifyDataSetChanged();
@@ -94,6 +96,11 @@ public class RefridgeActivity extends AppCompatActivity implements RefListGetTas
     @Override
     protected void onResume() {
         super.onResume();
+        try {
+            new RefListGetTask(username,this);
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
         refAdapter.notifyDataSetChanged();
     }
 

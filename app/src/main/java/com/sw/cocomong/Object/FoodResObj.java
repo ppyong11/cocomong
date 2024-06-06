@@ -22,11 +22,11 @@ import lombok.ToString;
 public class FoodResObj {
     private String idx;
     private String username;
-    private String refname;
     private String foodname;
     private String expiredate;
     private String category;
     private String memo;
     private String favorite;
+    private String refname;
 
 }

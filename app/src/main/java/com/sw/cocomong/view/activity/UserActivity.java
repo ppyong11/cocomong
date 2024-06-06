@@ -62,6 +62,10 @@ public class UserActivity extends AppCompatActivity implements FoodListGetTask.F
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.food_list);
+        Intent intent=getIntent();
+        Bundle extras=intent.getExtras();
+        refname=extras.getString("refname");  // 냉장고 위치 받아옴
+        username=extras.getString("username");  // username 받아옴
 /*
         // SharedPreferences 데이터 불러오기
         FoodSharedPreference foodSharedPreference = new FoodSharedPreference(this);
@@ -82,11 +86,7 @@ public class UserActivity extends AppCompatActivity implements FoodListGetTask.F
         startService(serviceIntent);
         Log.d("UserActivity", "BackgroundService 시작됨");
 
-        Intent intent=getIntent();
-        Bundle extras=intent.getExtras();
-        refname=extras.getString("refname");  // 냉장고 위치 받아옴
-        username=extras.getString("username");  // username 받아옴
-        refnum=extras.getString("refnum");
+
         try {
             new FoodListGetTask(username, refname,this);  // foodlist 요청
             //new RefListGetTask("dahee",this);                    // 냉장고 정보 받아옴
@@ -105,7 +105,7 @@ public class UserActivity extends AppCompatActivity implements FoodListGetTask.F
         list = findViewById(R.id.list_food);
         foodAdd = findViewById(R.id.btn_foodAdd);
         favorite = findViewById(R.id.btn_listFavorite);
-        recipe = findViewById(R.id.btn_mypage);
+        recipe = findViewById(R.id.btn_recipe);
         refridge=findViewById(R.id.btn_refback);
         sort=findViewById(R.id.btn_sort);
         category=findViewById(R.id.btn_list_category);
@@ -117,14 +117,13 @@ public class UserActivity extends AppCompatActivity implements FoodListGetTask.F
 
         list.setOnItemClickListener((parent, view, position, id) -> {
             String foodname = foodResObjs.get(position).getFoodname();
-            String foodid = foodResObjs.get(position).getIdx();
+            String foodid = foodResObjs.get(position).getIdx().toString();
 
             Intent foodIntent = new Intent(UserActivity.this, FoodInfoActivity.class);
             foodIntent.putExtra("username",username);
             foodIntent.putExtra("foodname", foodname);
             foodIntent.putExtra("refname",refname);
             foodIntent.putExtra("foodid",foodid);
-            foodIntent.putExtra("refnum",refnum);
             startActivity(foodIntent);
         });
 
@@ -202,6 +201,14 @@ public class UserActivity extends AppCompatActivity implements FoodListGetTask.F
     @Override
     protected void onResume() {
         super.onResume();
+        try {
+            new FoodListGetTask(username, refname,this);  // foodlist 요청
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
         foodAdapter.notifyDataSetChanged();
     }
 

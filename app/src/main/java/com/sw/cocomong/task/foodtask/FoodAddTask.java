@@ -23,20 +23,20 @@ import okhttp3.Response;
 public class FoodAddTask {
     //static String url = "http://58.224.91.191:8080/foods/post";
     //static String url = "http://58.224.91.191:8080:8080/foods/post";
-    String url = "http://121.150.122.246:8080/foods/post";  // dahee laptop
+    String url = "http://192.168.236.1:8080/foods/post";  // dahee laptop
     public FoodAddTask(FoodResObj foodResObj) throws JSONException {
 
         //Request에 사용할 JSON 작성
         JSONObject data = new JSONObject();
         //data.put("username", foodResObj.getUsername());
-        data.put("username","dahee");
+        data.put("username",foodResObj.getUsername());
         data.put("foodname", foodResObj.getFoodname());
         data.put("expiredate", foodResObj.getExpiredate());
         data.put("category", foodResObj.getCategory());
         data.put("memo", foodResObj.getMemo());
         data.put("favorite", foodResObj.getFavorite());
-        //data.put("refname", foodResObj.getRefname());
-        data.put("refname","냉장고1");
+        data.put("refname", foodResObj.getRefname());
+        //data.put("refname","냉장고1");
         RequestBody requestBody = RequestBody.create(MediaType.get("application/json; charset=utf-8"), data.toString());
 
         //request 작성
