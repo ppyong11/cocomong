@@ -35,6 +35,7 @@ public class RefDeleteActivity extends Activity {
         username=extras.getString("username");
         //refListItemDto= RefFoodMap.getRefListItemDtos().get(refPosition);
 
+
         btn_yes=findViewById(R.id.btn_yes);
         btn_no=findViewById(R.id.btn_no);
 
@@ -45,7 +46,7 @@ public class RefDeleteActivity extends Activity {
 
         btn_yes.setOnClickListener(v->{
             try {
-                RefDeleteTask refDeleteTask = new RefDeleteTask(refnum,username);
+                RefDeleteTask refDeleteTask = new RefDeleteTask(refnum);
             } catch (JSONException e) {
                 throw new RuntimeException(e);
             }
