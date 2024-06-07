@@ -79,7 +79,7 @@ public class BackgroundService extends Service {
                 int currentHour = calendar.get(Calendar.HOUR_OF_DAY);
                 int currentMinute = calendar.get(Calendar.MINUTE);
                 Log.d("BackgroundService", "Current time: " + currentHour + ":" + currentMinute);
-                if (currentHour == 6 && currentMinute == 7) {
+                if (currentHour == 6 && currentMinute == 18) {
                     getFoodList();
                 }
                 // 다음 작업을 예약
