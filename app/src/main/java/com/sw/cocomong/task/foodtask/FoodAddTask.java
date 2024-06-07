@@ -14,7 +14,6 @@ import java.io.IOException;
 
 import okhttp3.Call;
 import okhttp3.Callback;
-import okhttp3.HttpUrl;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
@@ -23,59 +22,59 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class FoodAddTask {
-    //static String url = "http://58.224.91.191:8080/foods/post"; 차차
-    //static String url = "http://121.181.25.225:8080/foods/post"; 다희
-    static String url = "http://192.168.219.144:8080/foods/post"; //아현
+    static String url = "http://192.168.236.1:8080/foods/post"; // dahee laptop
 
     public FoodAddTask(FoodResObj foodResObj, String file) throws JSONException {
-
         File img = new File(file);
 
-        //Request에 사용할 JSON 작성
+        // Create JSON data part
         JSONObject data = new JSONObject();
-        //data.put("username", foodResObj.getUsername());
-        data.put("username",foodResObj.getUsername());
+        data.put("username", foodResObj.getUsername());
         data.put("foodname", foodResObj.getFoodname());
         data.put("expiredate", foodResObj.getExpiredate());
         data.put("category", foodResObj.getCategory());
         data.put("memo", foodResObj.getMemo());
         data.put("favorite", foodResObj.getFavorite());
         data.put("refname", foodResObj.getRefname());
-        //data.put("refname","냉장고1");
-        RequestBody requestBody = RequestBody.create(MediaType.get("application/json; charset=utf-8"), data.toString());
 
-        //request 작성
-        OkHttpClient client = new OkHttpClient().newBuilder().build();
-        MediaType mediaType = MediaType.parse("text/plain");
-        RequestBody body = new MultipartBody.Builder().setType(MultipartBody.FORM)
-                .addFormDataPart("request", null, RequestBody.create(MediaType.parse("application/json"), data.toString()) )
-                .addFormDataPart("itemName", "test")
-                .addFormDataPart("file" , img.getName(), RequestBody.create(MediaType.parse("application/octet-stream"),
-                        img)).build();
+        // Create the request body
+        MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM)
+                .addFormDataPart("request", data.toString())
+                .addFormDataPart("itemName", "test"); // Replace "test" with the actual item name if needed
 
-        Request request = new Request.Builder().url(url).method("post", body).build();
+        // Add file part if file is provided
+        if (img.exists()) {
+            builder.addFormDataPart("file", img.getName(), RequestBody.create(MediaType.parse("application/octet-stream"), img));
+        }
 
-        // 응답 콜백
+        RequestBody requestBody = builder.build();
+
+        // Build the request
+        OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder()
+                .url(url)
+                .post(requestBody)
+                .build();
+
+        // Send the request
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(@NonNull Call call, @NonNull IOException e) {
                 e.printStackTrace();
             }
+
             @Override
             public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
                 if (!response.isSuccessful()) {
                     //응답 실패
                     Log.i("tag", "응답실패");
-                }else{
+                } else {
                     // 응답 성공
                     Log.i("tag", "응답성공");
                     final String responseData = response.body().string();
                     Log.i("tag", responseData);
                 }
-
             }
         });
-
     }
-
 }
