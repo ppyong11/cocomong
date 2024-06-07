@@ -29,7 +29,7 @@ public class FoodAddTask {
         //Request에 사용할 JSON 작성
         JSONObject data = new JSONObject();
         //data.put("username", foodResObj.getUsername());
-        data.put("username","dahee");
+        data.put("username",foodResObj.getUsername());
         data.put("foodname", foodResObj.getFoodname());
         data.put("expiredate", foodResObj.getExpiredate());
         data.put("category", foodResObj.getCategory());

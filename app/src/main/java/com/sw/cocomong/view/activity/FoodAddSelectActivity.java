@@ -37,7 +37,6 @@ import java.util.ArrayList;
 public class FoodAddSelectActivity extends AppCompatActivity {
 
     ImageButton photo, barcode;
-    static String uriString; //foodAdd액티비티에서 참조할 uri
 
     private String TAG = FoodAddSelectActivity.class.getSimpleName();
     private Context context = FoodAddSelectActivity.this;
@@ -80,10 +79,9 @@ public class FoodAddSelectActivity extends AppCompatActivity {
                     cameraIntent.putExtra("refname",refname);
                     cameraIntent.putExtra("username",username);
                     cameraIntent.putExtra("refnum",refnum);
-                    cameraIntent.putExtra("method","camera");
                     startActivity(cameraIntent);
-                    finish();
                 }
+                finish();
                 return false;
             });
             sortMenu.show();
@@ -119,10 +117,9 @@ public class FoodAddSelectActivity extends AppCompatActivity {
                             if (uri != null) {
                                 Log.d("uri", "uri 받아옴");
                                 // URI를 String으로 변환하여 TensorTask로 전달
-                                uriString = uri.toString();
-                                Log.d("uri", uriString);
+                                Log.d("uri", uri.toString());
                                 Intent foodAddIntent = new Intent(FoodAddSelectActivity.this, FoodAddActivity.class);
-                                foodAddIntent.putExtra("method", "gallery");
+                                foodAddIntent.putExtra("uri", uri.toString());
                                 foodAddIntent.putExtra("refname",refname);
                                 foodAddIntent.putExtra("username",username);
                                 foodAddIntent.putExtra("refnum",refnum);
