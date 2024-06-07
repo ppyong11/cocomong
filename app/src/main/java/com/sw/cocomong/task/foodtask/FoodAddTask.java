@@ -9,12 +9,14 @@ import com.sw.cocomong.Object.FoodResObj;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.io.IOException;
 
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.HttpUrl;
 import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -24,7 +26,9 @@ public class FoodAddTask {
     //static String url = "http://58.224.91.191:8080/foods/post";
     //static String url = "http://58.224.91.191:8080:8080/foods/post";
     String url = "http://192.168.236.1:8080/foods/post";  // dahee laptop
-    public FoodAddTask(FoodResObj foodResObj) throws JSONException {
+    public FoodAddTask(FoodResObj foodResObj, String file) throws JSONException {
+
+        File img = new File(file);
 
         //Request에 사용할 JSON 작성
         JSONObject data = new JSONObject();
@@ -40,8 +44,15 @@ public class FoodAddTask {
         RequestBody requestBody = RequestBody.create(MediaType.get("application/json; charset=utf-8"), data.toString());
 
         //request 작성
-        OkHttpClient client = new OkHttpClient();
-        Request request = new Request.Builder().url(url).post(requestBody).build();
+        OkHttpClient client = new OkHttpClient().newBuilder().build();
+        MediaType mediaType = MediaType.parse("text/plain");
+        RequestBody body = new MultipartBody.Builder().setType(MultipartBody.FORM)
+                .addFormDataPart("request", null, RequestBody.create(MediaType.parse("application/json"), data.toString()) )
+                .addFormDataPart("itemName", "test")
+                .addFormDataPart("file" , img.getName(), RequestBody.create(MediaType.parse("application/octet-stream"),
+                        img)).build();
+
+        Request request = new Request.Builder().url(url).method("post", body).build();
 
         // 응답 콜백
         client.newCall(request).enqueue(new Callback() {
