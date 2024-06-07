@@ -3,6 +3,7 @@ package com.sw.cocomong.view.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -26,8 +27,8 @@ public class RefAddActivity extends Activity implements RefListGetTask.RefListGe
     Button btn_cancel, btn_ok;
     // RefListItemDto refListItemDto;
     RefObj refObj;
-    List<RefObj> refObjs;
-    List<String> refNames;
+    List<RefObj> refObjs=new ArrayList<>();
+    List<String> refNames=new ArrayList<>();
     String username;
 
     @Override
@@ -45,20 +46,30 @@ public class RefAddActivity extends Activity implements RefListGetTask.RefListGe
 
         et_refName.setEnabled(true);
 
+        try {
+            new RefListGetTask(username,this);
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+
+
+        Log.i("tag",refNames.toString());
         btn_cancel.setOnClickListener(v->{
             finish();
         });
 
         btn_ok.setOnClickListener(v->{
             String refName = et_refName.getText().toString();
-            refObjs.forEach(ref-> refNames.add(ref.getRefName()));
 
-            if(refNames.contains(refName)) Toast.makeText(this,"같은 이름의 냉장고가 있습니다.",Toast.LENGTH_SHORT).show();
-            else{
+            if (refNames.contains(refName)) {
+                // refName이 refNames에 포함되어 있는 경우
+                Toast.makeText(this, "같은 이름의 냉장고가 있습니다.", Toast.LENGTH_SHORT).show();
+            } else {
+                // refName이 refNames에 포함되어 있지 않은 경우
                 try {
-                    RefAddTask refAddTask = new RefAddTask(et_refName.getText().toString(),username);
+                    RefAddTask refAddTask = new RefAddTask(refName, username);
                 } catch (JSONException e) {
-                    throw new RuntimeException(e);
+                    e.printStackTrace();
                 }
                 finish();
             }
@@ -70,5 +81,8 @@ public class RefAddActivity extends Activity implements RefListGetTask.RefListGe
     public void onRefListReceived(List<RefObj> refList) {
         refObjs.clear();
         refObjs.addAll(refList);
+        for(RefObj ref : refObjs){
+            refNames.add(ref.getRefName());
+        }
     }
 }

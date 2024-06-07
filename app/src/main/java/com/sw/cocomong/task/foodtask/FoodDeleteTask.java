@@ -23,8 +23,8 @@ import okhttp3.Response;
 public class FoodDeleteTask {
     public FoodDeleteTask(FoodResObj foodResObj) throws JSONException, IOException {
 
-       // String url = "http://192.168.236.1:8080/foods/"+foodResObj.getIdx();  // dahee laptop
-        String url = "http://192.168.219.144:8080/foods/"+foodResObj.getIdx(); //아현
+        String url = "http://192.168.236.1:8080/foods/"+foodResObj.getIdx();  // dahee laptop
+        //String url = "http://192.168.219.144:8080/foods/"+foodResObj.getIdx(); //아현
         OkHttpClient client = new OkHttpClient();
 
         Request request = new Request.Builder().url(url).delete().build();

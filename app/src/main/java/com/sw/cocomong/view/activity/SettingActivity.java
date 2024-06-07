@@ -13,6 +13,8 @@ import com.sw.cocomong.R;
 import com.sw.cocomong.dto.RefFoodMap;
 import com.sw.cocomong.task.reftask.RefAllDeleteTask;
 
+import org.json.JSONException;
+
 public class SettingActivity extends Activity {
     Button theme, refClear, logout, withdraw;
     String username;
@@ -39,7 +41,12 @@ public class SettingActivity extends Activity {
         });
 
         refClear.setOnClickListener(v->{
-
+            try {
+                new RefAllDeleteTask(null,username);
+            } catch (JSONException e) {
+                throw new RuntimeException(e);
+            }
+            finish();
             // 등등등
         });
 
