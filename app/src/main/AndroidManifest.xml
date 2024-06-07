@@ -43,10 +43,10 @@
         <activity android:name=".view.activity.CategorySelectActivity" android:theme="@style/Theme.AppCompat.Dialog"/>
         <activity android:name=".view.activity.RefDeleteActivity" android:theme="@style/Theme.AppCompat.Dialog"/>
         <activity android:name=".view.activity.SettingActivity" android:theme="@style/Theme.AppCompat.Dialog"/>
-
+        <activity android:name=".view.activity.RefridgeActivity"/>
         <activity android:name=".view.activity.FoodAddSelectActivity" android:theme="@style/Theme.AppCompat.Dialog"/>
         <activity
-            android:name=".view.activity.RefridgeActivity"
+            android:name=".view.activity.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

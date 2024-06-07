@@ -26,15 +26,11 @@ public class LoginTask extends AsyncTask<String, Void, String> {
     protected String doInBackground(String... strings) {
         try {
             String str;
-            /*
-             * 차차주소
-             */
-            //URL url = new URL("http://58.224.91.191:8080/login");  // login 서버
 
-            /*
-             * 다히주소
-             */
-            URL url = new URL("http://121.181.25.225:8080/login");
+            //URL url = new URL("http://58.224.91.191:8080/login");  // login 서버
+            //URL url = new URL("http://121.181.25.225:8080/login");
+            //URL url = new URL("http://192.168.236.1:8080/login");  // dahee laptop
+            URL url = new URL("http://192.168.219.144:8080/login"); //아현
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             this.conn=conn;
             conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");

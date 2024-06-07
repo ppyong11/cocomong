@@ -1,7 +1,10 @@
 package com.sw.cocomong.view.activity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -15,12 +18,15 @@ import com.sw.cocomong.R;
 import com.sw.cocomong.task.LoginTask;
 
 import java.io.IOException;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ExecutionException;
 
 public class LoginActivity extends AppCompatActivity {
     Button login, join, findPw;
     EditText name, pw, pwCheck;
     String username;
+    private Context mContext;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -39,20 +45,24 @@ public class LoginActivity extends AppCompatActivity {
 
         login.setOnClickListener(v -> {
             try {
-                username=name.getText().toString();
+                username = name.getText().toString();
                 LoginTask loginTask = new LoginTask(name.getText().toString(), pw.getText().toString());
                 String result = loginTask.execute(name.getText().toString(), pw.getText().toString()).get();
                 // Log.w("받은값 (Login): ", result);
 
                 if (loginTask.getResponseCode() == 200) {
+                    SharedPreferences sh = getSharedPreferences("UserSharedPref", MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sh.edit();
+                    editor.putString("username",username);
+                    editor.commit();
 
                     Intent intent = new Intent(LoginActivity.this, RefridgeActivity.class);
-                    intent.putExtra("username",username);
+                    intent.putExtra("username", username);
                     startActivity(intent);
                     finish();
                 } else Toast.makeText(this, "다시 입력하세요.", Toast.LENGTH_SHORT).show();
 
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         });

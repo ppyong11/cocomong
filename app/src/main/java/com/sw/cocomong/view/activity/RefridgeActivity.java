@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
@@ -18,11 +19,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.sw.cocomong.Object.RefObj;
 import com.sw.cocomong.R;
 import com.sw.cocomong.task.BackgroundService;
+import com.sw.cocomong.task.foodtask.RecipeListGetTask;
 import com.sw.cocomong.task.reftask.RefListGetTask;
 import com.sw.cocomong.view.adapter.RefAdapter;
 
 import org.json.JSONException;
 
+import java.sql.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,8 +36,8 @@ public class RefridgeActivity extends AppCompatActivity implements RefListGetTas
     private static final int REQUEST_SYSTEM_ALERT_WINDOW = 123;
     RefAdapter refAdapter;
     List<RefObj> refObjs=new ArrayList<>();
-
     String username;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -42,8 +45,9 @@ public class RefridgeActivity extends AppCompatActivity implements RefListGetTas
         setContentView(R.layout.refridge_list);
         Intent nameIntent=getIntent();
         Bundle nameExtras=nameIntent.getExtras();
-        // username=nameExtras.getString("username");
-        username="kah";
+        SharedPreferences sh = getSharedPreferences("UserSharedPref", MODE_PRIVATE);
+        username=sh.getString("username", "");  // login name
+
         try {
             new RefListGetTask(username, this);
             //refList=refListGetTask.getList();
@@ -56,7 +60,8 @@ public class RefridgeActivity extends AppCompatActivity implements RefListGetTas
         refAdd = findViewById(R.id.btn_refplus);
         setting=findViewById(R.id.btn_setting);
 
-        refAdapter = new RefAdapter(RefridgeActivity.this, refObjs);
+
+        refAdapter = new RefAdapter(RefridgeActivity.this, refObjs );
         list.setAdapter(refAdapter);
 
         list.setOnItemClickListener((parent, view, position, id) -> {
@@ -73,7 +78,8 @@ public class RefridgeActivity extends AppCompatActivity implements RefListGetTas
                                            int position, long id) {
                 Intent intent = new Intent(RefridgeActivity.this, RefDeleteActivity.class);
                 intent.putExtra("refname", refObjs.get(position).getRefName());
-                //intent.putExtra("refnum",refObjs.get(position).getRefnum());
+
+                intent.putExtra("refnum",refObjs.get(position).getRefid());
                 intent.putExtra("username",username);
                 startActivity(intent);
                 refAdapter.notifyDataSetChanged();
@@ -99,6 +105,11 @@ public class RefridgeActivity extends AppCompatActivity implements RefListGetTas
     @Override
     protected void onResume() {
         super.onResume();
+        try {
+            new RefListGetTask(username,this);
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
         refAdapter.notifyDataSetChanged();
     }
 
@@ -121,11 +132,11 @@ public class RefridgeActivity extends AppCompatActivity implements RefListGetTas
         startService(serviceIntent);
         Log.d("refActivity", "BackgroundService 시작됨");
     }
+
     private void updateRefUI() {
         refAdapter.notifyDataSetChanged();
     }
 
-    //백그라운드 알림 권한
     //백그라운드 알림 권한
     // 시스템 오버레이 권한을 확인하고 요청합니다.
     private void checkSystemAlertWindowPermission() {
@@ -165,3 +176,4 @@ public class RefridgeActivity extends AppCompatActivity implements RefListGetTas
         }
     }
 }
+

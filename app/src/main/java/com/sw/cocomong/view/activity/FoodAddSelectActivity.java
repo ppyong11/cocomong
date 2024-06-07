@@ -207,6 +207,7 @@ public class FoodAddSelectActivity extends AppCompatActivity {
                         if(grantResults[i] != PackageManager.PERMISSION_GRANTED) {
                             //권한 거부 - 권한허용이 필요한 거부된 경우 deniedPermission 리스트에 추가해준다
                             deniedPermission.add(requiredPermissionList[i]);
+                            Log.d("권한", deniedPermission.get(i));
                         }
                     }
 

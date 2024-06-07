@@ -111,27 +111,29 @@ public class FoodAddActivity extends AppCompatActivity {
             String expireCheck= expire_et.getText().toString();
             boolean isMatch = Pattern.matches(dateRegex,expireCheck);
             if(isMatch) {
-                foodName_et.setEnabled(false);
-                category_tv.setEnabled(false);
-                btnCategory.setEnabled(false);
-                expire_et.setEnabled(false);
-                memo_et.setEnabled(false);
+                if (foodName_et.getText().length()!=0){
+                    foodName_et.setEnabled(false);
+                    category_tv.setEnabled(false);
+                    btnCategory.setEnabled(false);
+                    expire_et.setEnabled(false);
+                    memo_et.setEnabled(false);
 
-                String foodname= foodName_et.getText().toString();
-                String expiredate= expire_et.getText().toString();
-                String category=category_tv.getText().toString();
-                String memo=memo_et.getText().toString();
-                //foodListItemDto = new FoodListItemDto(foodImageBitmap, foodName.getText().toString(), category.getText().toString(), expire.getText().toString(), memo.getText().toString(), false, refListItemDto.getRefId());
-                foodResObj = new FoodResObj(null,foodname,username,expiredate,category,memo,"false",refname);
+                    String foodname= foodName_et.getText().toString();
+                    String expiredate= expire_et.getText().toString();
+                    String category=category_tv.getText().toString();
+                    String memo=memo_et.getText().toString();
+                    //foodListItemDto = new FoodListItemDto(foodImageBitmap, foodName.getText().toString(), category.getText().toString(), expire.getText().toString(), memo.getText().toString(), false, refListItemDto.getRefId());
+                    foodResObj = new FoodResObj(null,username,foodname,expiredate,category,memo,"false",refname);
+                    try {
+                        FoodAddTask foodAddTask = new FoodAddTask(foodResObj, "content://media/external/images/media/36");
+                    } catch (JSONException e) {
+                        throw new RuntimeException(e);
+                    }
 
-                try {
-                    FoodAddTask foodAddTask = new FoodAddTask(foodResObj);
-                } catch (JSONException e) {
-                    throw new RuntimeException(e);
-                }
+                    save.setVisibility(View.GONE);
+                    finish();
+                } else Toast.makeText(this, "이름을 다시 입력하세요",Toast.LENGTH_SHORT).show();
 
-                save.setVisibility(View.GONE);
-                finish();
             } else Toast.makeText(this, "유통기한을 다시 입력하세요",Toast.LENGTH_SHORT).show();
         });
 
@@ -223,20 +225,14 @@ public class FoodAddActivity extends AppCompatActivity {
     //이미지 가져오기, 촬영 선택 시 모델 실행
     protected void imagePredict(String uriString){
         imageUri= Uri.parse(uriString);
-        Log.d("iamgePredict", "인자 "+uriString);
         // Context와 이미지 uri를 사용하여 TensorTask 인스턴스를 생성하고 초기화
         if (imageUri != null) {
-            Log.d("iamgePredict", "uri not null, String to uri 변환 후");
             foodimage.setImageURI(imageUri); //분류하는 이미지 보이기
-            Log.d("iamgePredict", "foodImage 보이기");
             // URI를 사용하여 이미지 분류 실행
             TensorTask tensorTask = new TensorTask(this);
-            Log.d("iamgePredict", "TensorTask 선언");
             int classificationResult = tensorTask.classifyUri(imageUri);
-            Log.d("iamgePredict", "TensorTask ㅅ실행"+classificationResult);
             // 반환된 분류결과로 카테고리 설정
             category_tv.setText(CATEGORY[classificationResult]);
         }
-        Log.d("imagePredict", "uri null, String to uri 변환 후");
     }
 }

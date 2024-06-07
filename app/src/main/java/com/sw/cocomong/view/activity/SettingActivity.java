@@ -2,8 +2,10 @@ package com.sw.cocomong.view.activity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
@@ -28,18 +30,21 @@ public class SettingActivity extends Activity {
         withdraw=findViewById(R.id.btn_withdraw);
 
         logout.setOnClickListener(v->{
+            SharedPreferences sh = getSharedPreferences("UserSharedPref", MODE_PRIVATE);
+            SharedPreferences.Editor editor = sh.edit();
+            editor.clear();
+            editor.commit();
             Intent intent = new Intent(SettingActivity.this, LoginActivity.class);
             startActivity(intent);
         });
 
         refClear.setOnClickListener(v->{
-            RefAllDeleteTask refAllDeleteTask =new RefAllDeleteTask();
-            //RefFoodMap.getRefFoodMap().clear();
+
             // 등등등
         });
 
         theme.setOnClickListener(v->{
-
+            Toast.makeText(this, "no theme", Toast.LENGTH_SHORT).show();
         });
 
         withdraw.setOnClickListener(v->{
