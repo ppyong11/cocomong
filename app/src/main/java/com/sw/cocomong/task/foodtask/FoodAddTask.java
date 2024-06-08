@@ -22,8 +22,8 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class FoodAddTask {
-    static String url = "http://192.168.236.1:8080/foods/post"; // dahee laptop
-    //static String url = "http://192.168.219.144:8080/foods/post"; //아현
+    //static String url = "http://192.168.236.1:8080/foods/post"; // dahee laptop
+    static String url = "http://192.168.219.144:8080/foods/post"; //아현
     public FoodAddTask(FoodResObj foodResObj) throws JSONException {
 
         // Create JSON data part
@@ -54,7 +54,6 @@ public class FoodAddTask {
             public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
                 if (!response.isSuccessful()) {
                     //응답 실패
-                    Log.d("foodAddTask", foodResObj.getFilepath());
                     Log.i("foodAdd", "응답실패");
                 } else {
                     // 응답 성공

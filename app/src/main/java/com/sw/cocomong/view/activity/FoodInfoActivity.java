@@ -61,7 +61,8 @@ public class FoodInfoActivity extends AppCompatActivity implements FoodDetailTas
         filepath= extras.getString("filepath");
         Log.d("foodinfo", filepath);
 
-        uri= Uri.parse(filepath); //uri 형식 바꾸기
+        if (filepath != "")
+            uri= Uri.parse(filepath); //uri 형식 바꾸기
 
         //refListItemDto=RefFoodMap.getRefListItemDtos().get(refPosition);
         try {
@@ -238,7 +239,6 @@ public class FoodInfoActivity extends AppCompatActivity implements FoodDetailTas
         memo = findViewById(R.id.et_memo);
 
 
-        // foodImageBitmap = foodObj.getFoodImage();
         foodImage.setImageURI(uri);
         title.setText(foodResObj.getFoodname());
         foodName_et.setText(foodResObj.getFoodname());
@@ -262,6 +262,7 @@ public class FoodInfoActivity extends AppCompatActivity implements FoodDetailTas
         category = findViewById(R.id.tv_category);
         expire = findViewById(R.id.et_infoExpire);
         memo = findViewById(R.id.et_memo);
+
 
         foodImage.setImageURI(uri);
         title.setText(foodResObj.getFoodname());

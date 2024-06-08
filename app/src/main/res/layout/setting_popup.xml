@@ -22,17 +22,6 @@
             android:background="@color/purple_200"/>
 
         <Button
-            android:id="@+id/btn_theme"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_margin="5dp"
-            android:backgroundTint="@color/purple_100"
-            android:text="테마변경"
-            android:textColor="@color/white"
-            android:textSize="15dp" />
-
-        <Button
             android:id="@+id/btn_refclear"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

@@ -96,17 +96,6 @@
                 android:textColor="#000000"
                 android:textSize="15dp"/>
 
-                <Button
-                    android:id="@+id/btn_findPw"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-                    android:text="pw찾기"
-                    android:backgroundTint="#f2ecff"
-                    android:textColor="#000000"
-                    android:textSize="12dp"/>
-
 
         </LinearLayout>
     </LinearLayout>

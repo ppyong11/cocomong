@@ -23,7 +23,7 @@ import java.util.Set;
 import java.util.concurrent.ExecutionException;
 
 public class LoginActivity extends AppCompatActivity {
-    Button login, join, findPw;
+    Button login, join;
     EditText name, pw, pwCheck;
     String username;
     private Context mContext;
@@ -35,7 +35,6 @@ public class LoginActivity extends AppCompatActivity {
 
         login = findViewById(R.id.btn_login);
         join = findViewById(R.id.btn_join);
-        findPw = findViewById(R.id.btn_findPw);
 
         name = findViewById(R.id.et_loginName);
         pw = findViewById(R.id.et_loginPw);

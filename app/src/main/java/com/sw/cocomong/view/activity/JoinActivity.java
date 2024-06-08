@@ -17,7 +17,7 @@ import com.sw.cocomong.task.JoinTask;
 import java.util.concurrent.ExecutionException;
 
 public class JoinActivity extends AppCompatActivity {
-    Button login, join, findPw;
+    Button login, join;
     EditText name, pw, pwCheck;
     TextView title;
 
@@ -28,7 +28,6 @@ public class JoinActivity extends AppCompatActivity {
 
         login = findViewById(R.id.btn_login);
         join = findViewById(R.id.btn_join);
-        findPw = findViewById(R.id.btn_findPw);
         title = findViewById(R.id.login_title);
 
         name = findViewById(R.id.et_loginName);
@@ -36,7 +35,6 @@ public class JoinActivity extends AppCompatActivity {
         pwCheck = findViewById(R.id.et_loginPwCheck);
 
         login.setVisibility(View.GONE);
-        findPw.setVisibility(View.GONE);
         title.setText("회원가입");
 
         join.setOnClickListener(v-> {
