@@ -22,17 +22,14 @@ import com.sw.cocomong.Object.FoodResObj;
 import com.sw.cocomong.R;
 import com.sw.cocomong.dto.RefListItemDto;
 import com.sw.cocomong.task.BackgroundService;
+import com.sw.cocomong.task.FoodSharedPreference;
 import com.sw.cocomong.task.NotificationService;
-import com.sw.cocomong.task.foodtask.FoodDeleteTask;
-import com.sw.cocomong.task.foodtask.FoodDetailTask;
 import com.sw.cocomong.task.foodtask.FoodEditTask;
 import com.sw.cocomong.task.foodtask.FoodListGetTask;
-import com.sw.cocomong.task.reftask.RefListGetTask;
 import com.sw.cocomong.view.adapter.FoodAdapter;
 
 import org.json.JSONException;
 
-import java.io.IOException;
 import java.sql.Array;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -40,7 +37,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
-public class UserActivity extends AppCompatActivity implements FoodListGetTask.FoodListGetTaskListener {
+public class UserActivity extends AppCompatActivity {
 
     ListView list;
     TextView refName_tv;
@@ -53,6 +50,7 @@ public class UserActivity extends AppCompatActivity implements FoodListGetTask.F
     List<FoodResObj> foodResObjs = new ArrayList<>();
     List<FoodResObj> favoriteList=new ArrayList<>();
     List<FoodResObj> categoryList;
+    private static final int REQUEST_SYSTEM_ALERT_WINDOW = 123;
 
     boolean isFavorite=false;
     boolean isCategory=false;
@@ -61,18 +59,34 @@ public class UserActivity extends AppCompatActivity implements FoodListGetTask.F
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.food_list);
+
+        // SharedPreferences 데이터 불러오기
+        FoodSharedPreference foodSharedPreference = new FoodSharedPreference(this);
+        Map<String, String> foodData = foodSharedPreference.getFoodData();
+
+        // 데이터가 없는 경우
+        if (foodData == null || foodData.isEmpty()) {
+            Toast.makeText(this, "저장된 식재료 데이터가 없습니다.", Toast.LENGTH_SHORT).show();
+        } else {
+            for (Map.Entry<String, String> entry : foodData.entrySet()) {
+                String foodName = entry.getKey();
+                String expireDate = entry.getValue();
+                System.out.println("Food Name: " + foodName + ", Expire Date: " + expireDate);
+            }
+        }
+
+        Intent serviceIntent = new Intent(this, BackgroundService.class);
+        startService(serviceIntent);
+        Log.d("UserActivity", "BackgroundService 시작됨");
+
         Intent intent=getIntent();
         Bundle extras=intent.getExtras();
-        refname=extras.getString("refname");  // 냉장고 위치 받아옴
-        username=extras.getString("username");  // username 받아옴
-
-
+        //refname=extras.getString("refname");  // 냉장고 위치 받아옴
+        // username=extras.getString("username");  // username 받아옴
+        // refnum=extras.getString("refnum");
         try {
-            new FoodListGetTask(username, refname,this);  // foodlist 요청
-            //new RefListGetTask("dahee",this);                    // 냉장고 정보 받아옴
-           // FoodDetailTask foodDetailTask = new FoodDetailTask(27);                                  //음식상세정보
-
-            //foodResObjs=listGetTask;
+            FoodListGetTask listGetTask = new FoodListGetTask("dahee", "냉장고1");  // foodlist 받아옴
+            foodResObjs=listGetTask.getList();
             foodResObjs.forEach(foodResObj -> {
                 if(foodResObj.getFavorite().equals("true")) favoriteList.add(foodResObj);
             });
@@ -86,7 +100,7 @@ public class UserActivity extends AppCompatActivity implements FoodListGetTask.F
         list = findViewById(R.id.list_food);
         foodAdd = findViewById(R.id.btn_foodAdd);
         favorite = findViewById(R.id.btn_listFavorite);
-        recipe = findViewById(R.id.btn_recipe);
+        recipe = findViewById(R.id.btn_mypage);
         refridge=findViewById(R.id.btn_refback);
         sort=findViewById(R.id.btn_sort);
         category=findViewById(R.id.btn_list_category);
@@ -98,13 +112,14 @@ public class UserActivity extends AppCompatActivity implements FoodListGetTask.F
 
         list.setOnItemClickListener((parent, view, position, id) -> {
             String foodname = foodResObjs.get(position).getFoodname();
-            String foodid = foodResObjs.get(position).getIdx().toString();
+            String foodid = foodResObjs.get(position).getFoodid();
 
             Intent foodIntent = new Intent(UserActivity.this, FoodInfoActivity.class);
             foodIntent.putExtra("username",username);
             foodIntent.putExtra("foodname", foodname);
             foodIntent.putExtra("refname",refname);
             foodIntent.putExtra("foodid",foodid);
+            foodIntent.putExtra("refnum",refnum);
             startActivity(foodIntent);
         });
 
@@ -182,14 +197,6 @@ public class UserActivity extends AppCompatActivity implements FoodListGetTask.F
     @Override
     protected void onResume() {
         super.onResume();
-        try {
-            new FoodListGetTask(username, refname,this);  // foodlist 요청
-        } catch (JSONException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
         foodAdapter.notifyDataSetChanged();
     }
 
@@ -213,19 +220,47 @@ public class UserActivity extends AppCompatActivity implements FoodListGetTask.F
         }
     }
 
-    @Override
-    public void onFoodListReceived(List<FoodResObj> foodResObjs) {
-        this.foodResObjs = foodResObjs;
-        // Update UI with the received food list
-        updateUI();
-    }
-    private void updateUI() {
-        for (FoodResObj foodResObj : foodResObjs) {
-            if (foodResObj.getFavorite().equals("true")) {
-                favoriteList.add(foodResObj);
+    //백그라운드 알림 권한
+    // 시스템 오버레이 권한을 확인하고 요청합니다.
+    private void checkSystemAlertWindowPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (!Settings.canDrawOverlays(this)) {
+                requestAlertWindowPermission();
+            } else {
+                // 이미 권한이 있는 경우 알림을 표시합니다.
+                showNotification("test", "이미 권한 있음");
             }
         }
-        foodAdapter = new FoodAdapter(this, foodResObjs);
-        list.setAdapter(foodAdapter);
+    }
+
+    // 알림을 표시합니다.
+    private void showNotification(String title, String message) {
+        NotificationService.showNotification(this, title, message);
+    }
+
+    // 권한 요청 후 처리를 위한 메서드입니다.
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == REQUEST_SYSTEM_ALERT_WINDOW) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // 권한이 부여되면 알림을 표시합니다.
+                showNotification("test", "권한 부여됨");
+            }
+        }
+    }
+
+    // 시스템 오버레이 권한을 요청합니다.
+    private void requestAlertWindowPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (!Settings.canDrawOverlays(this)) {
+                Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                        Uri.parse("package:" + getPackageName()));
+                startActivityForResult(intent, REQUEST_SYSTEM_ALERT_WINDOW);
+            } else {
+                // 이미 권한이 있는 경우 알림을 표시합니다.
+                showNotification("test", "이미 권한 있음");
+            }
+        }
     }
 }
