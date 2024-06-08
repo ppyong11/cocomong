@@ -101,6 +101,19 @@ public class UserActivity extends AppCompatActivity implements FoodListGetTask.F
         });
 
         foodAdd.setOnClickListener(v -> {
+            if(isCategory) {
+                isCategory=false;
+                list.setAdapter(foodAdapter);
+                category.setText("카테고리");
+                category.setBackgroundColor(getResources().getColor(R.color.purple_100));
+                category.setTextColor(getResources().getColor(R.color.black));
+            }else if(isFavorite){
+                isFavorite=false;
+                list.setAdapter(foodAdapter);
+                favorite.setText("즐겨찾기");
+                favorite.setBackgroundColor(getResources().getColor(R.color.purple_100));
+                favorite.setTextColor(getResources().getColor(R.color.black));
+            }
             list.setAdapter(foodAdapter);
             Intent foodAddIntent = new Intent(UserActivity.this, FoodAddSelectActivity.class);
             foodAddIntent.putExtra("username",username);
@@ -169,12 +182,28 @@ public class UserActivity extends AppCompatActivity implements FoodListGetTask.F
             getMenuInflater().inflate(R.menu.sort_menu, sortMenu.getMenu());
             sortMenu.setOnMenuItemClickListener(p->{
                 if(p.getItemId()==R.id.sort_name){
-                    Collections.sort(foodResObjs, Comparator.comparing(FoodResObj::getFoodname));
-                    list.setAdapter(foodAdapter);
+                    if(isFavorite){
+                        Collections.sort(favoriteList, Comparator.comparing(FoodResObj::getFoodname));
+                        list.setAdapter(favAdapter);
+                    }else if(isCategory){
+                        Collections.sort(categoryList, Comparator.comparing(FoodResObj::getFoodname));
+                        list.setAdapter(categoryAdapter);
+                    }else {
+                        Collections.sort(foodResObjs, Comparator.comparing(FoodResObj::getFoodname));
+                        list.setAdapter(foodAdapter);
+                    }
                 } else if (p.getItemId()==R.id.sort_expire) {
-                    Toast.makeText(this, "유통기한 정렬", Toast.LENGTH_SHORT).show();
-                    Collections.sort(foodResObjs, Comparator.comparing(FoodResObj::getExpiredate));
-                    list.setAdapter(foodAdapter);
+                    if(isFavorite){
+                        Collections.sort(favoriteList, Comparator.comparing(FoodResObj::getExpiredate));
+                        list.setAdapter(favAdapter);
+                    }else if(isCategory){
+                        Collections.sort(categoryList, Comparator.comparing(FoodResObj::getExpiredate));
+                        list.setAdapter(categoryAdapter);
+                    }else {
+                        Collections.sort(foodResObjs, Comparator.comparing(FoodResObj::getExpiredate));
+                        list.setAdapter(foodAdapter);
+                    }
+
                 }
                 return false;
             });
