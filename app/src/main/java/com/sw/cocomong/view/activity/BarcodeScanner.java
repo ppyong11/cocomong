@@ -2,6 +2,7 @@ package com.sw.cocomong.view.activity;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -41,6 +42,7 @@ public class BarcodeScanner extends AppCompatActivity {
     FoodResObj foodResObj;
     Bitmap foodImageBitmap=null;
     String refnum, refname, username;
+    Uri uri;
     String dateRegex = "^(?:(?:19|20)\\d{2})/(0[1-9]|1[0-2])/(0[1-9]|1\\d|2[0-8]|29(?!/02)|30(?!/02|/04|/06|/09|/11)|31(?=/0[13578]|/1[02]))$|^(?:(?:19|20)(?:[02468][048]|[13579][26]))/02/29$";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,7 +109,7 @@ public class BarcodeScanner extends AppCompatActivity {
                     String category=category_tv.getText().toString();
                     String memo=memo_et.getText().toString();
                     //foodListItemDto = new FoodListItemDto(foodImageBitmap, foodName.getText().toString(), category.getText().toString(), expire.getText().toString(), memo.getText().toString(), false, refListItemDto.getRefId());
-                    foodResObj = new FoodResObj(null,username,foodname,expiredate,category,memo,"false",refname,"");
+                    foodResObj = new FoodResObj(null,username,foodname,expiredate,category,memo,"false",refname,"content://media/external/images/media/109");
                     try {
                         FoodAddTask foodAddTask = new FoodAddTask(foodResObj);
                     } catch (JSONException e) {
@@ -165,6 +167,8 @@ public class BarcodeScanner extends AppCompatActivity {
 
             }
         });
+        uri= Uri.parse("content://media/external/images/media/109");
+        foodimage.setImageURI(uri);
     }
 
     private void startScan() {
