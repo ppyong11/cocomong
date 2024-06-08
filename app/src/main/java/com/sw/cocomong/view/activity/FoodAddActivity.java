@@ -33,7 +33,7 @@ import java.util.regex.Pattern;
 public class FoodAddActivity extends AppCompatActivity {
 
     ImageView foodimage;
-    TextView title_tv, category_tv, barcode_tv, barcodeTest_tv;
+    TextView title_tv, category_tv;
     ImageButton back, edit;
     Button save, delete, btnCategory;
     EditText foodName_et, expire_et, memo_et;
@@ -75,8 +75,6 @@ public class FoodAddActivity extends AppCompatActivity {
         category_tv = findViewById(R.id.tv_category);
         expire_et = findViewById(R.id.et_infoExpire);
         memo_et = findViewById(R.id.et_memo);
-        barcodeTest_tv =findViewById(R.id.btn_barcode);
-        barcode_tv =findViewById(R.id.tv_barcodeNum);
 
         foodimage = findViewById(R.id.food_image);
 

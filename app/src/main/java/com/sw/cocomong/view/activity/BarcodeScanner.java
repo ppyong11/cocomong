@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -33,14 +34,11 @@ import java.util.regex.Pattern;
 public class BarcodeScanner extends AppCompatActivity {
 
     ImageView foodimage;
-    TextView title_tv, category_tv, barcodeTest_tv, barcode_tv;
+    TextView title_tv, category_tv;
     ImageButton back, edit;
     Button save, delete, btnCategory;
     EditText foodName_et, expire_et, memo_et;
-    //FoodListItemDto foodListItemDto;
-    //RefListItemDto refListItemDto;
     FoodResObj foodResObj;
-    Bitmap foodImageBitmap=null;
     String refnum, refname, username;
     Uri uri;
     String dateRegex = "^(?:(?:19|20)\\d{2})/(0[1-9]|1[0-2])/(0[1-9]|1\\d|2[0-8]|29(?!/02)|30(?!/02|/04|/06|/09|/11)|31(?=/0[13578]|/1[02]))$|^(?:(?:19|20)(?:[02468][048]|[13579][26]))/02/29$";
@@ -67,15 +65,12 @@ public class BarcodeScanner extends AppCompatActivity {
         expire_et = findViewById(R.id.et_infoExpire);
         memo_et = findViewById(R.id.et_memo);
 
-        barcodeTest_tv =findViewById(R.id.btn_barcode);
-        barcode_tv =findViewById(R.id.tv_barcodeNum);
-
         foodimage = findViewById(R.id.food_image);
-
 
         save.setVisibility(View.VISIBLE);
         delete.setVisibility(View.GONE);
         edit.setVisibility(View.GONE);
+
 
         foodName_et.setEnabled(true);
         btnCategory.setEnabled(true);
@@ -108,14 +103,12 @@ public class BarcodeScanner extends AppCompatActivity {
                     String expiredate= expire_et.getText().toString();
                     String category=category_tv.getText().toString();
                     String memo=memo_et.getText().toString();
-                    //foodListItemDto = new FoodListItemDto(foodImageBitmap, foodName.getText().toString(), category.getText().toString(), expire.getText().toString(), memo.getText().toString(), false, refListItemDto.getRefId());
-                    foodResObj = new FoodResObj(null,username,foodname,expiredate,category,memo,"false",refname,"content://media/external/images/media/109");
+                    foodResObj = new FoodResObj(null,username,foodname,expiredate,category,memo,"false",refname,"content://media/external/images/media/40");
                     try {
                         FoodAddTask foodAddTask = new FoodAddTask(foodResObj);
                     } catch (JSONException e) {
                         throw new RuntimeException(e);
                     }
-
                     save.setVisibility(View.GONE);
                     finish();
                 } else Toast.makeText(this, "이름을 다시 입력하세요",Toast.LENGTH_SHORT).show();
@@ -167,7 +160,7 @@ public class BarcodeScanner extends AppCompatActivity {
 
             }
         });
-        uri= Uri.parse("content://media/external/images/media/109");
+        uri= Uri.parse("content://media/external/images/media/40");
         foodimage.setImageURI(uri);
     }
 
@@ -197,7 +190,6 @@ public class BarcodeScanner extends AppCompatActivity {
                     try {
                         BarcodeResDto taskResult = barcodeTask.execute(text).get();
 
-                        barcode_tv.setText(text);
                         foodName_et.setText(taskResult.getProductName());
                         category_tv.setText(barcodeCategory(taskResult.getCategory()));
                         memo_et.setText(taskResult.getDayCount());
@@ -211,12 +203,12 @@ public class BarcodeScanner extends AppCompatActivity {
                     }
                     // TODO: 2024-05-20 수정하기
                 }else{
-                    String text = barcode_tv.getText().toString();
+                    String text = "";
+                    Log.i("barcode result.getContents() == null", text);
                     BarcodeTask barcodeTask = new BarcodeTask(text);
                     try {
                         BarcodeResDto taskResult = barcodeTask.execute(text).get();
 
-                        barcode_tv.setText(text);
                         foodName_et.setText(taskResult.getProductName());
                         category_tv.setText(taskResult.getCategory());
                         memo_et.setText(taskResult.getDayCount());

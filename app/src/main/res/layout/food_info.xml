@@ -71,40 +71,6 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:orientation="horizontal"
-                    android:background="@color/white"
-                    >
-
-                    <TextView
-                        android:id="@+id/btn_barcode"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:backgroundTint="@color/white"
-                        android:layout_gravity="center"
-                        android:gravity="center"
-                        android:layout_margin="5dp"
-                        android:text="바코드 번호"
-                        android:textColor="@color/purple_200"
-                        android:textSize="13dp"
-                        android:textStyle="bold"/>
-
-                    <EditText
-                        android:id="@+id/tv_barcodeNum"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-
-                        android:layout_gravity="center"
-                        android:padding="10dp"
-                        android:layout_margin="5dp"
-                        android:textSize="10dp"
-                        android:textColor="@color/black"/>
-                </LinearLayout>
-
-
                 <EditText
                     android:id="@+id/et_infoFoodName"
                     android:layout_width="match_parent"

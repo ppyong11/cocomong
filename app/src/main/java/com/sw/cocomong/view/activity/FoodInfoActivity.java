@@ -88,12 +88,10 @@ public class FoodInfoActivity extends AppCompatActivity implements FoodDetailTas
         delete.setVisibility(View.VISIBLE);
         edit.setVisibility(View.VISIBLE);
 
-
         foodName_et.setEnabled(false);
         btnCategory.setEnabled(false);
         expire.setEnabled(false);
         memo.setEnabled(false);
-
 
         back.setOnClickListener(v -> {
             finish();
