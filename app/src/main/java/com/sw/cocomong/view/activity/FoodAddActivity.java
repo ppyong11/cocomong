@@ -125,7 +125,7 @@ public class FoodAddActivity extends AppCompatActivity {
                     //foodListItemDto = new FoodListItemDto(foodImageBitmap, foodName.getText().toString(), category.getText().toString(), expire.getText().toString(), memo.getText().toString(), false, refListItemDto.getRefId());
                     foodResObj = new FoodResObj(null,username,foodname,expiredate,category,memo,"false",refname);
                     try {
-                        FoodAddTask foodAddTask = new FoodAddTask(foodResObj, "content://media/external/images/media/36");
+                        FoodAddTask foodAddTask = new FoodAddTask(foodResObj, "content://media/external/images/media/1000000034");
                     } catch (JSONException e) {
                         throw new RuntimeException(e);
                     }
