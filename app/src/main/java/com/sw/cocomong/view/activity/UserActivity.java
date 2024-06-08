@@ -170,10 +170,12 @@ public class UserActivity extends AppCompatActivity implements FoodListGetTask.F
 
 
         recipe.setOnClickListener(v->{
-            list.setAdapter(foodAdapter);
-            Intent mypageIntent = new Intent(UserActivity.this, LoginActivity.class);
-            startActivity(mypageIntent);
+            Intent recipeIntent = new Intent(UserActivity.this, RecipeActivity.class);
+            recipeIntent.putExtra("username",username);
+            recipeIntent.putExtra("refname",refname);
+            startActivity(recipeIntent);
         });
+
 
         refridge.setOnClickListener(v->{
             Intent refIntent = new Intent(UserActivity.this, RefridgeActivity.class);
