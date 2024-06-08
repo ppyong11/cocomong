@@ -66,11 +66,6 @@ public class UserActivity extends AppCompatActivity implements FoodListGetTask.F
         refname=extras.getString("refname");  // 냉장고 위치 받아옴
         username=extras.getString("username");  // username 받아옴
 
-        Intent serviceIntent = new Intent(this, BackgroundService.class);
-        startService(serviceIntent);
-        Log.d("UserActivity", "BackgroundService 시작됨");
-
-
         try {
             new FoodListGetTask(username, refname,this);  // foodlist 요청
             //new RefListGetTask("dahee",this);                    // 냉장고 정보 받아옴

@@ -80,8 +80,8 @@ public class FoodAddSelectActivity extends AppCompatActivity {
                     cameraIntent.putExtra("username",username);
                     cameraIntent.putExtra("refnum",refnum);
                     startActivity(cameraIntent);
+                    finish();
                 }
-                finish();
                 return false;
             });
             sortMenu.show();
@@ -124,6 +124,7 @@ public class FoodAddSelectActivity extends AppCompatActivity {
                                 foodAddIntent.putExtra("username",username);
                                 foodAddIntent.putExtra("refnum",refnum);
                                 startActivity(foodAddIntent);
+                                finish();
                             }
                         }
                     }
