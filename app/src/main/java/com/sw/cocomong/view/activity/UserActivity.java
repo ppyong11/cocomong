@@ -50,7 +50,6 @@ public class UserActivity extends AppCompatActivity implements FoodListGetTask.F
         Bundle extras=intent.getExtras();
         refname=extras.getString("refname");  // 냉장고 위치 받아옴
         username=extras.getString("username");  // username 받아옴
-
         try {
             new FoodListGetTask(username, refname,this);
             foodResObjs.forEach(foodResObj -> {
@@ -117,8 +116,14 @@ public class UserActivity extends AppCompatActivity implements FoodListGetTask.F
                 if(food.getFavorite().equals("true"))
                     favoriteList.add(food);
             }
-
             if(!isFavorite) {
+                if(isCategory) {
+                    isCategory=false;
+                    list.setAdapter(foodAdapter);
+                    category.setText("카테고리");
+                    category.setBackgroundColor(getResources().getColor(R.color.purple_100));
+                    category.setTextColor(getResources().getColor(R.color.black));
+                }
                 isFavorite = true;
                 list.setAdapter(favAdapter);
                 favorite.setText("돌아가기");
@@ -145,6 +150,7 @@ public class UserActivity extends AppCompatActivity implements FoodListGetTask.F
                 category.setTextColor(getResources().getColor(R.color.black));
             }
         });
+
 
         recipe.setOnClickListener(v->{
             list.setAdapter(foodAdapter);
@@ -194,6 +200,7 @@ public class UserActivity extends AppCompatActivity implements FoodListGetTask.F
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        categoryList.clear();
         if (requestCode==1300&&resultCode==RESULT_OK){
             if(data!=null){
                 String selectedCategory = data.getStringExtra("category");
@@ -201,6 +208,13 @@ public class UserActivity extends AppCompatActivity implements FoodListGetTask.F
                     if(foodResObj.getCategory().equals(selectedCategory)) categoryList.add(foodResObj);
                 }
                 isCategory=true;
+                if(isFavorite){
+                    isFavorite=false;
+                    list.setAdapter(foodAdapter);
+                    favorite.setText("즐겨찾기");
+                    favorite.setBackgroundColor(getResources().getColor(R.color.purple_100));
+                    favorite.setTextColor(getResources().getColor(R.color.black));
+                }
                 Log.i("tag",categoryList.toString());
                 categoryAdapter = new FoodAdapter(UserActivity.this, categoryList);
                 list.setAdapter(categoryAdapter);
