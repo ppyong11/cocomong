@@ -17,8 +17,9 @@ import okhttp3.Response;
 public class RefDeleteTask {
     public RefDeleteTask(String refnum, String username) throws JSONException {
 
-       // String url = "http://192.168.236.1:8080/ref/"+refnum;  // dahee laptop
-        String url = "http://192.168.219.144:8080/ref/"+refnum; //아현
+        //String url = "http://192.168.236.1:8080/ref/"+refnum;  // dahee laptop
+        String url = "http://118.139.210.235:8080/ref/"+refnum;  // chae laptop
+
         OkHttpClient client = new OkHttpClient();
 
         Request request = new Request.Builder().url(url).delete().build();

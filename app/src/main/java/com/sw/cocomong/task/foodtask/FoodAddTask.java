@@ -23,10 +23,10 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class FoodAddTask {
-    //static String url = "http://58.224.91.191:8080/foods/post"; 차차
-    //static String url = "http://121.181.25.225:8080/foods/post"; 다희
-    static String url = "http://192.168.219.144:8080/foods/post"; //아현
-
+    //static String url = "http://58.224.91.191:8080/foods/post";
+    //static String url = "http://58.224.91.191:8080:8080/foods/post";
+    //String url = "http://192.168.236.1:8080/foods/post";  // dahee laptop
+    String url = "http://118.139.210.235:8080/foods/post";  // chae laptop
     public FoodAddTask(FoodResObj foodResObj, String file) throws JSONException {
 
         File img = new File(file);

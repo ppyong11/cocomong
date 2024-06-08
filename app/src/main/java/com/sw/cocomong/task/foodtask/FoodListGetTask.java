@@ -28,8 +28,9 @@ public class FoodListGetTask {
 
     //static String url = "http://58.224.91.191:8080/foods/list/asc";
     //static String url = "http://121.181.25.225:8080/foods/list/asc";
-     //String url = "http://192.168.236.1:8080/foods/list/asc";  // dahee laptop
-    String url = "http://192.168.219.144:8080/foods/list/asc"; //아현
+    //String url = "http://192.168.236.1:8080/foods/list/asc";  // dahee laptop
+    String url = "http://118.139.210.235:8080/foods/list/asc";  // chae laptop
+
     private List<FoodResObj> foodResObjs;
     private final FoodListGetTaskListener listener;
 

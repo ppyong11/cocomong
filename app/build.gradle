@@ -29,9 +29,6 @@ android {
 }
 
 dependencies {
-    //시간
-    implementation "androidx.work:work-runtime:2.7.1" // 최신 버전을 사용하세요.
-    implementation 'com.google.code.gson:gson:2.8.8'
     // tensorflow
     implementation 'org.tensorflow:tensorflow-lite:2.10.0'
     implementation 'org.tensorflow:tensorflow-lite-gpu:2.10.0'

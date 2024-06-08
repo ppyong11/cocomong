@@ -44,7 +44,8 @@ public class FoodEditTask {
     public FoodEditTask(FoodResObj foodResObj, FoodEditTaskListener listener) throws JSONException, IOException {
         this.listener = listener;
         //String url = "http://192.168.236.1:8080/foods/"+foodResObj.getIdx();  // dahee laptop
-        String url = "http://192.168.219.144:8080/foods/"+foodResObj.getIdx(); //아현
+        String url = "http://118.139.210.235:8080/foods/"+foodResObj.getIdx();  // chae laptop
+
         //request 작성
         OkHttpClient client = new OkHttpClient();
 

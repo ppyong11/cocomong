@@ -143,6 +143,7 @@ public class FoodInfoActivity extends AppCompatActivity implements FoodDetailTas
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
             }
+
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (expire.isFocusable() && !s.toString().isEmpty()) {
