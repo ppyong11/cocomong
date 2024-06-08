@@ -35,7 +35,7 @@ public class UserActivity extends AppCompatActivity implements FoodListGetTask.F
     TextView refName_tv;
     Button refridge, foodAdd, favorite, recipe, sort, category;
     FoodAdapter foodAdapter, categoryAdapter,favAdapter;
-    RecipeAdapter recipeAdapter;
+    RecipeAdapter recipeAdapter, favRecipeAdapter;
     //RefListItemDto refListItemDto;
     //int foodPosition, refPosition;
     //public List<FoodListItemDto> foodListItemDtos,favoriteList, categoryList;
@@ -44,10 +44,12 @@ public class UserActivity extends AppCompatActivity implements FoodListGetTask.F
     public static List<FoodResObj> favoriteList=new ArrayList<>();
     List<FoodResObj> categoryList=new ArrayList<>();
     List<RecipeObj> recipeObjs = new ArrayList<>();
+    List<RecipeObj> favRecipeObjs = new ArrayList<>();
 
     boolean isFavorite=false;
     boolean isCategory=false;
     boolean isRecipe=false;
+    boolean isFavRecipe=false;
     String username,refname,refnum;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -82,6 +84,7 @@ public class UserActivity extends AppCompatActivity implements FoodListGetTask.F
         favAdapter = new FoodAdapter(UserActivity.this, favoriteList);
         categoryAdapter = new FoodAdapter(UserActivity.this, categoryList);
         recipeAdapter = new RecipeAdapter(UserActivity.this, recipeObjs);
+        favRecipeAdapter = new RecipeAdapter(this, favRecipeObjs);
 
         list.setAdapter(foodAdapter);
 
@@ -226,9 +229,22 @@ public class UserActivity extends AppCompatActivity implements FoodListGetTask.F
 
         sort.setOnClickListener(v->{
             final PopupMenu sortMenu = new PopupMenu(getApplicationContext(),v);
-            // TODO: 2024-06-09 sort 손보기
             if(isRecipe){
                 getMenuInflater().inflate(R.menu.recipe_sort_menu, sortMenu.getMenu());
+                sortMenu.setOnMenuItemClickListener(p->{
+                    if(p.getItemId()==R.id.sort_name){
+                            Collections.sort(recipeObjs, Comparator.comparing(RecipeObj::getRecipename));
+                            list.setAdapter(recipeAdapter);
+                    } else if (p.getItemId()==R.id.sort_expire) {
+                        // TODO: 2024-06-09 기준 세우기 어려움.
+                    }else {
+                        list.setAdapter(favRecipeAdapter);
+                    }
+                    return false;
+                });
+                sortMenu.show();
+            }else{
+                getMenuInflater().inflate(R.menu.sort_menu, sortMenu.getMenu());
                 sortMenu.setOnMenuItemClickListener(p->{
                     if(p.getItemId()==R.id.sort_name){
                         if(isFavorite){
@@ -256,35 +272,6 @@ public class UserActivity extends AppCompatActivity implements FoodListGetTask.F
                     return false;
                 });
                 sortMenu.show();
-            }else{
-            getMenuInflater().inflate(R.menu.sort_menu, sortMenu.getMenu());
-            sortMenu.setOnMenuItemClickListener(p->{
-                if(p.getItemId()==R.id.sort_name){
-                    if(isFavorite){
-                        Collections.sort(favoriteList, Comparator.comparing(FoodResObj::getFoodname));
-                        list.setAdapter(favAdapter);
-                    }else if(isCategory){
-                        Collections.sort(categoryList, Comparator.comparing(FoodResObj::getFoodname));
-                        list.setAdapter(categoryAdapter);
-                    }else {
-                        Collections.sort(foodResObjs, Comparator.comparing(FoodResObj::getFoodname));
-                        list.setAdapter(foodAdapter);
-                    }
-                } else if (p.getItemId()==R.id.sort_expire) {
-                    if(isFavorite){
-                        Collections.sort(favoriteList, Comparator.comparing(FoodResObj::getExpiredate));
-                        list.setAdapter(favAdapter);
-                    }else if(isCategory){
-                        Collections.sort(categoryList, Comparator.comparing(FoodResObj::getExpiredate));
-                        list.setAdapter(categoryAdapter);
-                    }else {
-                        Collections.sort(foodResObjs, Comparator.comparing(FoodResObj::getExpiredate));
-                        list.setAdapter(foodAdapter);
-                    }
-                }
-                return false;
-            });
-            sortMenu.show();
             }
         });
     }
@@ -347,6 +334,7 @@ public class UserActivity extends AppCompatActivity implements FoodListGetTask.F
         foodAdapter = new FoodAdapter(this, foodResObjs);
         favAdapter = new FoodAdapter(UserActivity.this, favoriteList);
         recipeAdapter=new RecipeAdapter(this, recipeObjs);
+        favRecipeAdapter = new RecipeAdapter(this, favRecipeObjs);
         list.setAdapter(foodAdapter);
         if(isCategory){
             list.setAdapter(categoryAdapter);
@@ -358,11 +346,21 @@ public class UserActivity extends AppCompatActivity implements FoodListGetTask.F
     @Override
     public void onRecipeListReceived(List<RecipeObj> recipeObjs) {
         this.recipeObjs.clear();
-        for(FoodResObj food : foodResObjs){
-            for(RecipeObj recipeObj: recipeObjs){
-                if(recipeObj.getMain().equals(food.getFoodname())) this.recipeObjs.add(recipeObj);
-                else if(recipeObj.getSub1().equals(food.getFoodname())) this.recipeObjs.add(recipeObj);
-                else if(recipeObj.getSub2().equals(food.getFoodname())) this.recipeObjs.add(recipeObj);
+        this.favRecipeObjs.clear();
+        for(FoodResObj food : foodResObjs) {
+            for (RecipeObj recipeObj : recipeObjs) {
+                if (recipeObj.getMain().equals(food.getFoodname())) this.recipeObjs.add(recipeObj);
+                else if (recipeObj.getSub1().equals(food.getFoodname()))
+                    this.recipeObjs.add(recipeObj);
+                else if (recipeObj.getSub2().equals(food.getFoodname()))
+                    this.recipeObjs.add(recipeObj);
+                if(food.getFavorite().equals("true")){
+                    if (recipeObj.getMain().equals(food.getFoodname())) this.favRecipeObjs.add(recipeObj);
+                    else if (recipeObj.getSub1().equals(food.getFoodname()))
+                        this.favRecipeObjs.add(recipeObj);
+                    else if (recipeObj.getSub2().equals(food.getFoodname()))
+                        this.favRecipeObjs.add(recipeObj);
+                }
             }
         }
         updateUI();
