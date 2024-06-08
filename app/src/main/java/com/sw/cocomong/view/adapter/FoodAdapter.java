@@ -2,6 +2,7 @@ package com.sw.cocomong.view.adapter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import com.sw.cocomong.dto.FoodListItemDto;
 import com.sw.cocomong.dto.RefFoodMap;
 import com.sw.cocomong.dto.RefListItemDto;
 import com.sw.cocomong.task.foodtask.FoodEditTask;
+import com.sw.cocomong.view.activity.UserActivity;
 
 import org.checkerframework.checker.units.qual.A;
 import org.json.JSONException;
@@ -81,16 +83,16 @@ public class FoodAdapter extends ArrayAdapter<FoodResObj> implements FoodEditTas
         FoodResObj favObj= foodResObjs.get(position);
         if(isFavorite){
             favObj.setFavorite("true");
-            FoodEditTask foodEditTask = new FoodEditTask(favObj,this);
+            new FoodEditTask(favObj,this);
         }else {
             favObj.setFavorite("false");
-            FoodEditTask foodEditTask = new FoodEditTask(favObj,this);
+            new FoodEditTask(favObj,this);
+            UserActivity.favoriteList.remove(favObj);
         }
        notifyDataSetChanged();
     }
 
     @Override
-    public void onFoodEditReceived(FoodResObj foodResObj) {
-        foodResObjs.set(position,foodResObj);
+    public void onFoodEditReceived(FoodResObj foodResObj){
     }
 }

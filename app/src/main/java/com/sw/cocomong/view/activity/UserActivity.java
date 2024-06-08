@@ -1,44 +1,28 @@
 package com.sw.cocomong.view.activity;
 
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.provider.Settings;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.sw.cocomong.Object.FoodObj;
 import com.sw.cocomong.Object.FoodResObj;
 import com.sw.cocomong.R;
-import com.sw.cocomong.dto.RefListItemDto;
-import com.sw.cocomong.task.BackgroundService;
-import com.sw.cocomong.task.NotificationService;
-import com.sw.cocomong.task.foodtask.FoodDeleteTask;
-import com.sw.cocomong.task.foodtask.FoodDetailTask;
-import com.sw.cocomong.task.foodtask.FoodEditTask;
 import com.sw.cocomong.task.foodtask.FoodListGetTask;
-import com.sw.cocomong.task.reftask.RefListGetTask;
 import com.sw.cocomong.view.adapter.FoodAdapter;
 
 import org.json.JSONException;
 
 import java.io.IOException;
-import java.sql.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
 
 public class UserActivity extends AppCompatActivity implements FoodListGetTask.FoodListGetTaskListener {
 
@@ -51,7 +35,7 @@ public class UserActivity extends AppCompatActivity implements FoodListGetTask.F
     //public List<FoodListItemDto> foodListItemDtos,favoriteList, categoryList;
     // List<FoodObj> foodList=new ArrayList<>();
     List<FoodResObj> foodResObjs = new ArrayList<>();
-    List<FoodResObj> favoriteList=new ArrayList<>();
+    public static List<FoodResObj> favoriteList=new ArrayList<>();
     List<FoodResObj> categoryList;
 
     boolean isFavorite=false;
@@ -114,6 +98,12 @@ public class UserActivity extends AppCompatActivity implements FoodListGetTask.F
 
 
         favorite.setOnClickListener(v->{
+            favoriteList.clear();
+            for(FoodResObj food : foodResObjs){
+                if(food.getFavorite().equals("true"))
+                    favoriteList.add(food);
+            }
+
             if(!isFavorite) {
                 isFavorite = true;
                 list.setAdapter(favAdapter);
@@ -126,7 +116,6 @@ public class UserActivity extends AppCompatActivity implements FoodListGetTask.F
                 favorite.setText("즐겨찾기");
                 favorite.setBackgroundColor(getResources().getColor(R.color.purple_100));
                 favorite.setTextColor(getResources().getColor(R.color.black));
-
             }
         });
 
@@ -184,8 +173,8 @@ public class UserActivity extends AppCompatActivity implements FoodListGetTask.F
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
         foodAdapter.notifyDataSetChanged();
+        favAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -215,12 +204,9 @@ public class UserActivity extends AppCompatActivity implements FoodListGetTask.F
         updateUI();
     }
     private void updateUI() {
-        for (FoodResObj foodResObj : foodResObjs) {
-            if (foodResObj.getFavorite().equals("true")) {
-                favoriteList.add(foodResObj);
-            }
-        }
         foodAdapter = new FoodAdapter(this, foodResObjs);
+        favAdapter = new FoodAdapter(UserActivity.this, favoriteList);
         list.setAdapter(foodAdapter);
     }
+
 }
