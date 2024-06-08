@@ -107,9 +107,9 @@ public class BarcodeScanner extends AppCompatActivity {
                     String category=category_tv.getText().toString();
                     String memo=memo_et.getText().toString();
                     //foodListItemDto = new FoodListItemDto(foodImageBitmap, foodName.getText().toString(), category.getText().toString(), expire.getText().toString(), memo.getText().toString(), false, refListItemDto.getRefId());
-                    foodResObj = new FoodResObj(null,username,foodname,expiredate,category,memo,"false",refname);
+                    foodResObj = new FoodResObj(null,username,foodname,expiredate,category,memo,"false",refname,null);
                     try {
-                        FoodAddTask foodAddTask = new FoodAddTask(foodResObj, "content://media/external/images/media/36");
+                        FoodAddTask foodAddTask = new FoodAddTask(foodResObj);
                     } catch (JSONException e) {
                         throw new RuntimeException(e);
                     }

@@ -2,9 +2,11 @@ package com.sw.cocomong.view.activity;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -42,9 +44,10 @@ public class FoodInfoActivity extends AppCompatActivity implements FoodDetailTas
     Bitmap foodImageBitmap;
     //int foodPosition, refPosition;
     String dateRegex = "^(?:(?:19|20)\\d{2})/(0[1-9]|1[0-2])/(0[1-9]|1\\d|2[0-8]|29(?!/02)|30(?!/02|/04|/06|/09|/11)|31(?=/0[13578]|/1[02]))$|^(?:(?:19|20)(?:[02468][048]|[13579][26]))/02/29$";
-    String username, foodname, refname,foodid;
+    String username, foodname, refname,foodid, filepath;
     //FoodObj foodObj;
     FoodResObj foodResObj;
+    Uri uri;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +59,11 @@ public class FoodInfoActivity extends AppCompatActivity implements FoodDetailTas
         refname = extras.getString("refname");
         foodname = extras.getString("foodname");
         foodid = extras.getString("foodid");
+        filepath= extras.getString("filepath");
+        Log.d("foodinfo", filepath);
+
+        uri= Uri.parse(filepath); //uri 형식 바꾸기
+
         //refListItemDto=RefFoodMap.getRefListItemDtos().get(refPosition);
         try {
             new FoodDetailTask(foodid,this);
@@ -79,6 +87,7 @@ public class FoodInfoActivity extends AppCompatActivity implements FoodDetailTas
         save.setVisibility(View.GONE);
         delete.setVisibility(View.VISIBLE);
         edit.setVisibility(View.VISIBLE);
+
 
         foodName_et.setEnabled(false);
         btnCategory.setEnabled(false);
@@ -123,6 +132,7 @@ public class FoodInfoActivity extends AppCompatActivity implements FoodDetailTas
                 foodResObj.setCategory(category.getText().toString());
                 foodResObj.setExpiredate(expire.getText().toString());
                 foodResObj.setMemo(memo.getText().toString());
+
 
                 try {
                     new FoodEditTask(foodResObj,this);

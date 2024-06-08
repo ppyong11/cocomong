@@ -22,10 +22,9 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class FoodAddTask {
-    static String url = "http://192.168.236.1:8080/foods/post"; // dahee laptop
-
-    public FoodAddTask(FoodResObj foodResObj, String file) throws JSONException {
-        File img = new File(file);
+    //static String url = "http://192.168.236.1:8080/foods/post"; // dahee laptop
+    static String url = "http://192.168.219.144:8080/foods/post"; //아현
+    public FoodAddTask(FoodResObj foodResObj) throws JSONException {
 
         // Create JSON data part
         JSONObject data = new JSONObject();
@@ -36,25 +35,13 @@ public class FoodAddTask {
         data.put("memo", foodResObj.getMemo());
         data.put("favorite", foodResObj.getFavorite());
         data.put("refname", foodResObj.getRefname());
+        data.put("filepath", foodResObj.getFilepath());
 
-        // Create the request body
-        MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM)
-                .addFormDataPart("request", data.toString())
-                .addFormDataPart("itemName", "test"); // Replace "test" with the actual item name if needed
+        RequestBody requestBody = RequestBody.create(MediaType.get("application/json; charset=utf-8"), data.toString());
 
-        // Add file part if file is provided
-        if (img.exists()) {
-            builder.addFormDataPart("file", img.getName(), RequestBody.create(MediaType.parse("application/octet-stream"), img));
-        }
-
-        RequestBody requestBody = builder.build();
-
-        // Build the request
+        //request 작성
         OkHttpClient client = new OkHttpClient();
-        Request request = new Request.Builder()
-                .url(url)
-                .post(requestBody)
-                .build();
+        Request request = new Request.Builder().url(url).post(requestBody).build();
 
         // Send the request
         client.newCall(request).enqueue(new Callback() {
@@ -67,10 +54,11 @@ public class FoodAddTask {
             public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
                 if (!response.isSuccessful()) {
                     //응답 실패
-                    Log.i("tag", "응답실패");
+                    Log.d("foodAddTask", foodResObj.getFilepath());
+                    Log.i("foodAdd", "응답실패");
                 } else {
                     // 응답 성공
-                    Log.i("tag", "응답성공");
+                    Log.i("foodAdd", "응답성공");
                     final String responseData = response.body().string();
                     Log.i("tag", responseData);
                 }

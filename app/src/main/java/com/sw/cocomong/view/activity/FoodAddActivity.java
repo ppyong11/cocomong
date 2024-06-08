@@ -43,7 +43,7 @@ public class FoodAddActivity extends AppCompatActivity {
     RefObj refObj;
     Bitmap foodImageBitmap;
     //int foodPosition, refPosition;
-    String foodname, refname,refnum,username, imageUriString;
+    String foodname, refname,refnum,username, imageUriString, filepath;
     Uri imageUri;
     static  final String[] CATEGORY= {"과일", "축산물", "해산물", "채소"};
     String dateRegex = "^(?:(?:19|20)\\d{2})/(0[1-9]|1[0-2])/(0[1-9]|1\\d|2[0-8]|29(?!/02)|30(?!/02|/04|/06|/09|/11)|31(?=/0[13578]|/1[02]))$|^(?:(?:19|20)(?:[02468][048]|[13579][26]))/02/29$";
@@ -123,9 +123,9 @@ public class FoodAddActivity extends AppCompatActivity {
                     String category=category_tv.getText().toString();
                     String memo=memo_et.getText().toString();
                     //foodListItemDto = new FoodListItemDto(foodImageBitmap, foodName.getText().toString(), category.getText().toString(), expire.getText().toString(), memo.getText().toString(), false, refListItemDto.getRefId());
-                    foodResObj = new FoodResObj(null,username,foodname,expiredate,category,memo,"false",refname);
+                    foodResObj = new FoodResObj(null,username,foodname,expiredate,category,memo,"false",refname, imageUriString);
                     try {
-                        FoodAddTask foodAddTask = new FoodAddTask(foodResObj, "content://media/external/images/media/36");
+                        FoodAddTask foodAddTask = new FoodAddTask(foodResObj);
                     } catch (JSONException e) {
                         throw new RuntimeException(e);
                     }

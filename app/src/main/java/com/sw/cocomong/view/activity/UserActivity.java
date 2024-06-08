@@ -78,18 +78,21 @@ public class UserActivity extends AppCompatActivity implements FoodListGetTask.F
         list.setAdapter(foodAdapter);
 
         list.setOnItemClickListener((parent, view, position, id) -> {
-
             String foodname;
             String foodid;
+            String filepath;
             if(isCategory){
                 foodname=categoryList.get(position).getFoodname();
                 foodid = categoryList.get(position).getIdx().toString();
+                filepath= foodResObjs.get(position).getFilepath();
             }else if(isFavorite){
                 foodname=favoriteList.get(position).getFoodname();
                 foodid = favoriteList.get(position).getIdx().toString();
+                filepath= foodResObjs.get(position).getFilepath();
             }else {
                 foodname = foodResObjs.get(position).getFoodname();
                 foodid = foodResObjs.get(position).getIdx().toString();
+                filepath= foodResObjs.get(position).getFilepath();
             }
 
             Intent foodIntent = new Intent(UserActivity.this, FoodInfoActivity.class);
@@ -97,6 +100,7 @@ public class UserActivity extends AppCompatActivity implements FoodListGetTask.F
             foodIntent.putExtra("foodname", foodname);
             foodIntent.putExtra("refname",refname);
             foodIntent.putExtra("foodid",foodid);
+            foodIntent.putExtra("filepath", filepath);
             startActivity(foodIntent);
         });
 
