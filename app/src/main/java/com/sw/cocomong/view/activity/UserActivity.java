@@ -17,6 +17,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.sw.cocomong.Object.FoodExpObj;
 import com.sw.cocomong.Object.FoodObj;
 import com.sw.cocomong.Object.FoodResObj;
 import com.sw.cocomong.R;
@@ -150,9 +151,10 @@ public class UserActivity extends AppCompatActivity implements FoodListGetTask.F
         });
 
         recipe.setOnClickListener(v->{
-            list.setAdapter(foodAdapter);
-            Intent mypageIntent = new Intent(UserActivity.this, LoginActivity.class);
-            startActivity(mypageIntent);
+            Intent recipeIntent = new Intent(UserActivity.this, RecipeActivity.class);
+            recipeIntent.putExtra("username",username);
+            recipeIntent.putExtra("refname",refname);
+            startActivity(recipeIntent);
         });
 
         refridge.setOnClickListener(v->{
@@ -219,6 +221,12 @@ public class UserActivity extends AppCompatActivity implements FoodListGetTask.F
         // Update UI with the received food list
         updateUI();
     }
+
+    @Override
+    public void onFoodReceived(List<FoodExpObj> foodExpList) {
+
+    }
+
     private void updateUI() {
         for (FoodResObj foodResObj : foodResObjs) {
             if (foodResObj.getFavorite().equals("true")) {

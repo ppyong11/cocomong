@@ -6,12 +6,10 @@ import android.os.IBinder;
 import android.app.Service;
 import android.util.Log;
 import androidx.annotation.Nullable;
-import androidx.collection.CircularArray;
 
 
 import com.sw.cocomong.Object.FoodExpObj;
 import com.sw.cocomong.Object.FoodResObj;
-import com.sw.cocomong.dto.Food;
 import com.sw.cocomong.task.foodtask.FoodListGetTask;
 
 import java.text.SimpleDateFormat;
@@ -27,6 +25,8 @@ public class BackgroundService extends Service {
     private static final CharSequence CHANNEL_NAME = "Foreground Service Channel";
     private Handler handler;
     private Runnable checkTimeRunnable;
+
+    String username,refname,refnum;
 
     @Override
     public void onCreate() {
@@ -84,10 +84,17 @@ public class BackgroundService extends Service {
         Log.d("BackgroundService", "Current time: " + hourOfDay + ":" + minute);
     }
 
+    /*
+
     private void getExpFoodList(){
         for (int i=0; i<this.refname.size(); i++){
             try {
                 new FoodListGetTask((this.username, this.refname.get(i).toString(), new FoodListGetTask.FoodListGetTaskListener(){
+                    @Override
+                    public void onFoodListReceived(List<FoodResObj> foodResObjs) {
+
+                    }
+
                     Calendar calendar = Calendar.getInstance();
                     @Override
                     public void onFoodReceived(List<FoodExpObj> foodExpList){
@@ -136,6 +143,8 @@ public class BackgroundService extends Service {
 
         }
     }
+
+     */
 
 
 }

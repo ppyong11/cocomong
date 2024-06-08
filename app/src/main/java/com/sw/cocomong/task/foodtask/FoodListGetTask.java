@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sw.cocomong.Object.FoodExpObj;
 import com.sw.cocomong.Object.FoodResObj;
 
 import org.json.JSONException;
@@ -36,6 +37,8 @@ public class FoodListGetTask {
 
     public interface FoodListGetTaskListener {
         void onFoodListReceived(List<FoodResObj> foodResObjs);
+
+        void onFoodReceived(List<FoodExpObj> foodExpList);
     }
 
     public FoodListGetTask(String username, String refname, FoodListGetTaskListener listener) throws JSONException, IOException {
