@@ -146,7 +146,6 @@ public class RefridgeActivity extends AppCompatActivity implements RefListGetTas
     private void updateRefUI() {
         refAdapter.notifyDataSetChanged();
     }
-
     //백그라운드 알림 권한
     // 시스템 오버레이 권한을 확인하고 요청합니다.
     private void checkSystemAlertWindowPermission() {

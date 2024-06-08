@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".view.activity.MainActivity">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+
+        <LinearLayout
+            android:id="@+id/linearLayout2"
+            android:layout_width="match_parent"
+            android:layout_height="598dp"
+            android:layout_above="@+id/buttonLayout"
+            android:background="#DDDDDD"
+            android:orientation="vertical">
+
+            <SearchView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#ffffff" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/purple_200"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/ref_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="냉장고 이름"
+                    android:textSize="30dp"
+                    android:layout_margin="5dp"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    />
+
+                <Button
+                    android:id="@+id/btn_recsort"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:background="@android:drawable/btn_dropdown"
+                    android:paddingTop="0dp"
+                    android:text="정렬"
+                    android:textAlignment="textStart"
+                    android:textColor="@color/purple_500"
+                    app:backgroundTint="#9CFFFFFF"
+                    app:backgroundTintMode="src_atop" />
+            </RelativeLayout>
+
+            <ListView
+                android:id="@+id/list_recipe"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/buttonLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_alignParentBottom="true">
+
+            <Button
+                android:id="@+id/btn_refback"
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:layout_weight="1"
+                android:backgroundTint="#dac9ff"
+                android:text="냉장고"
+                android:textColor="#000000"
+                android:textSize="11dp" />
+
+            <Button
+                android:id="@+id/btn_listFavorite"
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:layout_weight="1"
+                android:backgroundTint="#dac9ff"
+                android:text="즐겨찾기"
+                android:textColor="#000000"
+                android:textSize="11dp" />
+
+            <Button
+                android:id="@+id/btn_foodAdd"
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:layout_weight="1"
+                android:backgroundTint="#dac9ff"
+                android:text="재료추가"
+                android:textColor="#000000"
+                android:textSize="11dp" />
+
+            <Button
+                android:id="@+id/btn_list_category"
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:layout_weight="1"
+                android:backgroundTint="#dac9ff"
+                android:text="카테고리"
+                android:textColor="#000000"
+                android:textSize="11dp" />
+
+            <Button
+                android:id="@+id/btn_recipe"
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/purple_200"
+                android:text="레시피추천"
+                android:textColor="#FFFFFF"
+                android:textSize="10dp" />
+        </LinearLayout>
+
+    </LinearLayout>
+</RelativeLayout>
