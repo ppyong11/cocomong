@@ -2,6 +2,7 @@ package com.sw.cocomong.view.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.PopupMenu;
@@ -36,7 +37,7 @@ public class UserActivity extends AppCompatActivity implements FoodListGetTask.F
     // List<FoodObj> foodList=new ArrayList<>();
     List<FoodResObj> foodResObjs = new ArrayList<>();
     public static List<FoodResObj> favoriteList=new ArrayList<>();
-    List<FoodResObj> categoryList;
+    List<FoodResObj> categoryList=new ArrayList<>();
 
     boolean isFavorite=false;
     boolean isCategory=false;
@@ -73,6 +74,8 @@ public class UserActivity extends AppCompatActivity implements FoodListGetTask.F
         //foodAdapter = new FoodAdapter(UserActivity.this, foodListItemDtos, refListItemDto);
         foodAdapter = new FoodAdapter(UserActivity.this, foodResObjs);
         favAdapter = new FoodAdapter(UserActivity.this, favoriteList);
+        categoryAdapter = new FoodAdapter(UserActivity.this, categoryList);
+
         list.setAdapter(foodAdapter);
 
         list.setOnItemClickListener((parent, view, position, id) -> {
@@ -121,7 +124,6 @@ public class UserActivity extends AppCompatActivity implements FoodListGetTask.F
 
         category.setOnClickListener(v->{
             if(!isCategory){
-
                 Intent categoryIntent = new Intent(UserActivity.this, CategorySelectActivity.class);
                 startActivityForResult(categoryIntent,1300);
             }else{
@@ -175,6 +177,7 @@ public class UserActivity extends AppCompatActivity implements FoodListGetTask.F
         }
         foodAdapter.notifyDataSetChanged();
         favAdapter.notifyDataSetChanged();
+        categoryAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -183,11 +186,11 @@ public class UserActivity extends AppCompatActivity implements FoodListGetTask.F
         if (requestCode==1300&&resultCode==RESULT_OK){
             if(data!=null){
                 String selectedCategory = data.getStringExtra("category");
-                categoryList=new ArrayList<>();
                 for(FoodResObj foodResObj : foodResObjs){
                     if(foodResObj.getCategory().equals(selectedCategory)) categoryList.add(foodResObj);
                 }
                 isCategory=true;
+                Log.i("tag",categoryList.toString());
                 categoryAdapter = new FoodAdapter(UserActivity.this, categoryList);
                 list.setAdapter(categoryAdapter);
                 category.setText(selectedCategory);
@@ -207,6 +210,9 @@ public class UserActivity extends AppCompatActivity implements FoodListGetTask.F
         foodAdapter = new FoodAdapter(this, foodResObjs);
         favAdapter = new FoodAdapter(UserActivity.this, favoriteList);
         list.setAdapter(foodAdapter);
+        if(isCategory){
+            list.setAdapter(categoryAdapter);
+        }
     }
 
 }
