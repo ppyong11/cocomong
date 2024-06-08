@@ -39,9 +39,8 @@ public class FoodInfoActivity extends AppCompatActivity implements FoodDetailTas
     Button save, delete, btnCategory;
     EditText foodName_et, expire, memo;
     //FoodListItemDto foodListItemDto;
-   // RefListItemDto refListItemDto;
+    // RefListItemDto refListItemDto;
     ImageView foodImage;
-    Bitmap foodImageBitmap;
     //int foodPosition, refPosition;
     String dateRegex = "^(?:(?:19|20)\\d{2})/(0[1-9]|1[0-2])/(0[1-9]|1\\d|2[0-8]|29(?!/02)|30(?!/02|/04|/06|/09|/11)|31(?=/0[13578]|/1[02]))$|^(?:(?:19|20)(?:[02468][048]|[13579][26]))/02/29$";
     String username, foodname, refname,foodid, filepath;
@@ -205,12 +204,14 @@ public class FoodInfoActivity extends AppCompatActivity implements FoodDetailTas
             // 액티비티 종료
             finish();
         });
+        foodImage.setImageURI(uri);
+        Log.d("foodAddOncreate", "이미지 설정");
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
-
+        Log.d("foodInfo_onActivity", "이미지 설정");
         if (requestCode == 1212 && resultCode == RESULT_OK) {
             if (intent != null) {
                 String selectedCategory = intent.getStringExtra("category");
@@ -238,7 +239,7 @@ public class FoodInfoActivity extends AppCompatActivity implements FoodDetailTas
 
 
         // foodImageBitmap = foodObj.getFoodImage();
-        foodImage.setImageBitmap(foodImageBitmap);
+        foodImage.setImageURI(uri);
         title.setText(foodResObj.getFoodname());
         foodName_et.setText(foodResObj.getFoodname());
         category.setText(foodResObj.getCategory());
@@ -262,9 +263,7 @@ public class FoodInfoActivity extends AppCompatActivity implements FoodDetailTas
         expire = findViewById(R.id.et_infoExpire);
         memo = findViewById(R.id.et_memo);
 
-
-        // foodImageBitmap = foodObj.getFoodImage();
-        foodImage.setImageBitmap(foodImageBitmap);
+        foodImage.setImageURI(uri);
         title.setText(foodResObj.getFoodname());
         foodName_et.setText(foodResObj.getFoodname());
         category.setText(foodResObj.getCategory());
