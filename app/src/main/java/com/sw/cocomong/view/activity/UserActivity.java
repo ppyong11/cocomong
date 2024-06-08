@@ -67,11 +67,7 @@ public class UserActivity extends AppCompatActivity implements FoodListGetTask.F
         username=extras.getString("username");  // username 받아옴
 
         try {
-            new FoodListGetTask(username, refname,this);  // foodlist 요청
-            //new RefListGetTask("dahee",this);                    // 냉장고 정보 받아옴
-           // FoodDetailTask foodDetailTask = new FoodDetailTask(27);                                  //음식상세정보
-
-            //foodResObjs=listGetTask;
+            new FoodListGetTask(username, refname,this);
             foodResObjs.forEach(foodResObj -> {
                 if(foodResObj.getFavorite().equals("true")) favoriteList.add(foodResObj);
             });

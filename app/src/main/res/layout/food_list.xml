@@ -7,6 +7,7 @@
 
 
     <LinearLayout
+        android:id="@+id/listlayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -15,8 +16,7 @@
         <LinearLayout
             android:id="@+id/linearLayout2"
             android:layout_width="match_parent"
-            android:layout_height="598dp"
-            android:layout_above="@+id/buttonLayout"
+            android:layout_height="match_parent"
             android:background="#DDDDDD"
             android:orientation="vertical">
 
@@ -62,68 +62,66 @@
             <ListView
                 android:id="@+id/list_food"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="match_parent" />
 
 
         </LinearLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/buttonLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignBottom="@+id/listlayout">
 
-        <LinearLayout
-            android:id="@+id/buttonLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_alignParentBottom="true">
+        <Button
+            android:id="@+id/btn_refback"
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:layout_weight="1"
+            android:backgroundTint="#dac9ff"
+            android:text="냉장고"
+            android:textColor="#000000"
+            android:textSize="11dp" />
 
-            <Button
-                android:id="@+id/btn_refback"
-                android:layout_width="wrap_content"
-                android:layout_height="60dp"
-                android:layout_weight="1"
-                android:backgroundTint="#dac9ff"
-                android:text="냉장고"
-                android:textColor="#000000"
-                android:textSize="11dp" />
+        <Button
+            android:id="@+id/btn_listFavorite"
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:layout_weight="1"
+            android:backgroundTint="#dac9ff"
+            android:text="즐겨찾기"
+            android:textColor="#000000"
+            android:textSize="11dp" />
 
-            <Button
-                android:id="@+id/btn_listFavorite"
-                android:layout_width="wrap_content"
-                android:layout_height="60dp"
-                android:layout_weight="1"
-                android:backgroundTint="#dac9ff"
-                android:text="즐겨찾기"
-                android:textColor="#000000"
-                android:textSize="11dp" />
+        <Button
+            android:id="@+id/btn_foodAdd"
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:layout_weight="1"
+            android:backgroundTint="#dac9ff"
+            android:text="재료추가"
+            android:textColor="#000000"
+            android:textSize="11dp" />
 
-            <Button
-                android:id="@+id/btn_foodAdd"
-                android:layout_width="wrap_content"
-                android:layout_height="60dp"
-                android:layout_weight="1"
-                android:backgroundTint="#dac9ff"
-                android:text="재료추가"
-                android:textColor="#000000"
-                android:textSize="11dp" />
+        <Button
+            android:id="@+id/btn_list_category"
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:layout_weight="1"
+            android:backgroundTint="#dac9ff"
+            android:text="카테고리"
+            android:textColor="#000000"
+            android:textSize="11dp" />
 
-            <Button
-                android:id="@+id/btn_list_category"
-                android:layout_width="wrap_content"
-                android:layout_height="60dp"
-                android:layout_weight="1"
-                android:backgroundTint="#dac9ff"
-                android:text="카테고리"
-                android:textColor="#000000"
-                android:textSize="11dp" />
-
-            <Button
-                android:id="@+id/btn_recipe"
-                android:layout_width="wrap_content"
-                android:layout_height="60dp"
-                android:layout_weight="1"
-                android:backgroundTint="#dac9ff"
-                android:text="레시피추천"
-                android:textColor="#000000"
-                android:textSize="10dp" />
-        </LinearLayout>
-
+        <Button
+            android:id="@+id/btn_recipe"
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:layout_weight="1"
+            android:backgroundTint="#dac9ff"
+            android:text="레시피추천"
+            android:textColor="#000000"
+            android:textSize="10dp" />
     </LinearLayout>
 </RelativeLayout>

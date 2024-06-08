@@ -33,6 +33,7 @@ public class FoodAdapter extends ArrayAdapter<FoodResObj> implements FoodEditTas
 
     private List<FoodResObj> foodResObjs;
     private FoodResObj foodResObj;
+    int position;
 
 
     public FoodAdapter(Activity context, List<FoodResObj> foodResObjs) {
@@ -47,7 +48,7 @@ public class FoodAdapter extends ArrayAdapter<FoodResObj> implements FoodEditTas
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-
+        this.position = position;
         LayoutInflater inflater = context.getLayoutInflater();
         View rowView = inflater.inflate(R.layout.food_item,null,true);
 
@@ -80,7 +81,6 @@ public class FoodAdapter extends ArrayAdapter<FoodResObj> implements FoodEditTas
         FoodResObj favObj= foodResObjs.get(position);
         if(isFavorite){
             favObj.setFavorite("true");
-
             FoodEditTask foodEditTask = new FoodEditTask(favObj,this);
         }else {
             favObj.setFavorite("false");
@@ -91,6 +91,6 @@ public class FoodAdapter extends ArrayAdapter<FoodResObj> implements FoodEditTas
 
     @Override
     public void onFoodEditReceived(FoodResObj foodResObj) {
-
+        foodResObjs.set(position,foodResObj);
     }
 }

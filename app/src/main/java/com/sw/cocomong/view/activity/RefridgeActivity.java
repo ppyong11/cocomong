@@ -72,7 +72,6 @@ public class RefridgeActivity extends AppCompatActivity implements RefListGetTas
             //intent.putExtra("refnum",refObjs.get(position).getRefnum());
             intent.putExtra("username",username);
             startActivity(intent);
-
         });
         list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
