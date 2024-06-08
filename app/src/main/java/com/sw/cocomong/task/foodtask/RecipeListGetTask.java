@@ -1,15 +1,22 @@
 package com.sw.cocomong.task.foodtask;
 
 
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sw.cocomong.Object.FoodResObj;
+import com.sw.cocomong.Object.RecipeObj;
 
 import org.json.JSONException;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -19,13 +26,22 @@ import okhttp3.Response;
 
 public class RecipeListGetTask {
 
-    public RecipeListGetTask() {
+    List<RecipeObj> recipeObjs=new ArrayList<>();
+
+    private final RecipeListGetTask.RecipeListGetTaskListener listener;
+
+    public interface RecipeListGetTaskListener {
+        void onRecipeListReceived(List<RecipeObj> foodResObjs);
+    }
+
+    public RecipeListGetTask(RecipeListGetTaskListener listener) {
+        this.listener = listener;
 
         Log.i("tag","실행됨");
         //String url = "http://58.224.91.191:8080/recipe/get";
         //String url = "http://121.181.25.225:8080/recipe/get";
-        //String url = "http://192.168.236.1:8080/recipe/get";  // dahee laptop
-        String url = "http://192.168.219.144:8080/recipe/get"; //아현
+        String url = "http://192.168.236.1:8080/recipe/get";  // dahee laptop
+        //String url = "http://192.168.219.144:8080/recipe/get"; //아현
         //request 작성
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder().url(url).get().build();
@@ -46,6 +62,11 @@ public class RecipeListGetTask {
                     //응답성공
                     final String responseData = response.body().string();
                     Log.w("tag", "응답성공" + responseData);
+                    ObjectMapper objectMapper = new ObjectMapper();
+                    recipeObjs = objectMapper.readValue(responseData, new TypeReference<List<RecipeObj>>() {});
+
+                    Log.i("tag", "recipeObjs" + recipeObjs.toString());
+                    new Handler(Looper.getMainLooper()).post(() -> listener.onRecipeListReceived(recipeObjs));
                     System.out.println(responseData);
                 }
             }

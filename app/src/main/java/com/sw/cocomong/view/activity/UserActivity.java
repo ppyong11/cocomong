@@ -13,10 +13,14 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.sw.cocomong.Object.FoodResObj;
+import com.sw.cocomong.Object.RecipeObj;
 import com.sw.cocomong.R;
 import com.sw.cocomong.task.foodtask.FoodListGetTask;
+import com.sw.cocomong.task.foodtask.RecipeListGetTask;
 import com.sw.cocomong.view.adapter.FoodAdapter;
+import com.sw.cocomong.view.adapter.RecipeAdapter;
 
+import org.checkerframework.checker.units.qual.A;
 import org.json.JSONException;
 
 import java.io.IOException;
@@ -25,12 +29,13 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class UserActivity extends AppCompatActivity implements FoodListGetTask.FoodListGetTaskListener {
+public class UserActivity extends AppCompatActivity implements FoodListGetTask.FoodListGetTaskListener, RecipeListGetTask.RecipeListGetTaskListener {
 
     ListView list;
     TextView refName_tv;
     Button refridge, foodAdd, favorite, recipe, sort, category;
     FoodAdapter foodAdapter, categoryAdapter,favAdapter;
+    RecipeAdapter recipeAdapter;
     //RefListItemDto refListItemDto;
     //int foodPosition, refPosition;
     //public List<FoodListItemDto> foodListItemDtos,favoriteList, categoryList;
@@ -38,9 +43,11 @@ public class UserActivity extends AppCompatActivity implements FoodListGetTask.F
     List<FoodResObj> foodResObjs = new ArrayList<>();
     public static List<FoodResObj> favoriteList=new ArrayList<>();
     List<FoodResObj> categoryList=new ArrayList<>();
+    List<RecipeObj> recipeObjs = new ArrayList<>();
 
     boolean isFavorite=false;
     boolean isCategory=false;
+    boolean isRecipe=false;
     String username,refname,refnum;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -74,6 +81,7 @@ public class UserActivity extends AppCompatActivity implements FoodListGetTask.F
         foodAdapter = new FoodAdapter(UserActivity.this, foodResObjs);
         favAdapter = new FoodAdapter(UserActivity.this, favoriteList);
         categoryAdapter = new FoodAdapter(UserActivity.this, categoryList);
+        recipeAdapter = new RecipeAdapter(UserActivity.this, recipeObjs);
 
         list.setAdapter(foodAdapter);
 
@@ -85,23 +93,38 @@ public class UserActivity extends AppCompatActivity implements FoodListGetTask.F
                 foodname=categoryList.get(position).getFoodname();
                 foodid = categoryList.get(position).getIdx().toString();
                 filepath= foodResObjs.get(position).getFilepath();
+                Intent foodIntent = new Intent(UserActivity.this, FoodInfoActivity.class);
+                foodIntent.putExtra("username",username);
+                foodIntent.putExtra("foodname", foodname);
+                foodIntent.putExtra("refname",refname);
+                foodIntent.putExtra("foodid",foodid);
+                foodIntent.putExtra("filepath", filepath);
+                startActivity(foodIntent);
             }else if(isFavorite){
                 foodname=favoriteList.get(position).getFoodname();
                 foodid = favoriteList.get(position).getIdx().toString();
                 filepath= foodResObjs.get(position).getFilepath();
+                Intent foodIntent = new Intent(UserActivity.this, FoodInfoActivity.class);
+                foodIntent.putExtra("username",username);
+                foodIntent.putExtra("foodname", foodname);
+                foodIntent.putExtra("refname",refname);
+                foodIntent.putExtra("foodid",foodid);
+                foodIntent.putExtra("filepath", filepath);
+                startActivity(foodIntent);
+            }else if(isRecipe) {
+                recipeObjs.get(position).getRecipeLink();
             }else {
                 foodname = foodResObjs.get(position).getFoodname();
                 foodid = foodResObjs.get(position).getIdx().toString();
                 filepath= foodResObjs.get(position).getFilepath();
+                Intent foodIntent = new Intent(UserActivity.this, FoodInfoActivity.class);
+                foodIntent.putExtra("username",username);
+                foodIntent.putExtra("foodname", foodname);
+                foodIntent.putExtra("refname",refname);
+                foodIntent.putExtra("foodid",foodid);
+                foodIntent.putExtra("filepath", filepath);
+                startActivity(foodIntent);
             }
-
-            Intent foodIntent = new Intent(UserActivity.this, FoodInfoActivity.class);
-            foodIntent.putExtra("username",username);
-            foodIntent.putExtra("foodname", foodname);
-            foodIntent.putExtra("refname",refname);
-            foodIntent.putExtra("foodid",foodid);
-            foodIntent.putExtra("filepath", filepath);
-            startActivity(foodIntent);
         });
 
         foodAdd.setOnClickListener(v -> {
@@ -117,6 +140,11 @@ public class UserActivity extends AppCompatActivity implements FoodListGetTask.F
                 favorite.setText("즐겨찾기");
                 favorite.setBackgroundColor(getResources().getColor(R.color.purple_100));
                 favorite.setTextColor(getResources().getColor(R.color.black));
+            }else if(isRecipe){
+                isRecipe=false;
+                list.setAdapter(foodAdapter);
+                recipe.setBackgroundColor(getResources().getColor(R.color.purple_100));
+                recipe.setTextColor(getResources().getColor(R.color.black));
             }
             list.setAdapter(foodAdapter);
             Intent foodAddIntent = new Intent(UserActivity.this, FoodAddSelectActivity.class);
@@ -140,6 +168,11 @@ public class UserActivity extends AppCompatActivity implements FoodListGetTask.F
                     category.setText("카테고리");
                     category.setBackgroundColor(getResources().getColor(R.color.purple_100));
                     category.setTextColor(getResources().getColor(R.color.black));
+                }else if (isRecipe){
+                    isRecipe=false;
+                    list.setAdapter(foodAdapter);
+                    recipe.setBackgroundColor(getResources().getColor(R.color.purple_100));
+                    recipe.setTextColor(getResources().getColor(R.color.black));
                 }
                 isFavorite = true;
                 list.setAdapter(favAdapter);
@@ -170,10 +203,18 @@ public class UserActivity extends AppCompatActivity implements FoodListGetTask.F
 
 
         recipe.setOnClickListener(v->{
-            Intent recipeIntent = new Intent(UserActivity.this, RecipeActivity.class);
-            recipeIntent.putExtra("username",username);
-            recipeIntent.putExtra("refname",refname);
-            startActivity(recipeIntent);
+            if(!isRecipe) {
+                isRecipe = true;
+                list.setAdapter(recipeAdapter);
+                recipe.setBackgroundColor(getResources().getColor(R.color.purple_200));
+                recipe.setTextColor(getResources().getColor(R.color.white));
+                new RecipeListGetTask(this);
+            }else{
+                isRecipe=false;
+                list.setAdapter(foodAdapter);
+                recipe.setBackgroundColor(getResources().getColor(R.color.purple_100));
+                recipe.setTextColor(getResources().getColor(R.color.black));
+            }
         });
 
 
@@ -185,6 +226,37 @@ public class UserActivity extends AppCompatActivity implements FoodListGetTask.F
 
         sort.setOnClickListener(v->{
             final PopupMenu sortMenu = new PopupMenu(getApplicationContext(),v);
+            // TODO: 2024-06-09 sort 손보기
+            if(isRecipe){
+                getMenuInflater().inflate(R.menu.recipe_sort_menu, sortMenu.getMenu());
+                sortMenu.setOnMenuItemClickListener(p->{
+                    if(p.getItemId()==R.id.sort_name){
+                        if(isFavorite){
+                            Collections.sort(favoriteList, Comparator.comparing(FoodResObj::getFoodname));
+                            list.setAdapter(favAdapter);
+                        }else if(isCategory){
+                            Collections.sort(categoryList, Comparator.comparing(FoodResObj::getFoodname));
+                            list.setAdapter(categoryAdapter);
+                        }else {
+                            Collections.sort(foodResObjs, Comparator.comparing(FoodResObj::getFoodname));
+                            list.setAdapter(foodAdapter);
+                        }
+                    } else if (p.getItemId()==R.id.sort_expire) {
+                        if(isFavorite){
+                            Collections.sort(favoriteList, Comparator.comparing(FoodResObj::getExpiredate));
+                            list.setAdapter(favAdapter);
+                        }else if(isCategory){
+                            Collections.sort(categoryList, Comparator.comparing(FoodResObj::getExpiredate));
+                            list.setAdapter(categoryAdapter);
+                        }else {
+                            Collections.sort(foodResObjs, Comparator.comparing(FoodResObj::getExpiredate));
+                            list.setAdapter(foodAdapter);
+                        }
+                    }
+                    return false;
+                });
+                sortMenu.show();
+            }else{
             getMenuInflater().inflate(R.menu.sort_menu, sortMenu.getMenu());
             sortMenu.setOnMenuItemClickListener(p->{
                 if(p.getItemId()==R.id.sort_name){
@@ -209,11 +281,11 @@ public class UserActivity extends AppCompatActivity implements FoodListGetTask.F
                         Collections.sort(foodResObjs, Comparator.comparing(FoodResObj::getExpiredate));
                         list.setAdapter(foodAdapter);
                     }
-
                 }
                 return false;
             });
             sortMenu.show();
+            }
         });
     }
 
@@ -249,6 +321,11 @@ public class UserActivity extends AppCompatActivity implements FoodListGetTask.F
                     favorite.setText("즐겨찾기");
                     favorite.setBackgroundColor(getResources().getColor(R.color.purple_100));
                     favorite.setTextColor(getResources().getColor(R.color.black));
+                } else if(isRecipe){
+                    isRecipe=false;
+                    list.setAdapter(foodAdapter);
+                    recipe.setBackgroundColor(getResources().getColor(R.color.purple_100));
+                    recipe.setTextColor(getResources().getColor(R.color.black));
                 }
                 Log.i("tag",categoryList.toString());
                 categoryAdapter = new FoodAdapter(UserActivity.this, categoryList);
@@ -269,10 +346,25 @@ public class UserActivity extends AppCompatActivity implements FoodListGetTask.F
     private void updateUI() {
         foodAdapter = new FoodAdapter(this, foodResObjs);
         favAdapter = new FoodAdapter(UserActivity.this, favoriteList);
+        recipeAdapter=new RecipeAdapter(this, recipeObjs);
         list.setAdapter(foodAdapter);
         if(isCategory){
             list.setAdapter(categoryAdapter);
+        }else if(isRecipe){
+            list.setAdapter(recipeAdapter);
         }
     }
 
+    @Override
+    public void onRecipeListReceived(List<RecipeObj> recipeObjs) {
+        this.recipeObjs.clear();
+        for(FoodResObj food : foodResObjs){
+            for(RecipeObj recipeObj: recipeObjs){
+                if(recipeObj.getMain().equals(food.getFoodname())) this.recipeObjs.add(recipeObj);
+                else if(recipeObj.getSub1().equals(food.getFoodname())) this.recipeObjs.add(recipeObj);
+                else if(recipeObj.getSub2().equals(food.getFoodname())) this.recipeObjs.add(recipeObj);
+            }
+        }
+        updateUI();
+    }
 }

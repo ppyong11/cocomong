@@ -12,8 +12,10 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.TextView;
 import com.sw.cocomong.Object.FoodResObj;
+import com.sw.cocomong.Object.RecipeObj;
 import com.sw.cocomong.R;
 import com.sw.cocomong.task.foodtask.FoodEditTask;
+import com.sw.cocomong.task.foodtask.RecipeListGetTask;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -26,20 +28,20 @@ import java.util.List;
 
 import okhttp3.Response;
 
-public class RecipeAdapter<StringRequest> extends ArrayAdapter<FoodResObj> implements FoodEditTask.FoodEditTaskListener {
+public class RecipeAdapter extends ArrayAdapter<RecipeObj> implements RecipeListGetTask.RecipeListGetTaskListener {
     private final Activity context;
    // private List<FoodListItemDto> foodListItemDtos;
    // private FoodListItemDto foodListItemDto;
     //private RefListItemDto refListItemDto;
 
-    private List<FoodResObj> foodResObjs;
-    private FoodResObj foodResObj;
+    private List<RecipeObj> recipeObjs;
+    private RecipeObj recipeObj;
 
 
-    public RecipeAdapter(Activity context, List<FoodResObj> foodResObjs) {
-        super(context, R.layout.food_item, foodResObjs);
+    public RecipeAdapter(Activity context, List<RecipeObj> recipeObjs) {
+        super(context, R.layout.recipe_item, recipeObjs);
         this.context=context;
-        this.foodResObjs = foodResObjs;
+        this.recipeObjs = recipeObjs;
     }
 
     public static AdapterView<?> createFromResource(Context applicationContext, int position) {
@@ -55,44 +57,19 @@ public class RecipeAdapter<StringRequest> extends ArrayAdapter<FoodResObj> imple
         TextView tvRecipeName =  (TextView) rowView.findViewById(R.id.tv_recipename);
         TextView tvIn1 = (TextView) rowView.findViewById(R.id.tv_in1);
         TextView tvIn2 = (TextView) rowView.findViewById(R.id.tv_in2);
-        TextView tnIn3 = (TextView) rowView.findViewById(R.id.tv_in3);
+        TextView tvIn3 = (TextView) rowView.findViewById(R.id.tv_in3);
 
+        recipeObj = recipeObjs.get(position);
 
-        foodResObj = foodResObjs.get(position);
-
-        /*tvFoodName.setText(foodResObj.getFoodname());
-        tvCategory.setText(foodResObj.getCategory());
-        tvExpire.setText(foodResObj.getExpiredate());
-        cbFavorite.setChecked(Boolean.parseBoolean(foodResObj.getFavorite()));
-
-        cbFavorite.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            try {
-                setFavoriteItems(position,isChecked);
-            } catch (JSONException e) {
-                throw new RuntimeException(e);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });*/
-
+        tvRecipeName.setText(recipeObj.getRecipename());
+        tvIn1.setText(recipeObj.getMain());
+        tvIn2.setText(recipeObj.getSub1());
+        tvIn3.setText(recipeObj.getSub2());
         return rowView;
     }
-    public void setRecipeItems(int position, boolean isRecipe) throws JSONException, IOException {
-        FoodResObj favObj= foodResObjs.get(position);
-        if(isRecipe){
-            favObj.setFavorite("true");
-
-            FoodEditTask foodEditTask = new FoodEditTask(favObj,this);
-        }else {
-            favObj.setFavorite("false");
-            FoodEditTask foodEditTask = new FoodEditTask(favObj,this);
-        }
-       notifyDataSetChanged();
-    }
-
 
     @Override
-    public void onFoodEditReceived(FoodResObj foodResObj) {
+    public void onRecipeListReceived(List<RecipeObj> recipeObjs) {
 
     }
 }

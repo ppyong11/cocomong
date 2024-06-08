@@ -17,10 +17,10 @@ import lombok.ToString;
 @ToString
 public class RecipeObj {
 
-    private String recipe;
+    private String recipename;
     private String main;
     private String sub1;
     private String sub2;
     private String sub3;
-
+    private String recipeLink;
 }
