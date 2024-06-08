@@ -1,6 +1,7 @@
 package com.sw.cocomong.view.activity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
@@ -115,7 +116,9 @@ public class UserActivity extends AppCompatActivity implements FoodListGetTask.F
                 foodIntent.putExtra("filepath", filepath);
                 startActivity(foodIntent);
             }else if(isRecipe) {
-                recipeObjs.get(position).getRecipeLink();
+                String link = recipeObjs.get(position).getRecipeLink();
+                Intent recipeIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(link));
+                startActivity(recipeIntent);
             }else {
                 foodname = foodResObjs.get(position).getFoodname();
                 foodid = foodResObjs.get(position).getIdx().toString();
