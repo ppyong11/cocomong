@@ -25,9 +25,12 @@ import org.checkerframework.checker.units.qual.A;
 import org.json.JSONException;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 public class UserActivity extends AppCompatActivity implements FoodListGetTask.FoodListGetTaskListener, RecipeListGetTask.RecipeListGetTaskListener {
@@ -35,23 +38,26 @@ public class UserActivity extends AppCompatActivity implements FoodListGetTask.F
     ListView list;
     TextView refName_tv;
     Button refridge, foodAdd, favorite, recipe, sort, category;
-    FoodAdapter foodAdapter, categoryAdapter,favAdapter;
-    RecipeAdapter recipeAdapter, favRecipeAdapter;
-    //RefListItemDto refListItemDto;
-    //int foodPosition, refPosition;
-    //public List<FoodListItemDto> foodListItemDtos,favoriteList, categoryList;
-    // List<FoodObj> foodList=new ArrayList<>();
+    FoodAdapter foodAdapter, categoryAdapter,favAdapter,favCategoryAdapter, expCategoryAdapter;
+    RecipeAdapter recipeAdapter, favRecipeAdapter, expRecipeAdapter;
     List<FoodResObj> foodResObjs = new ArrayList<>();
     public static List<FoodResObj> favoriteList=new ArrayList<>();
     List<FoodResObj> categoryList=new ArrayList<>();
     List<RecipeObj> recipeObjs = new ArrayList<>();
     List<RecipeObj> favRecipeObjs = new ArrayList<>();
+    List<FoodResObj> favCategoryList = new ArrayList<>();
+    List<FoodResObj> expCategoryList = new ArrayList<>();
+    List<RecipeObj> expRecipeList = new ArrayList<>();
 
     boolean isFavorite=false;
     boolean isCategory=false;
     boolean isRecipe=false;
     boolean isFavRecipe=false;
     String username,refname,refnum;
+
+    Calendar calendar = Calendar.getInstance();
+    // 일자를 정수로 변환
+    int currentDayInt = calendar.get(Calendar.DAY_OF_MONTH);
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,12 +86,14 @@ public class UserActivity extends AppCompatActivity implements FoodListGetTask.F
         sort=findViewById(R.id.btn_sort);
         category=findViewById(R.id.btn_list_category);
 
-        //foodAdapter = new FoodAdapter(UserActivity.this, foodListItemDtos, refListItemDto);
         foodAdapter = new FoodAdapter(UserActivity.this, foodResObjs);
         favAdapter = new FoodAdapter(UserActivity.this, favoriteList);
         categoryAdapter = new FoodAdapter(UserActivity.this, categoryList);
         recipeAdapter = new RecipeAdapter(UserActivity.this, recipeObjs);
         favRecipeAdapter = new RecipeAdapter(this, favRecipeObjs);
+        favCategoryAdapter = new FoodAdapter(this, favCategoryList);
+        expCategoryAdapter=new FoodAdapter(this, expCategoryList);
+
 
         list.setAdapter(foodAdapter);
 
@@ -207,9 +215,21 @@ public class UserActivity extends AppCompatActivity implements FoodListGetTask.F
             }
         });
 
-
         recipe.setOnClickListener(v->{
             if(!isRecipe) {
+                if(isCategory) {
+                    isCategory=false;
+                    list.setAdapter(foodAdapter);
+                    category.setText("카테고리");
+                    category.setBackgroundColor(getResources().getColor(R.color.purple_100));
+                    category.setTextColor(getResources().getColor(R.color.black));
+                }else if(isFavorite){
+                    isFavorite=false;
+                    list.setAdapter(foodAdapter);
+                    favorite.setText("즐겨찾기");
+                    favorite.setBackgroundColor(getResources().getColor(R.color.purple_100));
+                    favorite.setTextColor(getResources().getColor(R.color.black));
+                }
                 isRecipe = true;
                 list.setAdapter(recipeAdapter);
                 recipe.setBackgroundColor(getResources().getColor(R.color.purple_200));
@@ -223,7 +243,6 @@ public class UserActivity extends AppCompatActivity implements FoodListGetTask.F
             }
         });
 
-
         refridge.setOnClickListener(v->{
             Intent refIntent = new Intent(UserActivity.this, RefridgeActivity.class);
             refIntent.putExtra("username",username);
@@ -236,17 +255,32 @@ public class UserActivity extends AppCompatActivity implements FoodListGetTask.F
                 getMenuInflater().inflate(R.menu.recipe_sort_menu, sortMenu.getMenu());
                 sortMenu.setOnMenuItemClickListener(p->{
                     if(p.getItemId()==R.id.sort_name){
-                            Collections.sort(recipeObjs, Comparator.comparing(RecipeObj::getRecipename));
-                            list.setAdapter(recipeAdapter);
+                        Collections.sort(recipeObjs, Comparator.comparing(RecipeObj::getRecipename));
+                        list.setAdapter(recipeAdapter);
                     } else if (p.getItemId()==R.id.sort_expire) {
-                        // TODO: 2024-06-09 기준 세우기 어려움.
+                        list.setAdapter(expRecipeAdapter);
                     }else {
                         list.setAdapter(favRecipeAdapter);
                     }
                     return false;
                 });
                 sortMenu.show();
-            }else{
+            }else if(isCategory){
+                getMenuInflater().inflate(R.menu.recipe_sort_menu, sortMenu.getMenu());
+                sortMenu.setOnMenuItemClickListener(p->{
+                    if(p.getItemId()==R.id.sort_name){
+                        Collections.sort(categoryList, Comparator.comparing(FoodResObj::getFoodname));
+                        list.setAdapter(categoryAdapter);
+                    } else if (p.getItemId()==R.id.sort_expire) {
+                        list.setAdapter(expCategoryAdapter);
+                    }else {
+                        list.setAdapter(favCategoryAdapter);
+                    }
+                    return false;
+                });
+                sortMenu.show();
+            }
+            else{
                 getMenuInflater().inflate(R.menu.sort_menu, sortMenu.getMenu());
                 sortMenu.setOnMenuItemClickListener(p->{
                     if(p.getItemId()==R.id.sort_name){
@@ -298,12 +332,35 @@ public class UserActivity extends AppCompatActivity implements FoodListGetTask.F
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         categoryList.clear();
+        favCategoryList.clear();
+        expCategoryList.clear();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM");
+        String monthStr = dateFormat.format(new Date());
+
         if (requestCode==1300&&resultCode==RESULT_OK){
             if(data!=null){
                 String selectedCategory = data.getStringExtra("category");
                 for(FoodResObj foodResObj : foodResObjs){
-                    if(foodResObj.getCategory().equals(selectedCategory)) categoryList.add(foodResObj);
+                    if(foodResObj.getCategory().equals(selectedCategory)) {
+                        categoryList.add(foodResObj);
+                        //favCategoryList 추가
+                        if(foodResObj.getFavorite().equals("true")) favCategoryList.add(foodResObj);
+                        // expCategoryList 추가
+                        String foodExp = foodResObj.getExpiredate();
+                        String[] parts = foodExp.split("/");
+                        String foodMonth = parts[0] + "/" + parts[1]; //"YYYY/MM"추출
+                        Integer foodDay = Integer.parseInt(parts[2]); //DD 추출
+                        if (foodMonth.equals(monthStr)) {
+                            //음식이 exp가 이번 달이라면
+                            if (foodDay >= currentDayInt && foodDay <= currentDayInt + 3) {
+                                //유통기한이 오늘이거나 오늘 날짜 +3일 이내라면
+                                expCategoryList.add(foodResObj);
+                            }
+                        }
+                    }
                 }
+                Log.i("favCategoryList",favCategoryList.toString());
+                Log.i("expCategoryList",expCategoryList.toString());
                 isCategory=true;
                 if(isFavorite){
                     isFavorite=false;
@@ -319,6 +376,8 @@ public class UserActivity extends AppCompatActivity implements FoodListGetTask.F
                 }
                 Log.i("tag",categoryList.toString());
                 categoryAdapter = new FoodAdapter(UserActivity.this, categoryList);
+                favCategoryAdapter=new FoodAdapter(this, favCategoryList);
+                expCategoryAdapter = new FoodAdapter(this, expCategoryList);
                 list.setAdapter(categoryAdapter);
                 category.setText(selectedCategory);
                 category.setBackgroundColor(getResources().getColor(R.color.purple_200));
@@ -338,25 +397,67 @@ public class UserActivity extends AppCompatActivity implements FoodListGetTask.F
         favAdapter = new FoodAdapter(UserActivity.this, favoriteList);
         recipeAdapter=new RecipeAdapter(this, recipeObjs);
         favRecipeAdapter = new RecipeAdapter(this, favRecipeObjs);
-        list.setAdapter(foodAdapter);
+        favCategoryAdapter = new FoodAdapter(this, favCategoryList);
+        expCategoryAdapter=new FoodAdapter(this, expCategoryList);
+        expRecipeAdapter=new RecipeAdapter(this,expRecipeList);
+
         if(isCategory){
             list.setAdapter(categoryAdapter);
         }else if(isRecipe){
             list.setAdapter(recipeAdapter);
-        }
+        }else
+            list.setAdapter(foodAdapter);
+
     }
 
     @Override
     public void onRecipeListReceived(List<RecipeObj> recipeObjs) {
+
         this.recipeObjs.clear();
         this.favRecipeObjs.clear();
+        this.expRecipeList.clear();
         for(FoodResObj food : foodResObjs) {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM");
+            String monthStr = dateFormat.format(new Date());
+            String foodExp = food.getExpiredate();
+            String[] parts = foodExp.split("/");
+            String foodMonth = parts[0] + "/" + parts[1]; //"YYYY/MM"추출
+            int foodDay = Integer.parseInt(parts[2]); //DD 추출
+
             for (RecipeObj recipeObj : recipeObjs) {
-                if (recipeObj.getMain().equals(food.getFoodname())) this.recipeObjs.add(recipeObj);
-                else if (recipeObj.getSub1().equals(food.getFoodname()))
+                if (recipeObj.getMain().equals(food.getFoodname())) {
                     this.recipeObjs.add(recipeObj);
-                else if (recipeObj.getSub2().equals(food.getFoodname()))
+
+                    if (foodMonth.equals(monthStr)) {
+                        //음식이 exp가 이번 달이라면
+                        if (foodDay >= currentDayInt && foodDay <= currentDayInt + 3) {
+                            //유통기한이 오늘이거나 오늘 날짜 +3일 이내라면
+                            expRecipeAdapter.add(recipeObj);
+                        }
+                    }
+                }
+                else if (recipeObj.getSub1().equals(food.getFoodname())){
                     this.recipeObjs.add(recipeObj);
+
+                    if (foodMonth.equals(monthStr)) {
+                        //음식이 exp가 이번 달이라면
+                        if (foodDay >= currentDayInt && foodDay <= currentDayInt + 3) {
+                            //유통기한이 오늘이거나 오늘 날짜 +3일 이내라면
+                            expRecipeAdapter.add(recipeObj);
+                        }
+                    }
+                }
+                else if (recipeObj.getSub2().equals(food.getFoodname())){
+                    this.recipeObjs.add(recipeObj);
+
+                    if (foodMonth.equals(monthStr)) {
+                        //음식이 exp가 이번 달이라면
+                        if (foodDay >= currentDayInt && foodDay <= currentDayInt + 3) {
+                            //유통기한이 오늘이거나 오늘 날짜 +3일 이내라면
+                            expRecipeAdapter.add(recipeObj);
+                        }
+                    }
+                }
                 if(food.getFavorite().equals("true")){
                     if (recipeObj.getMain().equals(food.getFoodname())) this.favRecipeObjs.add(recipeObj);
                     else if (recipeObj.getSub1().equals(food.getFoodname()))
