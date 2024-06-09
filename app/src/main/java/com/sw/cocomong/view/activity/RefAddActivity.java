@@ -64,7 +64,9 @@ public class RefAddActivity extends Activity implements RefListGetTask.RefListGe
             if (refNames.contains(refName)) {
                 // refName이 refNames에 포함되어 있는 경우
                 Toast.makeText(this, "같은 이름의 냉장고가 있습니다.", Toast.LENGTH_SHORT).show();
-            } else {
+            } else if (refName.equals("")) {
+                Toast.makeText(this, "냉장고 이름을 입력하세요.", Toast.LENGTH_SHORT).show();
+            }else{
                 // refName이 refNames에 포함되어 있지 않은 경우
                 try {
                     RefAddTask refAddTask = new RefAddTask(refName, username);
@@ -73,7 +75,6 @@ public class RefAddActivity extends Activity implements RefListGetTask.RefListGe
                 }
                 finish();
             }
-
         });
     }
 

@@ -53,13 +53,13 @@ public class RefridgeActivity extends AppCompatActivity implements RefListGetTas
         SharedPreferences sh = getSharedPreferences("UserSharedPref", MODE_PRIVATE);
         username=sh.getString("username", "");  // login name
 
-        try {
+       /* try {
             new RefListGetTask(username, this);
             //refList=refListGetTask.getList();
         } catch (JSONException e) {
             Log.d("RefListGetTask", "안됨");
             throw new RuntimeException(e);
-        }
+        }*/
 
         list = findViewById(R.id.list_ref);
         refAdd = findViewById(R.id.btn_refplus);
@@ -108,7 +108,11 @@ public class RefridgeActivity extends AppCompatActivity implements RefListGetTas
     @Override
     protected void onResume() {
         super.onResume();
-        updateRefList();
+        try {
+            new RefListGetTask(username, this);
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     //데이터를 background로 보내기 위해 해당 함수 내에 코드 첨부
@@ -121,32 +125,29 @@ public class RefridgeActivity extends AppCompatActivity implements RefListGetTas
             refNames.add(refObj.getRefName());
             Log.d("refActivity Recivied", "refNames: "+String.valueOf(refNames.size())+username);
         }
+        updateRefList();
         updateRefUI();
     }
 
     private void updateRefList() {
-        try {
-            new RefListGetTask(username, this);
-            Log.d("Ref", "서비스 개수(삭제/생성 전):" + String.valueOf(getRunningServicesCount(this)));
-            if (getRunningServicesCount(this) == 1) {
-                stopService(new Intent(this, BackgroundService.class));
-                Log.d("Ref", "서비스 삭제:" + String.valueOf(getRunningServicesCount(this)));
-            }
-            if (getRunningServicesCount(this) == 0) {
-                // Background 인텐트 실행 및 refObjs 데이터 보내기
-                Intent serviceIntent = new Intent(this, BackgroundService.class);
-                // RefObj 객체의 모든 refName 리스트에 추가
-
-                serviceIntent.putStringArrayListExtra("refNames", refNames);
-                serviceIntent.putExtra("userName", username);
-                startService(serviceIntent);
-                Log.d("refActivity onResume", "refNames: " + String.valueOf(refNames.size()) + username);
-                Log.d("refActivity", "BackgroundService 시작됨");
-                Log.d("Ref", "서비스 생성:" + String.valueOf(getRunningServicesCount(this)));
-            }
-        } catch (JSONException e) {
-            throw new RuntimeException(e);
+        Log.d("Ref", "서비스 개수(삭제/생성 전):" + String.valueOf(getRunningServicesCount(this)));
+        if (getRunningServicesCount(this) == 1) {
+            stopService(new Intent(this, BackgroundService.class));
+            Log.d("Ref", "서비스 삭제:" + String.valueOf(getRunningServicesCount(this)));
         }
+        if (getRunningServicesCount(this) == 0) {
+            // Background 인텐트 실행 및 refObjs 데이터 보내기
+            Intent serviceIntent = new Intent(this, BackgroundService.class);
+            // RefObj 객체의 모든 refName 리스트에 추가
+
+            serviceIntent.putStringArrayListExtra("refNames", refNames);
+            serviceIntent.putExtra("userName", username);
+            startService(serviceIntent);
+            Log.d("refActivity onResume", "refNames: " + String.valueOf(refNames.size()) + username);
+            Log.d("refActivity", "BackgroundService 시작됨");
+            Log.d("Ref", "서비스 생성:" + String.valueOf(getRunningServicesCount(this)));
+        }
+
     }
     private void updateRefUI() {
         refAdapter.notifyDataSetChanged();
