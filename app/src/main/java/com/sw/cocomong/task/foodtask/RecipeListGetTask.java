@@ -40,8 +40,8 @@ public class RecipeListGetTask {
         Log.i("tag","실행됨");
         //String url = "http://58.224.91.191:8080/recipe/get";
         //String url = "http://121.181.25.225:8080/recipe/get";
-        String url = "http://192.168.236.1:8080/recipe/get";  // dahee laptop
-        //String url = "http://192.168.219.144:8080/recipe/get"; //아현
+        //String url = "http://192.168.236.1:8080/recipe/get";  // dahee laptop
+        String url = "http://192.168.219.144:8080/recipe/get"; //아현
         //request 작성
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder().url(url).get().build();

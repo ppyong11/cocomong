@@ -103,7 +103,7 @@ public class BarcodeScanner extends AppCompatActivity {
                     String expiredate= expire_et.getText().toString();
                     String category=category_tv.getText().toString();
                     String memo=memo_et.getText().toString();
-                    foodResObj = new FoodResObj(null,username,foodname,expiredate,category,memo,"false",refname,"content://media/external/images/media/40");
+                    foodResObj = new FoodResObj(null,username,foodname,expiredate,category,memo,"false",refname,"content://media/external/images/media/109");
                     try {
                         FoodAddTask foodAddTask = new FoodAddTask(foodResObj);
                     } catch (JSONException e) {
@@ -160,7 +160,7 @@ public class BarcodeScanner extends AppCompatActivity {
 
             }
         });
-        uri= Uri.parse("content://media/external/images/media/40");
+        uri= Uri.parse("content://media/external/images/media/109");
         foodimage.setImageURI(uri);
     }
 

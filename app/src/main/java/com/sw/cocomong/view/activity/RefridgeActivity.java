@@ -119,14 +119,10 @@ public class RefridgeActivity extends AppCompatActivity implements RefListGetTas
                 Intent serviceIntent = new Intent(this, BackgroundService.class);
                 //RefObj 객체의 모든 refName 리스트에 추가
 
-                for (RefObj refObj : refObjs) {
-                    refNames.add(refObj.getRefName());
-                    Log.d("refActivity", "refNames: "+String.valueOf(refNames.size())+username);
-                }
                 serviceIntent.putStringArrayListExtra("refNames", refNames);
                 serviceIntent.putExtra("userName",username);
                 startService(serviceIntent);
-                Log.d("refActivity", "refNames: "+String.valueOf(refNames.size())+username);
+                Log.d("refActivity onResume", "refNames: "+String.valueOf(refNames.size())+username);
                 Log.d("refActivity", "BackgroundService 시작됨");
                 Log.d("Ref", "서비스 생성:"+String.valueOf(getRunningServicesCount(this)));
             }
@@ -144,7 +140,7 @@ public class RefridgeActivity extends AppCompatActivity implements RefListGetTas
         refNames.clear();
         for (RefObj refObj : refObjs) {
             refNames.add(refObj.getRefName());
-            Log.d("refActivity", "refNames: "+String.valueOf(refNames.size())+username);
+            Log.d("refActivity Recivied", "refNames: "+String.valueOf(refNames.size())+username);
         }
         updateRefUI();
     }
@@ -200,4 +196,3 @@ public class RefridgeActivity extends AppCompatActivity implements RefListGetTas
         }
     }
 }
-
