@@ -41,6 +41,7 @@ public class RefridgeActivity extends AppCompatActivity implements RefListGetTas
     List<RefObj> refObjs=new ArrayList<>();
     String username;
     ArrayList<String> refNames=new ArrayList<>();
+    private static final int REQUEST_CODE_DELETE = 1; // 어떤 값도 상관없음
 
 
     @Override
@@ -107,29 +108,7 @@ public class RefridgeActivity extends AppCompatActivity implements RefListGetTas
     @Override
     protected void onResume() {
         super.onResume();
-        try {
-            new RefListGetTask(username,this);
-            Log.d("Ref", "서비스 개수(삭제/생성 전):"+String.valueOf(getRunningServicesCount(this)));
-            if (getRunningServicesCount(this) == 1) {
-                stopService(new Intent(this, BackgroundService.class));
-                Log.d("Ref", "서비스 삭제:"+String.valueOf(getRunningServicesCount(this)));
-            }
-            if(getRunningServicesCount(this) == 0){
-                //background 인텐트 실행 및 refObjs 데이터 보내기
-                Intent serviceIntent = new Intent(this, BackgroundService.class);
-                //RefObj 객체의 모든 refName 리스트에 추가
-
-                serviceIntent.putStringArrayListExtra("refNames", refNames);
-                serviceIntent.putExtra("userName",username);
-                startService(serviceIntent);
-                Log.d("refActivity onResume", "refNames: "+String.valueOf(refNames.size())+username);
-                Log.d("refActivity", "BackgroundService 시작됨");
-                Log.d("Ref", "서비스 생성:"+String.valueOf(getRunningServicesCount(this)));
-            }
-        } catch (JSONException e) {
-            throw new RuntimeException(e);
-        }
-        refAdapter.notifyDataSetChanged();
+        updateRefList();
     }
 
     //데이터를 background로 보내기 위해 해당 함수 내에 코드 첨부
@@ -145,6 +124,30 @@ public class RefridgeActivity extends AppCompatActivity implements RefListGetTas
         updateRefUI();
     }
 
+    private void updateRefList() {
+        try {
+            new RefListGetTask(username, this);
+            Log.d("Ref", "서비스 개수(삭제/생성 전):" + String.valueOf(getRunningServicesCount(this)));
+            if (getRunningServicesCount(this) == 1) {
+                stopService(new Intent(this, BackgroundService.class));
+                Log.d("Ref", "서비스 삭제:" + String.valueOf(getRunningServicesCount(this)));
+            }
+            if (getRunningServicesCount(this) == 0) {
+                // Background 인텐트 실행 및 refObjs 데이터 보내기
+                Intent serviceIntent = new Intent(this, BackgroundService.class);
+                // RefObj 객체의 모든 refName 리스트에 추가
+
+                serviceIntent.putStringArrayListExtra("refNames", refNames);
+                serviceIntent.putExtra("userName", username);
+                startService(serviceIntent);
+                Log.d("refActivity onResume", "refNames: " + String.valueOf(refNames.size()) + username);
+                Log.d("refActivity", "BackgroundService 시작됨");
+                Log.d("Ref", "서비스 생성:" + String.valueOf(getRunningServicesCount(this)));
+            }
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+    }
     private void updateRefUI() {
         refAdapter.notifyDataSetChanged();
     }
@@ -158,6 +161,13 @@ public class RefridgeActivity extends AppCompatActivity implements RefListGetTas
                 // 이미 권한이 있는 경우 알림을 표시합니다.
                 Log.d("ref: 알림 권한","권한 O");
             }
+        }
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE_DELETE && resultCode == RESULT_OK) {
+            updateRefList(); // 삭제 후 UI 업데이트
         }
     }
 
