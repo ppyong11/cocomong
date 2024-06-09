@@ -32,7 +32,7 @@ public class BackgroundService extends Service {
     private Handler handler;
     private Runnable checkTimeRunnable;
     Timer timer;
-    List<String> refname = new ArrayList<>();
+    List<String> refnames = new ArrayList<>();
     String username;
     List<FoodResObj> foodResObjs = new ArrayList<>();
     // BackgroundService 인스턴스를 저장할 정적 변수
@@ -54,7 +54,7 @@ public class BackgroundService extends Service {
         if (intent != null) {
             Bundle extras = intent.getExtras();
             if (extras != null) {
-                refname = extras.getStringArrayList("refNames");  // 냉장고 위치 받아옴
+                refnames = extras.getStringArrayList("refNames");  // 냉장고 위치 받아옴
                 username = extras.getString("userName");  // username 받아옴
                 // refname이 null인지 확인
             }
@@ -79,7 +79,7 @@ public class BackgroundService extends Service {
                 int currentHour = calendar.get(Calendar.HOUR_OF_DAY);
                 int currentMinute = calendar.get(Calendar.MINUTE);
                 Log.d("BackgroundService", "Current time: " + currentHour + ":" + currentMinute);
-                if (currentHour == 6 && currentMinute == 7) {
+                if (currentHour == 11 && currentMinute == 27) {
                     getFoodList();
                 }
                 // 다음 작업을 예약
@@ -111,10 +111,10 @@ public class BackgroundService extends Service {
         return null;
     }
     private void getFoodList() {
-        for (int i = 0; i < this.refname.size(); i++) {
+        for (int i = 0; i < this.refnames.size(); i++) {
             try {
                 // FoodListGetTask를 통해 각 refName에 해당하는 음식 정보 가져오기
-                new FoodListGetTask(this.username, this.refname.get(i).toString(), new FoodListGetTask.FoodListGetTaskListener() {
+                new FoodListGetTask(this.username, this.refnames.get(i).toString(), new FoodListGetTask.FoodListGetTaskListener() {
                     // 현재 날짜 구하기
                     Calendar calendar = Calendar.getInstance();
                     @Override
@@ -124,6 +124,8 @@ public class BackgroundService extends Service {
                         String monthStr = dateFormat.format(new Date());
                         // 일자를 정수로 변환
                         int currentDayInt = calendar.get(Calendar.DAY_OF_MONTH);
+                        String refName= "";
+
 
                         // 음식 정보를 해당 refName에 대한 FoodResObj 리스트에 저장
                         foodResObjs.clear();
@@ -131,7 +133,7 @@ public class BackgroundService extends Service {
                         List<List<String>> expMgmtList = new ArrayList<>(); // 임박
                         for (int i = 0; i < foodResObjs.size(); i++) {
                             FoodResObj foodResObj = foodResObjs.get(i);
-                            String refName= foodResObj.getRefname();
+                            refName= foodResObj.getRefname();
                             String foodName= foodResObj.getFoodname();
                             String foodExp= foodResObj.getExpiredate();
                             String[] parts= foodExp.split("/");
@@ -143,7 +145,6 @@ public class BackgroundService extends Service {
                                     //유통기한이 오늘이거나 오늘 날짜 +3일 이내라면
                                     List<String> item = new ArrayList<>();
                                     item.add("임박");
-                                    item.add(refName);
                                     item.add(foodName);
                                     item.add(foodExp);
 
@@ -152,7 +153,6 @@ public class BackgroundService extends Service {
                                     // 상함
                                     List<String> item = new ArrayList<>();
                                     item.add("만료");
-                                    item.add(refName);
                                     item.add(foodName);
                                     item.add(foodExp);
 
@@ -162,10 +162,9 @@ public class BackgroundService extends Service {
                                     break;
                             }
                         }
-                        // expMgmtList의 크기 출력
-                        count += 1;
+                        count += 1; //냉장고 개수만큼 알림채널 생성
                         int notificationId = NOTIFICATION_ID + count;
-                        Notification updatedNotification = NotificationService.showNotification(BackgroundService.getInstance(), count, username, expMgmtList);
+                        Notification updatedNotification = NotificationService.showNotification(BackgroundService.getInstance(), count, username, refName, expMgmtList);
                         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(BackgroundService.getInstance());
 
                         if (ActivityCompat.checkSelfPermission(BackgroundService.this, android.Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED) {
@@ -180,5 +179,4 @@ public class BackgroundService extends Service {
             }
         }
     }
-
 }
