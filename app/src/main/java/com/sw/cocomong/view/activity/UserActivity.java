@@ -5,6 +5,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
@@ -16,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.sw.cocomong.Object.FoodResObj;
 import com.sw.cocomong.Object.RecipeObj;
 import com.sw.cocomong.R;
+import com.sw.cocomong.dto.Food;
 import com.sw.cocomong.task.foodtask.FoodListGetTask;
 import com.sw.cocomong.task.foodtask.RecipeListGetTask;
 import com.sw.cocomong.view.adapter.FoodAdapter;
@@ -37,9 +40,11 @@ public class UserActivity extends AppCompatActivity implements FoodListGetTask.F
 
     ListView list;
     TextView refName_tv;
+    EditText search_et;
+    ImageButton search_btn;
     Button refridge, foodAdd, favorite, recipe, sort, category;
-    FoodAdapter foodAdapter, categoryAdapter,favAdapter,favCategoryAdapter, expCategoryAdapter;
-    RecipeAdapter recipeAdapter, favRecipeAdapter, expRecipeAdapter;
+    FoodAdapter foodAdapter, categoryAdapter,favAdapter,favCategoryAdapter, expCategoryAdapter,searchFoodAdapter;
+    RecipeAdapter recipeAdapter, favRecipeAdapter, expRecipeAdapter,searchRecipeAdapter;
     List<FoodResObj> foodResObjs = new ArrayList<>();
     public static List<FoodResObj> favoriteList=new ArrayList<>();
     List<FoodResObj> categoryList=new ArrayList<>();
@@ -48,6 +53,8 @@ public class UserActivity extends AppCompatActivity implements FoodListGetTask.F
     List<FoodResObj> favCategoryList = new ArrayList<>();
     List<FoodResObj> expCategoryList = new ArrayList<>();
     List<RecipeObj> expRecipeList = new ArrayList<>();
+    List<FoodResObj> searchFoodList=new ArrayList<>();
+    List<RecipeObj> searchRecipeList=new ArrayList<>();
 
     boolean isFavorite=false;
     boolean isCategory=false;
@@ -85,6 +92,8 @@ public class UserActivity extends AppCompatActivity implements FoodListGetTask.F
         refridge=findViewById(R.id.btn_refback);
         sort=findViewById(R.id.btn_sort);
         category=findViewById(R.id.btn_list_category);
+        search_btn=findViewById(R.id.search_btn);
+        search_et=findViewById(R.id.search_et);
 
         foodAdapter = new FoodAdapter(UserActivity.this, foodResObjs);
         favAdapter = new FoodAdapter(UserActivity.this, favoriteList);
@@ -310,6 +319,17 @@ public class UserActivity extends AppCompatActivity implements FoodListGetTask.F
                 });
                 sortMenu.show();
             }
+        });
+        search_btn.setOnClickListener(v->{
+            searchFoodList.clear();
+            String search=search_et.getText().toString();
+            if(!search.isEmpty()){
+                for(FoodResObj food : foodResObjs){
+                    if(food.getFoodname().equals(search)) searchFoodList.add(food);
+                }
+                searchFoodAdapter=new FoodAdapter(this,searchFoodList);
+                list.setAdapter(searchFoodAdapter);
+            }else list.setAdapter(foodAdapter);
         });
     }
 

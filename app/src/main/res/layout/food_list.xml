@@ -10,20 +10,45 @@
         android:id="@+id/listlayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_above="@+id/buttonLayout">
 
 
         <LinearLayout
             android:id="@+id/linearLayout2"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#DDDDDD"
+            android:background="@color/white"
             android:orientation="vertical">
 
-            <SearchView
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="#ffffff" />
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/search_et"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:layout_centerVertical="true"
+                    android:background="#ffffff"
+                    android:hint="음식이름을 검색하세요"
+                    android:textColor="#83000000"
+                    android:maxLength="10"
+                    android:maxLines="1"
+                    android:gravity="center"
+                    android:textSize="20dp"/>
+
+                <ImageButton
+                    android:id="@+id/search_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:src="?android:attr/actionModeWebSearchDrawable"
+                    android:layout_margin="5dp"
+                    android:backgroundTint="@color/white"/>
+            </RelativeLayout>
+
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -72,7 +97,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_alignBottom="@+id/listlayout">
+        android:layout_alignParentBottom="true">
 
         <Button
             android:id="@+id/btn_refback"
