@@ -48,8 +48,11 @@ public class JoinActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
                 Log.d("받은 값 (Join): ", result);
+                if(result.equals("{\"success\":\"false\"}")){
+                    Toast.makeText(this,"같은 이름의 계정이 있습니다.",Toast.LENGTH_SHORT).show();
+                }else finish();
 
-                finish();
+
             } else Toast.makeText(this, "비밀번호가 일치하지 않습니다.", Toast.LENGTH_SHORT).show();
         });
     }

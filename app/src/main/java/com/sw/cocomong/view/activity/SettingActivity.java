@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 import com.sw.cocomong.R;
 import com.sw.cocomong.dto.RefFoodMap;
 import com.sw.cocomong.task.reftask.RefAllDeleteTask;
+import com.sw.cocomong.task.usertask.UserWithdrawTask;
 
 import org.json.JSONException;
 
@@ -49,7 +50,17 @@ public class SettingActivity extends Activity {
             // 등등등
         });
         withdraw.setOnClickListener(v->{
-
+            try {
+                new UserWithdrawTask(username);
+            } catch (JSONException e) {
+                throw new RuntimeException(e);
+            }
+            SharedPreferences sh = getSharedPreferences("UserSharedPref", MODE_PRIVATE);
+            SharedPreferences.Editor editor = sh.edit();
+            editor.clear();
+            editor.commit();
+            Intent intent = new Intent(SettingActivity.this, LoginActivity.class);
+            startActivity(intent);
         });
     }
 }
