@@ -62,7 +62,8 @@ public class RefListGetTask {
                         new Handler(Looper.getMainLooper()).post(() -> listener.onRefListReceived(refList));
                     } catch (IOException e) {
                         Log.e(TAG, "JSON parsing error", e);
-                    }}
+                    }
+                }
             }
         });
     }

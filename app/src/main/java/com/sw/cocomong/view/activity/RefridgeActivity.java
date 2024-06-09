@@ -25,6 +25,7 @@ import com.sw.cocomong.task.foodtask.RecipeListGetTask;
 import com.sw.cocomong.task.reftask.RefListGetTask;
 import com.sw.cocomong.view.adapter.RefAdapter;
 
+import org.checkerframework.checker.units.qual.A;
 import org.json.JSONException;
 
 import java.sql.Array;
@@ -39,6 +40,7 @@ public class RefridgeActivity extends AppCompatActivity implements RefListGetTas
     RefAdapter refAdapter;
     List<RefObj> refObjs=new ArrayList<>();
     String username;
+    ArrayList<String> refNames=new ArrayList<>();
 
 
     @Override
@@ -69,7 +71,6 @@ public class RefridgeActivity extends AppCompatActivity implements RefListGetTas
         list.setOnItemClickListener((parent, view, position, id) -> {
             Intent intent = new Intent(RefridgeActivity.this, UserActivity.class);
             intent.putExtra("refname", refObjs.get(position).getRefName());
-            //intent.putExtra("refnum",refObjs.get(position).getRefnum());
             intent.putExtra("username",username);
             startActivity(intent);
         });
@@ -117,7 +118,7 @@ public class RefridgeActivity extends AppCompatActivity implements RefListGetTas
                 //background 인텐트 실행 및 refObjs 데이터 보내기
                 Intent serviceIntent = new Intent(this, BackgroundService.class);
                 //RefObj 객체의 모든 refName 리스트에 추가
-                ArrayList<String> refNames = new ArrayList<>();
+
                 for (RefObj refObj : refObjs) {
                     refNames.add(refObj.getRefName());
                     Log.d("refActivity", "refNames: "+String.valueOf(refNames.size())+username);
@@ -140,6 +141,11 @@ public class RefridgeActivity extends AppCompatActivity implements RefListGetTas
     public void onRefListReceived(List<RefObj> refObjs) {
         this.refObjs.clear();
         this.refObjs.addAll(refObjs);
+        refNames.clear();
+        for (RefObj refObj : refObjs) {
+            refNames.add(refObj.getRefName());
+            Log.d("refActivity", "refNames: "+String.valueOf(refNames.size())+username);
+        }
         updateRefUI();
     }
 
