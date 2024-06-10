@@ -120,7 +120,7 @@ public class UserActivity extends AppCompatActivity implements FoodListGetTask.F
             if(isCategory){
                 foodname=categoryList.get(position).getFoodname();
                 foodid = categoryList.get(position).getIdx().toString();
-                filepath= foodResObjs.get(position).getFilepath();
+                filepath= categoryList.get(position).getFilepath();
                 Intent foodIntent = new Intent(UserActivity.this, FoodInfoActivity.class);
                 foodIntent.putExtra("username",username);
                 foodIntent.putExtra("foodname", foodname);
@@ -131,7 +131,7 @@ public class UserActivity extends AppCompatActivity implements FoodListGetTask.F
             }else if(isFavorite){
                 foodname=favoriteList.get(position).getFoodname();
                 foodid = favoriteList.get(position).getIdx().toString();
-                filepath= foodResObjs.get(position).getFilepath();
+                filepath= favoriteList.get(position).getFilepath();
                 Intent foodIntent = new Intent(UserActivity.this, FoodInfoActivity.class);
                 foodIntent.putExtra("username",username);
                 foodIntent.putExtra("foodname", foodname);
@@ -221,6 +221,7 @@ public class UserActivity extends AppCompatActivity implements FoodListGetTask.F
             for(FoodResObj food : foodResObjs){
                 if(food.getFavorite().equals("true"))
                     favoriteList.add(food);
+                    Log.d("foodUrl", food.getFoodname()+  " " + food.getFilepath());
             }
             if(!isFavorite) {
                 if(isCategory) {
