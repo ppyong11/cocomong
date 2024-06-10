@@ -59,12 +59,12 @@ public class FoodAddSelectActivity extends AppCompatActivity {
         barcode=findViewById(R.id.btn_barcode);
 
         photo.setOnClickListener(v->{
-            Toast.makeText(this, "사진 클릭", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, "사진 클릭", Toast.LENGTH_SHORT).show();
             final PopupMenu sortMenu = new PopupMenu(getApplicationContext(),v);
             getMenuInflater().inflate(R.menu.food_photo_select_menu, sortMenu.getMenu());
             sortMenu.setOnMenuItemClickListener(p->{
                 if(p.getItemId()==R.id.select_photo){
-                    Toast.makeText(this, "사진 가져오기 선택", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(this, "사진 가져오기 선택", Toast.LENGTH_SHORT).show();
                     //갤러리 이동
                     Intent galleryIntent = new Intent(Intent.ACTION_PICK);
                     galleryIntent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
@@ -74,7 +74,7 @@ public class FoodAddSelectActivity extends AppCompatActivity {
                     activityResultLauncher.launch(galleryIntent);
 
                 } else if (p.getItemId()==R.id.select_camera) {
-                    Toast.makeText(this, "카메라 찍기 선택", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(this, "카메라 찍기 선택", Toast.LENGTH_SHORT).show();
                     Intent cameraIntent = new Intent(FoodAddSelectActivity.this, CameraCapture.class);
                     cameraIntent.putExtra("refname",refname);
                     cameraIntent.putExtra("username",username);
@@ -88,7 +88,7 @@ public class FoodAddSelectActivity extends AppCompatActivity {
         });
 
         barcode.setOnClickListener(v->{
-            Toast.makeText(this, "바코드 클릭", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, "바코드 클릭", Toast.LENGTH_SHORT).show();
 //            IntentIntegrator integrator = new IntentIntegrator(FoodAddSelectActivity.this);
 //            integrator.setOrientationLocked(false); //스캔 방향전환을 위한 설정
 //            integrator.setCaptureActivity(BarcodeScanner.class);
@@ -227,9 +227,9 @@ public class FoodAddSelectActivity extends AppCompatActivity {
     public void goNext(boolean successFlag){
         Log.d(TAG, "***** goNext() - successFlag : "+successFlag);
         if(successFlag) {
-            Toast.makeText(context, "모든 권한을 허용했네요!", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(context, "모든 권한을 허용했어요!", Toast.LENGTH_SHORT).show();
         } else {
-            Toast.makeText(context, "모든 권한을 허용해야합니다.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "모든 권한을 허용해야 합니다.", Toast.LENGTH_SHORT).show();
         }
     }
 

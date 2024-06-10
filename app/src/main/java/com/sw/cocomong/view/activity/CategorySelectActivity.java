@@ -47,7 +47,7 @@ public class CategorySelectActivity extends Activity {
         });
         meat.setOnClickListener(v->{
             Intent resultIntent = new Intent();
-            resultIntent.putExtra("category","축산품");
+            resultIntent.putExtra("category","축산물");
             setResult(RESULT_OK,resultIntent);
             finish();
         });
