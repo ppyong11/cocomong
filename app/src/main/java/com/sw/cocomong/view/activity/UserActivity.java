@@ -377,7 +377,7 @@ public class UserActivity extends AppCompatActivity implements FoodListGetTask.F
                     searchRecipeAdapter=new RecipeAdapter(this,searchRecipeList);
                     list.setAdapter(searchRecipeAdapter);
                 }else {
-                    list.setAdapter(foodAdapter);
+                    list.setAdapter(recipeAdapter);
                 }
             }
             else{
