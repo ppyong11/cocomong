@@ -107,6 +107,8 @@ public class UserActivity extends AppCompatActivity implements FoodListGetTask.F
         favRecipeAdapter = new RecipeAdapter(this, favRecipeObjs);
         favCategoryAdapter = new FoodAdapter(this, favCategoryList);
         expCategoryAdapter=new FoodAdapter(this, expCategoryList);
+        searchFoodAdapter=new FoodAdapter(this,searchFoodList);
+
 
 
         list.setAdapter(foodAdapter);
@@ -152,22 +154,36 @@ public class UserActivity extends AppCompatActivity implements FoodListGetTask.F
                     startActivity(recipeIntent);
                 }
             }else {
-                Log.d("항목 누름", ""+count);
-                if (count == 1){
-                    list.setAdapter(searchFoodAdapter);
+                if(list.getAdapter().equals(searchFoodAdapter)){
                     Log.d("현재 어댑터: ", list.getAdapter().getClass().getSimpleName());
+                    foodname = searchFoodList.get(position).getFoodname();
+                    foodid = searchFoodList.get(position).getIdx().toString();
+                    filepath= searchFoodList.get(position).getFilepath();
+                    Intent foodIntent = new Intent(UserActivity.this, FoodInfoActivity.class);
+                    foodIntent.putExtra("username",username);
+                    foodIntent.putExtra("foodname", foodname);
+                    foodIntent.putExtra("refname",refname);
+                    foodIntent.putExtra("foodid",foodid);
+                    foodIntent.putExtra("filepath", filepath);
+                    startActivity(foodIntent);
+                }else {
+//                    Log.d("항목 누름", "" + count);
+//                    if (count == 1) {
+//                        list.setAdapter(searchFoodAdapter);
+//                        Log.d("현재 어댑터: ", list.getAdapter().getClass().getSimpleName());
+//                    }
+                    Log.d("현재 어댑터: ", list.getAdapter().getClass().getSimpleName());
+                    foodname = foodResObjs.get(position).getFoodname();
+                    foodid = foodResObjs.get(position).getIdx().toString();
+                    filepath = foodResObjs.get(position).getFilepath();
+                    Intent foodIntent = new Intent(UserActivity.this, FoodInfoActivity.class);
+                    foodIntent.putExtra("username", username);
+                    foodIntent.putExtra("foodname", foodname);
+                    foodIntent.putExtra("refname", refname);
+                    foodIntent.putExtra("foodid", foodid);
+                    foodIntent.putExtra("filepath", filepath);
+                    startActivity(foodIntent);
                 }
-                Log.d("현재 어댑터: ", list.getAdapter().getClass().getSimpleName());
-                foodname = foodResObjs.get(position).getFoodname();
-                foodid = foodResObjs.get(position).getIdx().toString();
-                filepath= foodResObjs.get(position).getFilepath();
-                Intent foodIntent = new Intent(UserActivity.this, FoodInfoActivity.class);
-                foodIntent.putExtra("username",username);
-                foodIntent.putExtra("foodname", foodname);
-                foodIntent.putExtra("refname",refname);
-                foodIntent.putExtra("foodid",foodid);
-                foodIntent.putExtra("filepath", filepath);
-                startActivity(foodIntent);
             }
         });
 
@@ -470,6 +486,8 @@ public class UserActivity extends AppCompatActivity implements FoodListGetTask.F
         favCategoryAdapter = new FoodAdapter(this, favCategoryList);
         expCategoryAdapter=new FoodAdapter(this, expCategoryList);
         expRecipeAdapter=new RecipeAdapter(this,expRecipeList);
+        searchFoodAdapter=new FoodAdapter(this,searchFoodList);
+
 
         if(isCategory){
             list.setAdapter(categoryAdapter);
@@ -477,7 +495,6 @@ public class UserActivity extends AppCompatActivity implements FoodListGetTask.F
             list.setAdapter(recipeAdapter);
         }else
             list.setAdapter(foodAdapter);
-
     }
 
     @Override
