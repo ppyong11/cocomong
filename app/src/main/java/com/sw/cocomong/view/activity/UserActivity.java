@@ -72,6 +72,7 @@ public class UserActivity extends AppCompatActivity implements FoodListGetTask.F
 
     //데이터 갱신용 count
     int count=0;
+    boolean isFavoriteAdapter;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -364,7 +365,6 @@ public class UserActivity extends AppCompatActivity implements FoodListGetTask.F
             }
         });
 
-
         search_btn.setOnClickListener(v->{
             count= 0;
             Log.d("btn 누름", ""+count);
@@ -529,7 +529,10 @@ public class UserActivity extends AppCompatActivity implements FoodListGetTask.F
             list.setAdapter(categoryAdapter);
         }else if(isRecipe){
             list.setAdapter(recipeAdapter);
-        }else
+        } else if(isFavorite){
+            list.setAdapter(favAdapter);
+        }
+        else
             list.setAdapter(foodAdapter);
     }
 
