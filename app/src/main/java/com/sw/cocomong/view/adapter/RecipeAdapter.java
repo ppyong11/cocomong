@@ -50,16 +50,15 @@ public class RecipeAdapter extends ArrayAdapter<RecipeObj> implements RecipeList
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-
         LayoutInflater inflater = context.getLayoutInflater();
-        View rowView = inflater.inflate(R.layout.recipe_item,null,true);
+        View rowView = inflater.inflate(R.layout.recipe_item, null, true);
 
-        TextView tvRecipeName =  (TextView) rowView.findViewById(R.id.tv_recipename);
+        TextView tvRecipeName = (TextView) rowView.findViewById(R.id.tv_recipename);
         TextView tvIn1 = (TextView) rowView.findViewById(R.id.tv_in1);
         TextView tvIn2 = (TextView) rowView.findViewById(R.id.tv_in2);
         TextView tvIn3 = (TextView) rowView.findViewById(R.id.tv_in3);
 
-        recipeObj = recipeObjs.get(position);
+        recipeObj = getItem(position); // 여기에서 getItem을 사용하여 올바른 객체를 가져옵니다
 
         tvRecipeName.setText(recipeObj.getRecipename());
         tvIn1.setText(recipeObj.getMain());

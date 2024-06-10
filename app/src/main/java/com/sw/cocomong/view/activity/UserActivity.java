@@ -65,12 +65,17 @@ public class UserActivity extends AppCompatActivity implements FoodListGetTask.F
     Calendar calendar = Calendar.getInstance();
     // 일자를 정수로 변환
     int currentDayInt = calendar.get(Calendar.DAY_OF_MONTH);
+
+    //데이터 갱신용 count
+    int count=0;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.food_list);
         Intent intent=getIntent();
         Bundle extras=intent.getExtras();
+
+
         refname=extras.getString("refname");  // 냉장고 위치 받아옴
         username=extras.getString("username");  // username 받아옴
         try {
@@ -137,6 +142,12 @@ public class UserActivity extends AppCompatActivity implements FoodListGetTask.F
                 Intent recipeIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(link));
                 startActivity(recipeIntent);
             }else {
+                Log.d("항목 누름", ""+count);
+                if (count == 1){
+                    list.setAdapter(searchFoodAdapter);
+                    Log.d("현재 어댑터: ", list.getAdapter().getClass().getSimpleName());
+                }
+                Log.d("현재 어댑터: ", list.getAdapter().getClass().getSimpleName());
                 foodname = foodResObjs.get(position).getFoodname();
                 foodid = foodResObjs.get(position).getIdx().toString();
                 filepath= foodResObjs.get(position).getFilepath();
@@ -149,6 +160,7 @@ public class UserActivity extends AppCompatActivity implements FoodListGetTask.F
                 startActivity(foodIntent);
             }
         });
+
 
         foodAdd.setOnClickListener(v -> {
             if(isCategory) {
@@ -320,16 +332,44 @@ public class UserActivity extends AppCompatActivity implements FoodListGetTask.F
                 sortMenu.show();
             }
         });
+
+
         search_btn.setOnClickListener(v->{
+            count= 0;
+            Log.d("btn 누름", ""+count);
             searchFoodList.clear();
+            searchRecipeList.clear();
+
             String search=search_et.getText().toString();
-            if(!search.isEmpty()){
-                for(FoodResObj food : foodResObjs){
-                    if(food.getFoodname().equals(search)) searchFoodList.add(food);
+            if (isRecipe){
+                if(!search.isEmpty()){
+                    count += 1;
+                    Log.d("검색함", ""+count);
+                    for(RecipeObj recipeObj : recipeObjs){
+                        if(recipeObj.getRecipename().equals(search)) searchRecipeList.add(recipeObj);
+                    }
+                    searchRecipeAdapter=new RecipeAdapter(this,searchRecipeList);
+                    list.setAdapter(searchRecipeAdapter);
+                }else {
+                    list.setAdapter(foodAdapter);
                 }
-                searchFoodAdapter=new FoodAdapter(this,searchFoodList);
-                list.setAdapter(searchFoodAdapter);
-            }else list.setAdapter(foodAdapter);
+            }
+            else{
+                if(!search.isEmpty()){
+                    count += 1;
+                    Log.d("겅색함", ""+count);
+                    for(FoodResObj food : foodResObjs){
+                        if(food.getFoodname().equals(search)) searchFoodList.add(food);
+                    }
+                    searchFoodAdapter=new FoodAdapter(this,searchFoodList);
+                    list.setAdapter(searchFoodAdapter);
+                    Log.d("caeate", "mm");
+
+                }else {
+                    Log.d("엥", "ㅋㅋ");
+                    list.setAdapter(foodAdapter);
+                }
+            }
         });
     }
 
@@ -432,10 +472,11 @@ public class UserActivity extends AppCompatActivity implements FoodListGetTask.F
 
     @Override
     public void onRecipeListReceived(List<RecipeObj> recipeObjs) {
-
         this.recipeObjs.clear();
         this.favRecipeObjs.clear();
         this.expRecipeList.clear();
+
+
         for(FoodResObj food : foodResObjs) {
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM");
             String monthStr = dateFormat.format(new Date());
@@ -487,6 +528,8 @@ public class UserActivity extends AppCompatActivity implements FoodListGetTask.F
                 }
             }
         }
+
         updateUI();
+
     }
 }
