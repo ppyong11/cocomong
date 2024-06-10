@@ -138,9 +138,19 @@ public class UserActivity extends AppCompatActivity implements FoodListGetTask.F
                 foodIntent.putExtra("filepath", filepath);
                 startActivity(foodIntent);
             }else if(isRecipe) {
-                String link = recipeObjs.get(position).getRecipeLink();
-                Intent recipeIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(link));
-                startActivity(recipeIntent);
+                if(list.getAdapter().equals(expRecipeAdapter)) {
+                    String link = expRecipeList.get(position).getRecipeLink();
+                    Intent recipeIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(link));
+                    startActivity(recipeIntent);
+                } else if (list.getAdapter().equals(favAdapter)) {
+                    String link = favRecipeObjs.get(position).getRecipeLink();
+                    Intent recipeIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(link));
+                    startActivity(recipeIntent);
+                }else {
+                    String link = recipeObjs.get(position).getRecipeLink();
+                    Intent recipeIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(link));
+                    startActivity(recipeIntent);
+                }
             }else {
                 Log.d("항목 누름", ""+count);
                 if (count == 1){
