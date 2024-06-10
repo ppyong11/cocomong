@@ -16,6 +16,7 @@ import android.util.Log;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
+import androidx.core.app.TaskStackBuilder;
 
 import com.sw.cocomong.R;
 import com.sw.cocomong.view.activity.UserActivity;
@@ -55,7 +56,7 @@ public class NotificationService {
         return new NotificationCompat.Builder(context, FORE_CHANNEL_ID)
                 .setContentTitle("서비스 실행 중")
                 .setContentText("백그라운드 서비스가 실행 중입니다.")
-                .setSmallIcon(R.drawable.notification_icon)
+                .setSmallIcon(R.drawable.main_logo)
                 .setPriority(NotificationCompat.PRIORITY_LOW) // 중요도 낮춤
                 .build();
     }
@@ -68,11 +69,25 @@ public class NotificationService {
             Log.d("ccc", "null임");
         }else
             Log.d("ccc", "null아님");
-        Intent notificationIntent = new Intent(context, UserActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, notificationIntent, PendingIntent.FLAG_MUTABLE);
+        // 각 알림에 대한 Intent 및 PendingIntent 설정
+
+        Intent notificationIntent;
+        PendingIntent pendingIntent;
         int notificationId = NOTIFICATION_ID + count;
         String refName= refname;
         String state= "";
+
+        int requestCode = count; // 각 알림에 고유한 requestCode 사용, intent 이동
+        notificationIntent = new Intent(context, UserActivity.class);
+        notificationIntent.putExtra("refname", refname);
+        notificationIntent.putExtra("username", userName);
+
+        // TaskStackBuilder를 사용하여 Back Stack을 생성
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
+        stackBuilder.addNextIntentWithParentStack(notificationIntent);
+        pendingIntent = stackBuilder.getPendingIntent(count, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_MUTABLE);
+
+
         // 여러 음식의 정보를 문자열로 만들기
         StringBuilder contentTextBuilder = new StringBuilder();
         if(foodInfoList.size() > 0 && inFood){
@@ -97,7 +112,7 @@ public class NotificationService {
         // 팝업 알림 스타일 생성
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
                 .setContentText(contentText)
-                .setSmallIcon(R.drawable.notification_icon)
+                .setSmallIcon(R.drawable.ahyun_logo)
                 .setPriority(NotificationCompat.PRIORITY_MAX) // 팝업 알림의 우선순위를 높임
                 .setDefaults(NotificationCompat.DEFAULT_SOUND | NotificationCompat.DEFAULT_VIBRATE)
                 .setCategory(NotificationCompat.CATEGORY_MESSAGE) // 메시지 카테고리로 설정하여 팝업 알림 스타일을 적용

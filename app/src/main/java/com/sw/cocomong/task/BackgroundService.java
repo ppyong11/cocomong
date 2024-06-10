@@ -64,7 +64,7 @@ public class BackgroundService extends Service {
         Notification initialNotification = new Notification.Builder(this, NotificationService.FORE_CHANNEL_ID)
                 .setContentTitle("서비스 실행 중")
                 .setContentText("백그라운드 서비스가 실행 중입니다.")
-                .setSmallIcon(R.drawable.notification_icon)
+                .setSmallIcon(R.drawable.ahyun_logo)
                 .build();
         startForeground(NOTIFICATION_ID, initialNotification);
 
@@ -79,7 +79,7 @@ public class BackgroundService extends Service {
                 int currentHour = calendar.get(Calendar.HOUR_OF_DAY);
                 int currentMinute = calendar.get(Calendar.MINUTE);
                 Log.d("BackgroundService", "Current time: " + currentHour + ":" + currentMinute);
-                if (currentHour == 16 && currentMinute == 46) {
+                if (currentHour == 19 && currentMinute == 44) {
                     getFoodList();
                 }
                 // 다음 작업을 예약
