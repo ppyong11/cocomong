@@ -1,9 +1,13 @@
 package com.sw.cocomong.view.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -368,18 +372,50 @@ public class UserActivity extends AppCompatActivity implements FoodListGetTask.F
             searchRecipeList.clear();
 
             String search=search_et.getText().toString();
+
+            hideKeyboard();
+
             if (isRecipe){
                 if(!search.isEmpty()){
                     count += 1;
                     Log.d("검색함", ""+count);
                     for(RecipeObj recipeObj : recipeObjs){
                         if(recipeObj.getRecipename().equals(search)) searchRecipeList.add(recipeObj);
+                        else if(recipeObj.getMain().equals(search)) searchRecipeList.add(recipeObj);
+                        else if(recipeObj.getSub1().equals(search)) searchRecipeList.add(recipeObj);
+                        else if(recipeObj.getSub2().equals(search)) searchRecipeList.add(recipeObj);
                     }
                     searchRecipeAdapter=new RecipeAdapter(this,searchRecipeList);
                     list.setAdapter(searchRecipeAdapter);
                 }else {
                     list.setAdapter(recipeAdapter);
                 }
+            }
+            else if(isCategory){
+                if(!search.isEmpty()) {
+                    if (list.getAdapter().equals(favCategoryAdapter)) {
+                        for (FoodResObj category : favCategoryList) {
+                            if (category.getFoodname().equals(search)) searchFoodList.add(category);
+                        }
+                    } else if (list.getAdapter().equals(expCategoryAdapter)) {
+                        for (FoodResObj category : expCategoryList) {
+                            if (category.getFoodname().equals(search)) searchFoodList.add(category);
+                        }
+                    } else {
+                        for (FoodResObj category : categoryList) {
+                            if (category.getFoodname().equals(search)) searchFoodList.add(category);
+                        }
+                    }
+                    //searchFoodAdapter=new FoodAdapter(this,searchFoodList);
+                    list.setAdapter(searchFoodAdapter);
+                }else list.setAdapter(categoryAdapter);
+            }else if(isFavorite){
+                if(!search.isEmpty()) {
+                    for (FoodResObj category : favoriteList) {
+                        if (category.getFoodname().equals(search)) searchFoodList.add(category);
+                    }
+                    list.setAdapter(searchFoodAdapter);
+                }else list.setAdapter(favAdapter);
             }
             else{
                 if(!search.isEmpty()){
@@ -391,7 +427,6 @@ public class UserActivity extends AppCompatActivity implements FoodListGetTask.F
                     searchFoodAdapter=new FoodAdapter(this,searchFoodList);
                     list.setAdapter(searchFoodAdapter);
                     Log.d("caeate", "mm");
-
                 }else {
                     Log.d("엥", "ㅋㅋ");
                     list.setAdapter(foodAdapter);
@@ -559,5 +594,20 @@ public class UserActivity extends AppCompatActivity implements FoodListGetTask.F
 
         updateUI();
 
+    }
+    private void hideKeyboard() {
+        InputMethodManager imm = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
+        //Find the currently focused view, so we can grab the correct window token from it.
+        View view = getCurrentFocus();
+        //If no view currently has focus, create a new one, just so we can grab a window token from it
+        if (view == null) {
+            view = new View(this);
+        }
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        hideKeyboard();
+        return super.dispatchTouchEvent(ev);
     }
 }
