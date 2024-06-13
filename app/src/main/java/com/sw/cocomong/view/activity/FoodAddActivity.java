@@ -1,5 +1,6 @@
 package com.sw.cocomong.view.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -7,7 +8,9 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -87,6 +90,7 @@ public class FoodAddActivity extends AppCompatActivity {
         expire_et.setEnabled(true);
         memo_et.setEnabled(true);
 
+        hideKeyboard();
         //이미지 분류 실행
         if (!imageUriString.isEmpty())
             imagePredict(imageUriString);
@@ -232,5 +236,20 @@ public class FoodAddActivity extends AppCompatActivity {
             // 반환된 분류결과로 카테고리 설정
             category_tv.setText(CATEGORY[classificationResult]);
         }
+    }
+    private void hideKeyboard() {
+        InputMethodManager imm = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
+        //Find the currently focused view, so we can grab the correct window token from it.
+        View view = getCurrentFocus();
+        //If no view currently has focus, create a new one, just so we can grab a window token from it
+        if (view == null) {
+            view = new View(this);
+        }
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        hideKeyboard();
+        return super.dispatchTouchEvent(ev);
     }
 }

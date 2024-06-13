@@ -1,8 +1,11 @@
 package com.sw.cocomong.view.activity;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -37,6 +40,8 @@ public class JoinActivity extends AppCompatActivity {
         login.setVisibility(View.GONE);
         title.setText("회원가입");
 
+        hideKeyboard();
+
         join.setOnClickListener(v-> {
 
             if(pw.getText().toString().equals(pwCheck.getText().toString())){
@@ -47,7 +52,7 @@ public class JoinActivity extends AppCompatActivity {
                 } catch (Exception e){
                     e.printStackTrace();
                 }
-                Log.d("받은 값 (Join): ", result);
+                //Log.d("받은 값 (Join): ", result);
                 if(result.equals("{\"success\":\"false\"}")){
                     Toast.makeText(this,"같은 이름의 계정이 있습니다.",Toast.LENGTH_SHORT).show();
                 }else finish();
@@ -56,5 +61,19 @@ public class JoinActivity extends AppCompatActivity {
             } else Toast.makeText(this, "비밀번호가 일치하지 않습니다.", Toast.LENGTH_SHORT).show();
         });
     }
-
+    private void hideKeyboard() {
+        InputMethodManager imm = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
+        //Find the currently focused view, so we can grab the correct window token from it.
+        View view = getCurrentFocus();
+        //If no view currently has focus, create a new one, just so we can grab a window token from it
+        if (view == null) {
+            view = new View(this);
+        }
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        hideKeyboard();
+        return super.dispatchTouchEvent(ev);
+    }
 }

@@ -572,7 +572,6 @@ public class UserActivity extends AppCompatActivity implements FoodListGetTask.F
         }
 
         updateUI();
-
     }
     private void hideKeyboard() {
         InputMethodManager imm = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);

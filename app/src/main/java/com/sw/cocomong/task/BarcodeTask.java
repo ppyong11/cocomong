@@ -107,6 +107,8 @@ public class BarcodeTask extends AsyncTask<String, Void, BarcodeResDto> {
                 System.out.println("---------conn.disconeect()-------");
             }
         }
+        Log.i("barcodeNum", barcodeNum);
+        Log.i("barcodeCategory",category);
         barcodeResDto=new BarcodeResDto(product, pog_daycnt, category);
         return barcodeResDto;
     }

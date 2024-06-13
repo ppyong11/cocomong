@@ -113,6 +113,7 @@ public class RefridgeActivity extends AppCompatActivity implements RefListGetTas
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
+        updateRefUI();
     }
 
     //데이터를 background로 보내기 위해 해당 함수 내에 코드 첨부
@@ -149,7 +150,7 @@ public class RefridgeActivity extends AppCompatActivity implements RefListGetTas
         }
 
     }
-    private void updateRefUI() {
+    private void updateRefUI(){
         refAdapter.notifyDataSetChanged();
     }
     //백그라운드 알림 권한

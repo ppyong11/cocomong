@@ -29,7 +29,9 @@ public class LoginTask extends AsyncTask<String, Void, String> {
 
             //URL url = new URL("http://58.224.91.191:8080/login");  // login 서버
             //URL url = new URL("http://121.181.25.225:8080/login");
-            URL url = new URL("http://192.168.236.1:8080/login");  // dahee laptop
+            //URL url = new URL("http://192.168.236.1:8080/login");  // dahee laptop
+            URL url = new URL("http://172.29.164.224:8080/login");
+
             //URL url = new URL("http://192.168.219.144:8080/login"); //아현
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             this.conn=conn;
