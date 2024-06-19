@@ -41,6 +41,33 @@ public class TensorTask {
     }
 
     //이미지 로드 및 전처리, 모델 실행 후 결과값 반환
+    public int classifyBitmap(Bitmap bitmap){
+        //촬영 후 분류
+        if(bitmap == null){ //이미지 로드 실패 시 중단
+            Log.d("classifyImage", "이미지 로드 실패");
+            return -1;
+        }
+        Bitmap resizedBitmap = Bitmap.createScaledBitmap(bitmap, 224, 224, true);
+        Log.d("test", "bitmap 전환, 리사이즈 완료");
+
+        ByteBuffer inputBuffer = convertBitmapToByteBuffer(resizedBitmap);
+        Log.d("test", "buffer");
+
+        // Prepare output data
+        float[][] output = new float[1][NUM_CLASSES]; // NUM_CLASSES is the number of classes
+        Log.d("test", "1");
+
+        // Run inference
+        tflite.run(inputBuffer, output);
+        Log.d("test", "2");
+        // Process the output
+        float[] probabilities = output[0];
+        int maxIndex = getMaxIndex(probabilities);
+        Log.d("TFLite", "Predicted class: " + STRINGS_CLASSES[maxIndex] + ", Confidence: " + 100*probabilities[maxIndex]);
+        return maxIndex; //분류값 리턴
+    }
+
+    //이미지 로드 및 전처리, 모델 실행 후 결과값 반환
     public int classifyUri(Uri uri){
         //이미지 선택 후 분류
         Bitmap bitmap= loadImage(uri);

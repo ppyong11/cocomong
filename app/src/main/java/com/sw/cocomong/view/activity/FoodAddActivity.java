@@ -43,7 +43,7 @@ public class FoodAddActivity extends AppCompatActivity {
     RefObj refObj;
     Bitmap foodImageBitmap;
     //int foodPosition, refPosition;
-    String foodname, refname,refnum,username, imageUriString;
+    String foodname, refname,refnum,username;
     Uri imageUri;
     static  final String[] CATEGORY= {"과일", "축산물", "해산물", "채소"};
     String dateRegex = "^(?:(?:19|20)\\d{2})/(0[1-9]|1[0-2])/(0[1-9]|1\\d|2[0-8]|29(?!/02)|30(?!/02|/04|/06|/09|/11)|31(?=/0[13578]|/1[02]))$|^(?:(?:19|20)(?:[02468][048]|[13579][26]))/02/29$";
@@ -54,16 +54,12 @@ public class FoodAddActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.food_info);
 
-        //갤러리, 촬영 때 받아온 extra
         Intent intent=getIntent();
         Bundle extras=intent.getExtras();
         refname=extras.getString("refname");
-        //foodname은 안 받아오는디?
         foodname=extras.getString("foodname");
         refnum=extras.getString("refnum");
         username=extras.getString("username");
-        imageUriString= extras.getString("uri");
-        Log.d("FoodAddActivity", "uri 받음"+imageUriString);
 
         title_tv = findViewById(R.id.tv_infoTitle);
         back = findViewById(R.id.btn_back);
@@ -88,10 +84,6 @@ public class FoodAddActivity extends AppCompatActivity {
         btnCategory.setEnabled(true);
         expire_et.setEnabled(true);
         memo_et.setEnabled(true);
-
-        //이미지 분류 실행
-        if (!imageUriString.isEmpty())
-            imagePredict(imageUriString);
 
 //        foodImageBitmap=CameraCapture.moveCameraBitmap();
 //        foodimage.setImageBitmap(foodImageBitmap);
@@ -124,11 +116,11 @@ public class FoodAddActivity extends AppCompatActivity {
                     String memo=memo_et.getText().toString();
                     //foodListItemDto = new FoodListItemDto(foodImageBitmap, foodName.getText().toString(), category.getText().toString(), expire.getText().toString(), memo.getText().toString(), false, refListItemDto.getRefId());
                     foodResObj = new FoodResObj(null,username,foodname,expiredate,category,memo,"false",refname);
-                    try {
-                        FoodAddTask foodAddTask = new FoodAddTask(foodResObj, "content://media/external/images/media/36");
+                    /*try {
+                        FoodAddTask foodAddTask = new FoodAddTask(foodResObj);
                     } catch (JSONException e) {
                         throw new RuntimeException(e);
-                    }
+                    }*/
 
                     save.setVisibility(View.GONE);
                     finish();
@@ -201,7 +193,23 @@ public class FoodAddActivity extends AppCompatActivity {
             } catch (Exception e){
                 e.printStackTrace();
             }
-        });*/
+        });
+ */
+        //촬영: "camera", 갤러리: "gallery"
+        Intent tensorIntent= getIntent();
+        String method= tensorIntent.getStringExtra("method");
+        Log.d("method", method);
+
+        if (method.equals("camera")) {
+            //CameraCaptureActivity의 촬영 후 bitmap 변수 참조
+            Bitmap bitmap= CameraCapture.resizedBitmap;
+            cameraPredict(bitmap);
+        }
+        else if (method.equals("gallery")){
+            String imageUriString= FoodAddSelectActivity.uriString;
+            Log.d("foodAdduri", imageUriString);
+            galleryPredict(imageUriString);
+        }
     }
 
     @Override
@@ -223,14 +231,26 @@ public class FoodAddActivity extends AppCompatActivity {
     }
 
     //이미지 가져오기, 촬영 선택 시 모델 실행
-    protected void imagePredict(String uriString){
-        imageUri= Uri.parse(uriString);
+    protected void galleryPredict(String imageUriString){
         // Context와 이미지 uri를 사용하여 TensorTask 인스턴스를 생성하고 초기화
-        if (imageUri != null) {
+        if (imageUriString != null) {
+            Uri imageUri = Uri.parse(imageUriString);
             foodimage.setImageURI(imageUri); //분류하는 이미지 보이기
             // URI를 사용하여 이미지 분류 실행
             TensorTask tensorTask = new TensorTask(this);
             int classificationResult = tensorTask.classifyUri(imageUri);
+            // 반환된 분류결과로 카테고리 설정
+            category_tv.setText(CATEGORY[classificationResult]);
+        }
+    }
+
+    protected void cameraPredict(Bitmap bitmap){
+        //bitmap을 이용해 이미지 분류
+        if(bitmap != null){
+            foodimage.setImageBitmap(bitmap);
+            Log.d("method", "이미지 세팅ㅇ");
+            TensorTask tensorTask = new TensorTask(this);
+            int classificationResult= tensorTask.classifyBitmap(bitmap);
             // 반환된 분류결과로 카테고리 설정
             category_tv.setText(CATEGORY[classificationResult]);
         }
