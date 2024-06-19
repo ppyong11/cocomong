@@ -37,6 +37,7 @@ import java.util.ArrayList;
 public class FoodAddSelectActivity extends AppCompatActivity {
 
     ImageButton photo, barcode;
+    static String uriString; //foodAdd액티비티에서 참조할 uri
 
     private String TAG = FoodAddSelectActivity.class.getSimpleName();
     private Context context = FoodAddSelectActivity.this;
@@ -72,6 +73,7 @@ public class FoodAddSelectActivity extends AppCompatActivity {
                     galleryIntent.putExtra("username",username);
                     galleryIntent.putExtra("refnum",refnum);
                     activityResultLauncher.launch(galleryIntent);
+                    finish();
 
                 } else if (p.getItemId()==R.id.select_camera) {
                     //Toast.makeText(this, "카메라 찍기 선택", Toast.LENGTH_SHORT).show();
@@ -79,6 +81,7 @@ public class FoodAddSelectActivity extends AppCompatActivity {
                     cameraIntent.putExtra("refname",refname);
                     cameraIntent.putExtra("username",username);
                     cameraIntent.putExtra("refnum",refnum);
+                    cameraIntent.putExtra("method","camera");
                     startActivity(cameraIntent);
                     finish();
                 }
@@ -117,9 +120,10 @@ public class FoodAddSelectActivity extends AppCompatActivity {
                             if (uri != null) {
                                 Log.d("uri", "uri 받아옴");
                                 // URI를 String으로 변환하여 TensorTask로 전달
-                                Log.d("uri", uri.toString());
+                                uriString = uri.toString();
+                                Log.d("uri", uriString);
                                 Intent foodAddIntent = new Intent(FoodAddSelectActivity.this, FoodAddActivity.class);
-                                foodAddIntent.putExtra("uri", uri.toString());
+                                foodAddIntent.putExtra("method", "gallery");
                                 foodAddIntent.putExtra("refname",refname);
                                 foodAddIntent.putExtra("username",username);
                                 foodAddIntent.putExtra("refnum",refnum);
@@ -208,7 +212,6 @@ public class FoodAddSelectActivity extends AppCompatActivity {
                         if(grantResults[i] != PackageManager.PERMISSION_GRANTED) {
                             //권한 거부 - 권한허용이 필요한 거부된 경우 deniedPermission 리스트에 추가해준다
                             deniedPermission.add(requiredPermissionList[i]);
-                            Log.d("권한", deniedPermission.get(i));
                         }
                     }
 

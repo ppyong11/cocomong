@@ -35,9 +35,8 @@ public class RefListGetTask {
         this.listener = listener;
         //String url = "http://58.224.91.191:8080/ref/list/" + username;
         //String url = "http://192.168.236.1:8080/ref/list/"+username;  // dahee laptop
-        String url = "http://172.29.164.224:8080/ref/list/"+username;
+        String url = "http://118.139.210.235:8080/ref/list/"+username;  // chae laptop
 
-        //String url = "http://192.168.219.144:8080/ref/list/"+username; //아현
 
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder().url(url).get().build();
@@ -64,8 +63,7 @@ public class RefListGetTask {
                         new Handler(Looper.getMainLooper()).post(() -> listener.onRefListReceived(refList));
                     } catch (IOException e) {
                         Log.e(TAG, "JSON parsing error", e);
-                    }
-                }
+                    }}
             }
         });
     }

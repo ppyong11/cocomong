@@ -9,10 +9,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.hardware.Camera;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -27,9 +24,9 @@ public class CameraCapture extends Activity {
     static CameraSurfaceView surfaceView;
     ImageView food_image_test;
     Button image_ok, image_deny;
-    String refname, username, refnum; //FoodAddSelectActivity에서 보내는 값 받기
 
     static Bitmap resizedBitmap; //bitmap 객체 저장
+    String method;
 
     @SuppressLint({"MissingInflatedId", "Range"})
     @Override
@@ -38,12 +35,9 @@ public class CameraCapture extends Activity {
         setContentView(R.layout.camera_surface);
 
 
-        //FoodAdd에서 보낸 값 받아옴, foodAddActivity로 보낼 것
-        Intent intent=getIntent();
-        Bundle extras=intent.getExtras();
-        refname=extras.getString("refname");
-        refnum=extras.getString("refnum");
-        username=extras.getString("username");
+        //FoodAdd에서 method값 받아옴
+        method= getIntent().getStringExtra("method");
+
 
         food_image_test=findViewById(R.id.photo_test);
         image_ok=findViewById(R.id.photo_ok);
@@ -73,13 +67,9 @@ public class CameraCapture extends Activity {
         image_ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String imageUri= saveImageToGallery(resizedBitmap);
-                Intent foodAddIntent = new Intent(CameraCapture.this, FoodAddActivity.class);
-                foodAddIntent.putExtra("uri", imageUri);
-                foodAddIntent.putExtra("refname",refname);
-                foodAddIntent.putExtra("username",username);
-                foodAddIntent.putExtra("refnum",refnum);
-                startActivity(foodAddIntent);
+                Intent intent = new Intent(CameraCapture.this, FoodAddActivity.class);
+                intent.putExtra("method", method);
+                startActivity(intent);
                 finish();
             }
         });
@@ -94,6 +84,7 @@ public class CameraCapture extends Activity {
 
             }
         });
+
     }
 
     public void capture() {
@@ -115,23 +106,5 @@ public class CameraCapture extends Activity {
                 camera.startPreview();
             }
         });
-    }
-    // 갤러리에 이미지 저장하고 uri 스트링 반환
-    private String saveImageToGallery(Bitmap bitmap) {
-        String savedImageURL = MediaStore.Images.Media.insertImage(
-                getContentResolver(),
-                bitmap,
-                "Cocomong_Image",
-                "Image captured by Cocomong app"
-        );
-        // 갤러리에 이미지 저장 후 해당 이미지의 URI를 반환받음
-        if (savedImageURL != null) {
-            // 이미지 저장에 성공한 경우
-            Log.d("CameraCapture", savedImageURL.toString());
-            // savedImageURL을 사용하여 갤러리에 저장된 이미지에 대한 작업을 수행할 수 있음
-        } else {
-            // 이미지 저장에 실패한 경우
-        }
-        return savedImageURL;
     }
 }

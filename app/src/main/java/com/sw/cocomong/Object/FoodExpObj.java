@@ -15,12 +15,9 @@ import lombok.ToString;
 @Data
 @Builder
 @ToString
-public class RecipeObj {
-
-    private String recipe;
-    private String main;
-    private String sub1;
-    private String sub2;
-    private String sub3;
+public class FoodExpObj {
+    private String foodname;
+    private String expiredate;
+    private String category;
 
 }

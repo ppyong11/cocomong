@@ -3,15 +3,10 @@
 
 
     <item
-        android:id="@+id/sort_name"
-        android:title="이름순">
-    </item>
+        android:id="@+id/sort_Fav"
+        android:title="즐겨찾기순"></item>
     <item
-        android:id="@+id/sort_expire"
+        android:id="@+id/sort_exp"
         android:title="유통기한순">
-    </item>
-    <item
-        android:id="@+id/sort_fav"
-        android:title="즐겨찾기">
     </item>
 </menu>

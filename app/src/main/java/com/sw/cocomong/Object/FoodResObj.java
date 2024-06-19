@@ -28,5 +28,5 @@ public class FoodResObj {
     private String memo;
     private String favorite;
     private String refname;
-    private String filepath;
+
 }

@@ -23,10 +23,9 @@ import okhttp3.Response;
 
 public class RefAddTask {
 
-    //String url = "http:/192.168.236.1:8080/ref/create";  //dahee laptop
-    String url = "http://172.29.164.224:8080/ref/create";
+    //String url = "http:/192.168.236.1:8080/ref/create";
+    String url = "http:/118.139.210.235:8080/ref/create"; //chae
 
-    //String url = "http://192.168.219.144:8080/ref/create"; //아현
     public RefAddTask(String refname, String username) throws JSONException {
         JSONObject data = new JSONObject();
 

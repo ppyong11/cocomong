@@ -36,9 +36,8 @@ public class FoodDetailTask {
 
         //String url = "http://58.224.91.191:8080/foods/"+foodid;
         //String url = "http://192.168.236.1:8080/foods/"+foodid;  // dahee laptop
-        String url = "http://172.29.164.224:8080/foods/"+foodid;
+        String url = "http://118.139.210.235:8080/foods/"+foodid;  // chae laptop
 
-        //String url = "http://192.168.219.144:8080/foods/"+foodid; //아현
         //request 작성
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder().url(url).get().build();

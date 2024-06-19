@@ -1,16 +1,11 @@
 package com.sw.cocomong.view.activity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -37,13 +32,15 @@ import java.util.regex.Pattern;
 public class BarcodeScanner extends AppCompatActivity {
 
     ImageView foodimage;
-    TextView title_tv, category_tv;
+    TextView title_tv, category_tv, barcodeTest_tv, barcode_tv;
     ImageButton back, edit;
     Button save, delete, btnCategory;
     EditText foodName_et, expire_et, memo_et;
+    //FoodListItemDto foodListItemDto;
+    //RefListItemDto refListItemDto;
     FoodResObj foodResObj;
+    Bitmap foodImageBitmap=null;
     String refnum, refname, username;
-    Uri uri;
     String dateRegex = "^(?:(?:19|20)\\d{2})/(0[1-9]|1[0-2])/(0[1-9]|1\\d|2[0-8]|29(?!/02)|30(?!/02|/04|/06|/09|/11)|31(?=/0[13578]|/1[02]))$|^(?:(?:19|20)(?:[02468][048]|[13579][26]))/02/29$";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,20 +65,21 @@ public class BarcodeScanner extends AppCompatActivity {
         expire_et = findViewById(R.id.et_infoExpire);
         memo_et = findViewById(R.id.et_memo);
 
+        barcodeTest_tv =findViewById(R.id.btn_barcode);
+        barcode_tv =findViewById(R.id.tv_barcodeNum);
+
         foodimage = findViewById(R.id.food_image);
+
 
         save.setVisibility(View.VISIBLE);
         delete.setVisibility(View.GONE);
         edit.setVisibility(View.GONE);
-
 
         foodName_et.setEnabled(true);
         btnCategory.setEnabled(true);
         expire_et.setEnabled(true);
         memo_et.setEnabled(true);
 
-
-        hideKeyboard();
 
         btnCategory.setOnClickListener(v->{
             Intent intentCategory = new Intent(BarcodeScanner.this, CategorySelectActivity.class);
@@ -108,12 +106,14 @@ public class BarcodeScanner extends AppCompatActivity {
                     String expiredate= expire_et.getText().toString();
                     String category=category_tv.getText().toString();
                     String memo=memo_et.getText().toString();
-                    foodResObj = new FoodResObj(null,username,foodname,expiredate,category,memo,"false",refname,"content://media/external/images/media/109");
-                    try {
+                    //foodListItemDto = new FoodListItemDto(foodImageBitmap, foodName.getText().toString(), category.getText().toString(), expire.getText().toString(), memo.getText().toString(), false, refListItemDto.getRefId());
+                    foodResObj = new FoodResObj(null,username,foodname,expiredate,category,memo,"false",refname);
+                    /*try {
                         FoodAddTask foodAddTask = new FoodAddTask(foodResObj);
                     } catch (JSONException e) {
                         throw new RuntimeException(e);
-                    }
+                    }*/
+
                     save.setVisibility(View.GONE);
                     finish();
                 } else Toast.makeText(this, "이름을 다시 입력하세요",Toast.LENGTH_SHORT).show();
@@ -165,14 +165,12 @@ public class BarcodeScanner extends AppCompatActivity {
 
             }
         });
-        uri= Uri.parse("content://media/external/images/media/109");
-        foodimage.setImageURI(uri);
     }
 
     private void startScan() {
         IntentIntegrator integrator = new IntentIntegrator(this);
         integrator.setPrompt("Scan a barcode");
-        integrator.setOrientationLocked(true);
+        integrator.setOrientationLocked(false);
         integrator.initiateScan();
     }
 
@@ -194,16 +192,40 @@ public class BarcodeScanner extends AppCompatActivity {
                     BarcodeTask barcodeTask = new BarcodeTask(text);
                     try {
                         BarcodeResDto taskResult = barcodeTask.execute(text).get();
-                        if(taskResult.getProductName().isEmpty()) Toast.makeText(this, "바코드 정보가 없습니다.",Toast.LENGTH_SHORT).show();;
+
+                        barcode_tv.setText(text);
                         foodName_et.setText(taskResult.getProductName());
                         category_tv.setText(barcodeCategory(taskResult.getCategory()));
                         memo_et.setText(taskResult.getDayCount());
 
+                        if (barcodeTask.getResponseCode() == 200| taskResult==null) {
+                            Toast.makeText(this, "성공", Toast.LENGTH_SHORT).show();
+                        } else Toast.makeText(this, "실패", Toast.LENGTH_SHORT).show();
+
                     } catch (Exception e){
                         e.printStackTrace();
                     }
+                    // TODO: 2024-05-20 수정하기
                 }else{
-                    Toast.makeText(this, "연결이 불안정합니다.",Toast.LENGTH_SHORT).show();
+                    String text = barcode_tv.getText().toString();
+                    BarcodeTask barcodeTask = new BarcodeTask(text);
+                    try {
+                        BarcodeResDto taskResult = barcodeTask.execute(text).get();
+
+                        barcode_tv.setText(text);
+                        foodName_et.setText(taskResult.getProductName());
+                        category_tv.setText(taskResult.getCategory());
+                        memo_et.setText(taskResult.getDayCount());
+
+                        if (barcodeTask.getResponseCode() == 200| taskResult==null) {
+                            Toast.makeText(this, "성공", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(this, "실패", Toast.LENGTH_SHORT).show();
+                        }
+
+                    } catch (Exception e){
+                        e.printStackTrace();
+                    }
                 }
             }
         }
@@ -211,11 +233,11 @@ public class BarcodeScanner extends AppCompatActivity {
     private String barcodeCategory(String category){
         if(category.equals("과일")) return "과일";
         else if (category.equals("채소")) return "채소";
-        else if (category.equals("유제품")|category.equals("가공두유")) return "유제품";
+        else if (category.equals("유제품")) return "유제품";
         else if (category.equals("축산품")) return "축산품";
         else if (category.equals("해산물")) return "해산물";
         else if (category.equals("가공식품")) return "가공식품";
-        else if (category.equals("음료수")|category.equals("탄산음료")) return "음료수";
+        else if (category.equals("음료수")) return "음료수";
         else return "기타";
     }
 
@@ -223,20 +245,5 @@ public class BarcodeScanner extends AppCompatActivity {
     protected void onPause() {
 
         super.onPause();
-    }
-    private void hideKeyboard() {
-        InputMethodManager imm = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
-        //Find the currently focused view, so we can grab the correct window token from it.
-        View view = getCurrentFocus();
-        //If no view currently has focus, create a new one, just so we can grab a window token from it
-        if (view == null) {
-            view = new View(this);
-        }
-        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-    }
-    @Override
-    public boolean dispatchTouchEvent(MotionEvent ev) {
-        hideKeyboard();
-        return super.dispatchTouchEvent(ev);
     }
 }
