@@ -1,11 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-</head>
-<body>
   <div align="center">
 
     <!-- logo -->
@@ -104,5 +96,3 @@
     |:---:|:---:|
     | ![](https://github.com/yewon-Noh.png?size=120) | ![](https://github.com/SeongHo-C.png?size=120) |
     |[노예원](https://github.com/yewon-Noh)|[이성호](https://github.com/SeongHo-C)|    
-</body>
-</html>
