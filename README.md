@@ -15,9 +15,7 @@
     - 즐겨찾기 / 카테고리 기능  
         <img width="340" alt="image" src="https://github.com/user-attachments/assets/b65dbcb3-f58a-4313-8eea-8a32eda1dc5a" />  
   두 기능을 통해 더욱 효율적인 식재료 관리 가능
-
-
-    - 유통기한 관리 (알림 기능 제공)
+    - 유통기한 관리 (알림 기능 제공)  
        <img width="436" alt="image" src="https://github.com/user-attachments/assets/57eaa971-7e6a-4be6-b487-27e3a2caaa24" />  
   표출 기준에 따라 제공받는 알림의 텍스트가 달라지며, 알림 클릭 시 선택된 냉장고 리스트로 넘어간다.
 
