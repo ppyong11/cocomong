@@ -2,7 +2,7 @@
 1. **프로젝트명**: 이미지 분류 모델을 이용한 냉장고 관리 어플
 2. **프로젝트 인원**: 4명
 3. **프로젝트 기간**: 2024.03~2024.06  
-4. **프로젝트 목적**: 바쁜 현대인을 위해 간편한 식재료 등록과 보유 식재료 기반 레시피 추천 기능을 제공하여 집밥 소비를 늘리고, 건강한 식습관을 형성할 수 있도록 도움  
+4. **프로젝트 목적**: 바쁜 현대인을 위해 간편한 식재료 등록과 보유 식재료 기반 레시피 추천 기능을 제공하여 집밥 소비를 늘리고, 건강한 식습관을 형성할 수 있도록 돕습니다.
 5. **사용 기술**
     - 앱 개발: Java, Android Studio, 바코드 API
     - 서버 개발: Java, Spring Boot, MySQL, Restful API
@@ -24,4 +24,6 @@
 ## 📌 프로젝트 결과물
 - **영상 링크**  
   https://drive.google.com/file/d/1gtidJY9z6wRek0JrP4__iMHpGzZFoFe9/view?usp=sharing
-## 📝 배운 점 
+## 📝 프로젝트 상세 내용 및 기여 
+- **노션 링크**  
+  https://cooing-caraway-2f1.notion.site/1e6516e994b381f48bc7c352cbd9440c?source=copy_link
