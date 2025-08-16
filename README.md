@@ -6,7 +6,7 @@
 5. **사용 기술**
     - 앱 개발: Java, Android Studio, 바코드 API
     - 서버 개발: Java, Spring Boot, MySQL, Restful API
-    - 모델 개발: Python, Tensorflow, Tensorflow Lite
+    - 모델 개발: Python, Tensorflow, Tensorflow Lite, Pixabay API
 ## 📌 주요 기능 UI 소개
 - **주요 기능**
     - **식재료 등록**
